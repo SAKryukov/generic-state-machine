@@ -8,7 +8,6 @@
 */
 
 namespace StateMachines {
-    using Console = System.Console;
     using Type = System.Type;
     using BindingFlags = System.Reflection.BindingFlags;
     using FieldInfo = System.Reflection.FieldInfo;
@@ -126,18 +125,5 @@ namespace StateMachines {
         System.Collections.Generic.Dictionary<StateGraphKey, StateGraphValue<STATE>> stateGraph = new();
     } //class StateMachine
 
-    enum TestState { Draft, Denied, Approved, WaitForApprovalManager, WaitForApprovalTechnical, WaitForApprovalFinance, }
-    class Test {
-        static void Main() {
-            var stateMachine = new StateMachine<TestState>();
-            stateMachine.AddValidStateTransition(TestState.Draft, TestState.WaitForApprovalManager, (starting, ending) => { });
-            stateMachine.AddValidStateTransition(TestState.Draft, TestState.WaitForApprovalTechnical, (starting, ending) => { });
-            stateMachine.AddValidStateTransition(TestState.Draft, TestState.WaitForApprovalFinance, (starting, ending) => { });
-            stateMachine.AddInvalidStateTransition(TestState.Denied, TestState.WaitForApprovalManager, (starting, ending) =>
-                $"{TestState.Denied} to {TestState.WaitForApprovalManager}? Come on! It is already denied, don't wait!");
-            Console.WriteLine(stateMachine.IsTransitionValid(TestState.Draft, TestState.WaitForApprovalManager));
-            Console.WriteLine(stateMachine.IsTransitionValid(TestState.Denied, TestState.WaitForApprovalManager));
-        } //Main
-    } //class Test
-
 }
+
