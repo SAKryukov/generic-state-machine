@@ -117,6 +117,7 @@ namespace StateMachines {
                 value.ValidAction(CurrentState, state);
             else
                 value.InvalidAction(CurrentState, state);
+            CurrentState = state;
             return found;
         } //TryTransitionTo
         public void PerformTransitionIndirect(STATE startingState, STATE endingState) {
