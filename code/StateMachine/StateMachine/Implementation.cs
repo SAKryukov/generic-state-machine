@@ -137,4 +137,3 @@ namespace StateMachines {
     } //class ValidStateTransition
 
 }
-
