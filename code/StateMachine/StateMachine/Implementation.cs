@@ -23,14 +23,15 @@ namespace StateMachines {
             Type type = typeof(STATE);
             FieldInfo[] fields = type.GetFields(BindingFlags.Static | BindingFlags.Public);
             foreach (var field in fields) {
-                State state = new State(field.Name, field.GetValue(null));
+                STATE value = (STATE)field.GetValue(null);
+                State state = new State(field.Name, value);
                 stateSet.Add(state);
-                if (initialState.ToString() == field.Name)
-                    CurrentState = (STATE)state.UnderlyingMember;
+                if (value.Equals(initialState))
+                    CurrentState = value;
             } //loop
         } //StateMachine
         public STATE CurrentState { get; private set; }
-        static State CreateState(STATE value) => new State(value.ToString(), value);
+        static State CreateState(STATE value) => new State(value.ToString(), value); //SA??? 
         bool IsValid(StateGraphValue<STATE> value) => value.ValidAction != null;
         public void AddValidStateTransition(STATE startingState, STATE endingState, StateTransitionAction<STATE> action) {
             StateGraphKey key = new(CreateState(startingState), CreateState(endingState));
