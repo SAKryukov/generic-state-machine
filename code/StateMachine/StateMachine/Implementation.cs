@@ -44,15 +44,17 @@ namespace StateMachines {
                 throw new StateMachineGraphPopulationException<STATE>(startingState, endingState);
             stateGraph.Add(key, new StateGraphValue<STATE>(null, action));
         } //AddInvalidStateTransition
-        public string IsTransitionValid(STATE startingState, STATE endingState) {
+        public (bool IsValid, string ValidityComment) IsTransitionValid(STATE startingState, STATE endingState) {
             State starting = CreateState(startingState);
             State ending = CreateState(endingState);
             StateGraphKey key = new(starting, ending);
             bool found = stateGraph.TryGetValue(key, out StateGraphValue<STATE> value);
-            if (found && !IsValid(value) && value.InvalidAction != null) {
-                return value.InvalidAction(startingState, endingState);
-            }
-            return null;
+            if (!found)
+                return (false, DefinitionSet<STATE>.TransitionNotDefined(startingState, endingState));
+            if (!IsValid(value) && value.InvalidAction != null) {
+                return (false, value.InvalidAction(startingState, endingState));
+            } //if
+            return (true, DefinitionSet<STATE>.TransitionIsValid(startingState, endingState));
         } //IsTransitionValid
         public bool TryTransitionTo(STATE state, out string invalidTransitionReason) {
             invalidTransitionReason = null;
@@ -67,6 +69,8 @@ namespace StateMachines {
             CurrentState = state;
             return found;
         } //TryTransitionTo
+        public bool TryTransitionTo(STATE state) =>
+            TryTransitionTo(state, out string _);
         public void PerformTransitionIndirect(STATE startingState, STATE endingState) {
             //SA??? complicated algorithm of graph search to be implemented
         } //PerformTransition
