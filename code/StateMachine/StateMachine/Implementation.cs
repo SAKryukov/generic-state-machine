@@ -1,8 +1,9 @@
 /*
+    Generic State Machine
+
     Copyright (C) 2024 by Sergey A Kryukov
     https://www.SAKryukov.org
     https://github.com/SAKryukov
-    https://www.codeproject.com/Members/SAKryukov
     Answering to:
     https://stackoverflow.com/questions/79240035/how-to-correctly-implement-of-state-machine-pattern
 */

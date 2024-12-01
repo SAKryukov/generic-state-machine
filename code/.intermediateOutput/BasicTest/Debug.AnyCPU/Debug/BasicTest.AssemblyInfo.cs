@@ -13,7 +13,7 @@ using System.Reflection;
 
 [assembly: System.Reflection.AssemblyCompanyAttribute("SA")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
-[assembly: System.Reflection.AssemblyCopyrightAttribute("Copyright © 2023 Sergey A Kryukov")]
+[assembly: System.Reflection.AssemblyCopyrightAttribute("Copyright © 2024 Sergey A Kryukov")]
 [assembly: System.Reflection.AssemblyDescriptionAttribute("Generic State Machine Engine based on enumeration type parameter")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("0.1.0.0")]
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("0.1.0.0 ")]
