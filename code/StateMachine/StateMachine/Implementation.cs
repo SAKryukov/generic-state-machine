@@ -12,7 +12,6 @@ namespace StateMachines {
     using Type = System.Type;
     using BindingFlags = System.Reflection.BindingFlags;
     using FieldInfo = System.Reflection.FieldInfo;
-    using StateSet = System.Collections.Generic.HashSet<State>;
 
     public delegate void StateTransitionAction<STATE>(STATE startingState, STATE endingState);
     public delegate string InvalidStateTransitionAction<STATE>(STATE startingState, STATE endingState);
@@ -24,31 +23,37 @@ namespace StateMachines {
             FieldInfo[] fields = type.GetFields(BindingFlags.Static | BindingFlags.Public);
             foreach (var field in fields) {
                 STATE value = (STATE)field.GetValue(null);
-                State state = new State(field.Name, value);
+                State<STATE> state = new(field.Name, value);
                 stateSet.Add(state);
+                stateSearchDictionary.Add(value, state);
                 if (value.Equals(initialState))
                     CurrentState = value;
             } //loop
         } //StateMachine
         public STATE CurrentState { get; private set; }
-        static State CreateState(STATE value) => new State(value.ToString(), value); //SA??? 
+        State<STATE> CreateState(STATE value) {
+            if (stateSearchDictionary.TryGetValue(value, out State<STATE> state))
+                return state;
+            else
+                return new(value.ToString(), value); // fallback for the value out of enum
+        } //CreateState
         bool IsValid(StateGraphValue<STATE> value) => value.ValidAction != null;
         public void AddValidStateTransition(STATE startingState, STATE endingState, StateTransitionAction<STATE> action) {
-            StateGraphKey key = new(CreateState(startingState), CreateState(endingState));
+            StateGraphKey<STATE> key = new(CreateState(startingState), CreateState(endingState));
             if (stateGraph.TryGetValue(key, out StateGraphValue<STATE> value))
                 throw new StateMachineGraphPopulationException<STATE>(startingState, endingState);
             stateGraph.Add(key, new StateGraphValue<STATE>(action, null));
         } //AddValidStateTransition
         public void AddInvalidStateTransition(STATE startingState, STATE endingState, InvalidStateTransitionAction<STATE> action) {
-            StateGraphKey key = new(CreateState(startingState), CreateState(endingState));
+            StateGraphKey<STATE> key = new(CreateState(startingState), CreateState(endingState));
             if (stateGraph.TryGetValue(key, out StateGraphValue<STATE> value))
                 throw new StateMachineGraphPopulationException<STATE>(startingState, endingState);
             stateGraph.Add(key, new StateGraphValue<STATE>(null, action));
         } //AddInvalidStateTransition
         public (bool IsValid, string ValidityComment) IsTransitionValid(STATE startingState, STATE endingState) {
-            State starting = CreateState(startingState);
-            State ending = CreateState(endingState);
-            StateGraphKey key = new(starting, ending);
+            State<STATE> starting = CreateState(startingState);
+            State<STATE> ending = CreateState(endingState);
+            StateGraphKey<STATE> key = new(starting, ending);
             bool found = stateGraph.TryGetValue(key, out StateGraphValue<STATE> value);
             if (!found)
                 return (false, DefinitionSet<STATE>.TransitionNotDefined(startingState, endingState));
@@ -59,9 +64,9 @@ namespace StateMachines {
         } //IsTransitionValid
         public bool TryTransitionTo(STATE state, out string invalidTransitionReason) {
             invalidTransitionReason = null;
-            State starting = CreateState(CurrentState);
-            State ending = CreateState(state);
-            StateGraphKey key = new(starting, ending);
+            State<STATE> starting = CreateState(CurrentState);
+            State<STATE> ending = CreateState(state);
+            StateGraphKey<STATE> key = new(starting, ending);
             bool found = stateGraph.TryGetValue(key, out StateGraphValue<STATE> value);
             if (IsValid(value))
                 value.ValidAction(CurrentState, state);
@@ -75,8 +80,9 @@ namespace StateMachines {
         public void PerformTransitionIndirect(STATE startingState, STATE endingState) {
             //SA??? complicated algorithm of graph search to be implemented
         } //PerformTransition
-        StateSet stateSet = new();
-        System.Collections.Generic.Dictionary<StateGraphKey, StateGraphValue<STATE>> stateGraph = new();
+        System.Collections.Generic.HashSet<State<STATE>> stateSet = new();
+        System.Collections.Generic.Dictionary<STATE, State<STATE>> stateSearchDictionary = new();
+        System.Collections.Generic.Dictionary<StateGraphKey<STATE>, StateGraphValue<STATE>> stateGraph = new();
     } //class StateMachine
 
     class StateMachineGraphPopulationException<STATE> : System.ApplicationException {
@@ -84,17 +90,17 @@ namespace StateMachines {
             : base(DefinitionSet<STATE>.ExceptionMessage(stargingState, endingState)) { }
     } //class StateMachineGraphPopulationException
 
-    sealed class State {
-        internal State(string name, object underlyingMember) {
+    sealed class State<STATE> {
+        internal State(string name, STATE underlyingMember) {
             Name = name;
             UnderlyingMember = underlyingMember;
         } //State
         internal string Name { get; init; }
-        internal object UnderlyingMember { get; init; }
+        internal STATE UnderlyingMember { get; init; }
     } //class State
 
-    class StateGraphKey {
-        internal StateGraphKey(State starting, State ending) {
+    class StateGraphKey<STATE> {
+        internal StateGraphKey(State<STATE> starting, State<STATE> ending) {
             StartingState = starting; EndingState = ending;
         }
         public override int GetHashCode() { // important!
@@ -103,12 +109,12 @@ namespace StateMachines {
         }
         public override bool Equals(object @object) { // important!
             if (@object == null) return false;
-            if (@object is not StateGraphKey objectStateGraphKey) return false;
+            if (@object is not StateGraphKey<STATE> objectStateGraphKey) return false;
             return objectStateGraphKey.StartingState.Name == StartingState.Name
                 && objectStateGraphKey.EndingState.Name == EndingState.Name;
         }
-        internal State StartingState { get; init; }
-        internal State EndingState { get; init; }
+        internal State<STATE> StartingState { get; init; }
+        internal State<STATE> EndingState { get; init; }
     } //class StateGraphKey
 
     class StateGraphValue<STATE> {
@@ -119,20 +125,20 @@ namespace StateMachines {
         internal InvalidStateTransitionAction<STATE> InvalidAction { get; init; }
     } //class StateGraphValue
 
-    abstract class StateTransition : StateGraphKey {
-        internal StateTransition(State starting, State ending) :
+    abstract class StateTransition<STATE> : StateGraphKey<STATE> {
+        internal StateTransition(State<STATE> starting, State<STATE> ending) :
             base(starting, ending) { }
         internal abstract bool IsValid { get; }
     } //StateTransition
 
-    class ValidStateTransition : StateTransition {
-        internal ValidStateTransition(State starting, State ending) :
+    class ValidStateTransition<STATE> : StateTransition<STATE> {
+        internal ValidStateTransition(State<STATE> starting, State<STATE> ending) :
             base(starting, ending) { }
         internal override bool IsValid { get { return true; } }
     } //class ValidStateTransition
 
-    class InvalidStateTransition : StateTransition {
-        internal InvalidStateTransition(State starting, State ending) :
+    class InvalidStateTransition<STATE> : StateTransition<STATE> {
+        internal InvalidStateTransition(State<STATE> starting, State<STATE> ending) :
             base(starting, ending) { }
         internal override bool IsValid { get { return false; } }
     } //class ValidStateTransition
