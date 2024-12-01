@@ -8,7 +8,7 @@
 <Project>
  
   <PropertyGroup> <!-- customize:  -->
-    <CustomUnifiedVersion>0.1.0.0</CustomUnifiedVersion>
+    <CustomUnifiedVersion>0.2.0.0</CustomUnifiedVersion>
     <!-- can be alpha, beta, RC1, RC2, etc.: -->
     <CustomInformationalVersionSuffix></CustomInformationalVersionSuffix>
     <Copyright>Copyright © 2024 Sergey A Kryukov</Copyright>
