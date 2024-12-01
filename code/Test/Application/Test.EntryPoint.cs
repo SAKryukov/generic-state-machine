@@ -32,12 +32,14 @@ namespace StateMachines {
             StartingState = starting; EndingState = ending;
         }
         public override int GetHashCode() { // important!
-            string representation = StartingState.Name + EndingState.Name;
-            return representation.GetHashCode();
+            return StartingState.Name.GetHashCode()
+                ^ EndingState.Name.GetHashCode();
         }
         public override bool Equals(object @object) { // important!
             if (@object == null) return false;
-            return GetHashCode() == @object.GetHashCode(); //sic!
+            if (@object is not StateGraphKey objectStateGraphKey) return false;
+            return objectStateGraphKey.StartingState.Name == StartingState.Name
+                && objectStateGraphKey.EndingState.Name == EndingState.Name;
         }
         internal State StartingState { get; init; }
         internal State EndingState { get; init; }
@@ -49,7 +51,7 @@ namespace StateMachines {
         }
         internal StateTransitionAction ValidAction { get; init; }
         internal InvalidStateTransitionAction InvalidAction { get; init; }
-        } //class StateGraphValue
+    } //class StateGraphValue
 
     abstract class StateTransition : StateGraphKey {
         internal StateTransition(State starting, State ending) :
@@ -69,7 +71,7 @@ namespace StateMachines {
         internal override bool IsValid { get { return false; } }
     } //class ValidStateTransition
 
-class StateMachine<STATE> {
+    class StateMachine<STATE> {
 
         internal StateMachine(STATE initialState = default(STATE)) {
             Type type = typeof(STATE);
@@ -88,7 +90,7 @@ class StateMachine<STATE> {
             StateGraphKey key = new(CreateState(startingState), CreateState(endingState));
             if (stateGraph.TryGetValue(key, out StateGraphValue value))
                 return; //SA???
-            stateGraph.Add(key, new StateGraphValue(action, null)); 
+            stateGraph.Add(key, new StateGraphValue(action, null));
         } //AddValidStateTransition
         internal void AddInvalidStateTransition(STATE startingState, STATE endingState, InvalidStateTransitionAction action) {
             StateGraphKey key = new(CreateState(startingState), CreateState(endingState));
