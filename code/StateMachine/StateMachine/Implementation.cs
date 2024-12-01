@@ -14,6 +14,71 @@ namespace StateMachines {
     using FieldInfo = System.Reflection.FieldInfo;
     using StateSet = System.Collections.Generic.HashSet<State>;
 
+    public delegate void StateTransitionAction<STATE>(STATE startingState, STATE endingState);
+    public delegate string InvalidStateTransitionAction<STATE>(STATE startingState, STATE endingState);
+
+    public class StateMachine<STATE> {
+
+        public StateMachine(STATE initialState = default(STATE)) {
+            Type type = typeof(STATE);
+            FieldInfo[] fields = type.GetFields(BindingFlags.Static | BindingFlags.Public);
+            foreach (var field in fields) {
+                State state = new State(field.Name, field.GetValue(null));
+                stateSet.Add(state);
+                if (initialState.ToString() == field.Name)
+                    CurrentState = (STATE)state.UnderlyingMember;
+            } //loop
+        } //StateMachine
+        public STATE CurrentState { get; private set; }
+        static State CreateState(STATE value) => new State(value.ToString(), value);
+        bool IsValid(StateGraphValue<STATE> value) => value.ValidAction != null;
+        public void AddValidStateTransition(STATE startingState, STATE endingState, StateTransitionAction<STATE> action) {
+            StateGraphKey key = new(CreateState(startingState), CreateState(endingState));
+            if (stateGraph.TryGetValue(key, out StateGraphValue<STATE> value))
+                throw new StateMachineGraphPopulationException<STATE>(startingState, endingState);
+            stateGraph.Add(key, new StateGraphValue<STATE>(action, null));
+        } //AddValidStateTransition
+        public void AddInvalidStateTransition(STATE startingState, STATE endingState, InvalidStateTransitionAction<STATE> action) {
+            StateGraphKey key = new(CreateState(startingState), CreateState(endingState));
+            if (stateGraph.TryGetValue(key, out StateGraphValue<STATE> value))
+                throw new StateMachineGraphPopulationException<STATE>(startingState, endingState);
+            stateGraph.Add(key, new StateGraphValue<STATE>(null, action));
+        } //AddInvalidStateTransition
+        public string IsTransitionValid(STATE startingState, STATE endingState) {
+            State starting = CreateState(startingState);
+            State ending = CreateState(endingState);
+            StateGraphKey key = new(starting, ending);
+            bool found = stateGraph.TryGetValue(key, out StateGraphValue<STATE> value);
+            if (found && !IsValid(value) && value.InvalidAction != null) {
+                return value.InvalidAction(startingState, endingState);
+            }
+            return null;
+        } //IsTransitionValid
+        public bool TryTransitionTo(STATE state, out string invalidTransitionReason) {
+            invalidTransitionReason = null;
+            State starting = CreateState(CurrentState);
+            State ending = CreateState(state);
+            StateGraphKey key = new(starting, ending);
+            bool found = stateGraph.TryGetValue(key, out StateGraphValue<STATE> value);
+            if (IsValid(value))
+                value.ValidAction(CurrentState, state);
+            else
+                value.InvalidAction(CurrentState, state);
+            CurrentState = state;
+            return found;
+        } //TryTransitionTo
+        public void PerformTransitionIndirect(STATE startingState, STATE endingState) {
+            //SA??? complicated algorithm of graph search to be implemented
+        } //PerformTransition
+        StateSet stateSet = new();
+        System.Collections.Generic.Dictionary<StateGraphKey, StateGraphValue<STATE>> stateGraph = new();
+    } //class StateMachine
+
+    class StateMachineGraphPopulationException<STATE> : System.ApplicationException {
+        internal StateMachineGraphPopulationException(STATE stargingState, STATE endingState)
+            : base(DefinitionSet<STATE>.ExceptionMessage(stargingState, endingState)) { }
+    } //class StateMachineGraphPopulationException
+
     sealed class State {
         internal State(string name, object underlyingMember) {
             Name = name;
@@ -22,9 +87,6 @@ namespace StateMachines {
         internal string Name { get; init; }
         internal object UnderlyingMember { get; init; }
     } //class State
-
-    public delegate void StateTransitionAction<STATE>(STATE startingState, STATE endingState);
-    public delegate string InvalidStateTransitionAction<STATE>(STATE startingState, STATE endingState);
 
     class StateGraphKey {
         internal StateGraphKey(State starting, State ending) {
@@ -69,63 +131,6 @@ namespace StateMachines {
             base(starting, ending) { }
         internal override bool IsValid { get { return false; } }
     } //class ValidStateTransition
-
-    public class StateMachine<STATE> {
-
-        public StateMachine(STATE initialState = default(STATE)) {
-            Type type = typeof(STATE);
-            FieldInfo[] fields = type.GetFields(BindingFlags.Static | BindingFlags.Public);
-            foreach (var field in fields) {
-                State state = new State(field.Name, field.GetValue(null));
-                stateSet.Add(state);
-                if (initialState.ToString() == field.Name)
-                    CurrentState = (STATE)state.UnderlyingMember;
-            } //loop
-        } //StateMachine
-        public STATE CurrentState { get; private set; }
-        static State CreateState(STATE value) => new State(value.ToString(), value);
-        bool IsValid(StateGraphValue<STATE> value) => value.ValidAction != null;
-        public void AddValidStateTransition(STATE startingState, STATE endingState, StateTransitionAction<STATE> action) {
-            StateGraphKey key = new(CreateState(startingState), CreateState(endingState));
-            if (stateGraph.TryGetValue(key, out StateGraphValue<STATE> value))
-                return; //SA???
-            stateGraph.Add(key, new StateGraphValue<STATE>(action, null));
-        } //AddValidStateTransition
-        public void AddInvalidStateTransition(STATE startingState, STATE endingState, InvalidStateTransitionAction<STATE> action) {
-            StateGraphKey key = new(CreateState(startingState), CreateState(endingState));
-            if (stateGraph.TryGetValue(key, out StateGraphValue<STATE> value))
-                return; //SA???
-            stateGraph.Add(key, new StateGraphValue<STATE>(null, action));
-        } //AddInvalidStateTransition
-        public string IsTransitionValid(STATE startingState, STATE endingState) {
-            State starting = CreateState(startingState);
-            State ending = CreateState(endingState);
-            StateGraphKey key = new(starting, ending);
-            bool found = stateGraph.TryGetValue(key, out StateGraphValue<STATE> value);
-            if (found && !IsValid(value) && value.InvalidAction != null) {
-                return value.InvalidAction(startingState, endingState);
-            }
-            return null;
-        } //IsTransitionValid
-        public bool TryTransitionTo(STATE state, out string invalidTransitionReason) {
-            invalidTransitionReason = null;
-            State starting = CreateState(CurrentState);
-            State ending = CreateState(state);
-            StateGraphKey key = new(starting, ending);
-            bool found = stateGraph.TryGetValue(key, out StateGraphValue<STATE> value);
-            if (IsValid(value))
-                value.ValidAction(CurrentState, state);
-            else
-                value.InvalidAction(CurrentState, state);
-            CurrentState = state;
-            return found;
-        } //TryTransitionTo
-        public void PerformTransitionIndirect(STATE startingState, STATE endingState) {
-            //SA??? complicated algorithm of graph search
-        } //PerformTransition
-        StateSet stateSet = new();
-        System.Collections.Generic.Dictionary<StateGraphKey, StateGraphValue<STATE>> stateGraph = new();
-    } //class StateMachine
 
 }
 
