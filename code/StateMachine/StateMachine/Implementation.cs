@@ -13,7 +13,6 @@ namespace StateMachines {
     using BindingFlags = System.Reflection.BindingFlags;
     using FieldInfo = System.Reflection.FieldInfo;
     using StateSet = System.Collections.Generic.HashSet<State>;
-    using StateGraph = System.Collections.Generic.Dictionary<StateGraphKey, StateGraphValue>;
 
     sealed class State {
         internal State(string name, object underlyingMember) {
@@ -24,8 +23,8 @@ namespace StateMachines {
         internal object UnderlyingMember { get; init; }
     } //class State
 
-    delegate void StateTransitionAction(State startingState, State endingState);
-    delegate string InvalidStateTransitionAction(State startingState, State endingState);
+    public delegate void StateTransitionAction<STATE>(STATE startingState, STATE endingState);
+    public delegate string InvalidStateTransitionAction<STATE>(STATE startingState, STATE endingState);
 
     class StateGraphKey {
         internal StateGraphKey(State starting, State ending) {
@@ -45,12 +44,12 @@ namespace StateMachines {
         internal State EndingState { get; init; }
     } //class StateGraphKey
 
-    class StateGraphValue {
-        internal StateGraphValue(StateTransitionAction valid, InvalidStateTransitionAction invalid) {
+    class StateGraphValue<STATE> {
+        internal StateGraphValue(StateTransitionAction<STATE> valid, InvalidStateTransitionAction<STATE> invalid) {
             ValidAction = valid; InvalidAction = invalid;
         }
-        internal StateTransitionAction ValidAction { get; init; }
-        internal InvalidStateTransitionAction InvalidAction { get; init; }
+        internal StateTransitionAction<STATE> ValidAction { get; init; }
+        internal InvalidStateTransitionAction<STATE> InvalidAction { get; init; }
     } //class StateGraphValue
 
     abstract class StateTransition : StateGraphKey {
@@ -71,57 +70,60 @@ namespace StateMachines {
         internal override bool IsValid { get { return false; } }
     } //class ValidStateTransition
 
-    class StateMachine<STATE> {
+    public class StateMachine<STATE> {
 
-        internal StateMachine(STATE initialState = default(STATE)) {
+        public StateMachine(STATE initialState = default(STATE)) {
             Type type = typeof(STATE);
             FieldInfo[] fields = type.GetFields(BindingFlags.Static | BindingFlags.Public);
             foreach (var field in fields) {
                 State state = new State(field.Name, field.GetValue(null));
                 stateSet.Add(state);
                 if (initialState.ToString() == field.Name)
-                    CurrentState = state;
+                    CurrentState = (STATE)state.UnderlyingMember;
             } //loop
         } //StateMachine
-        internal State CurrentState { get; init; }
+        public STATE CurrentState { get; private set; }
         static State CreateState(STATE value) => new State(value.ToString(), value);
-        static bool IsValid(StateGraphValue value) => value.ValidAction != null;
-        internal void AddValidStateTransition(STATE startingState, STATE endingState, StateTransitionAction action) {
+        bool IsValid(StateGraphValue<STATE> value) => value.ValidAction != null;
+        public void AddValidStateTransition(STATE startingState, STATE endingState, StateTransitionAction<STATE> action) {
             StateGraphKey key = new(CreateState(startingState), CreateState(endingState));
-            if (stateGraph.TryGetValue(key, out StateGraphValue value))
+            if (stateGraph.TryGetValue(key, out StateGraphValue<STATE> value))
                 return; //SA???
-            stateGraph.Add(key, new StateGraphValue(action, null));
+            stateGraph.Add(key, new StateGraphValue<STATE>(action, null));
         } //AddValidStateTransition
-        internal void AddInvalidStateTransition(STATE startingState, STATE endingState, InvalidStateTransitionAction action) {
+        public void AddInvalidStateTransition(STATE startingState, STATE endingState, InvalidStateTransitionAction<STATE> action) {
             StateGraphKey key = new(CreateState(startingState), CreateState(endingState));
-            if (stateGraph.TryGetValue(key, out StateGraphValue value))
+            if (stateGraph.TryGetValue(key, out StateGraphValue<STATE> value))
                 return; //SA???
-            stateGraph.Add(key, new StateGraphValue(null, action));
+            stateGraph.Add(key, new StateGraphValue<STATE>(null, action));
         } //AddInvalidStateTransition
-        internal string IsTransitionValid(STATE startingState, STATE endingState) {
+        public string IsTransitionValid(STATE startingState, STATE endingState) {
             State starting = CreateState(startingState);
             State ending = CreateState(endingState);
             StateGraphKey key = new(starting, ending);
-            bool found = stateGraph.TryGetValue(key, out StateGraphValue value);
+            bool found = stateGraph.TryGetValue(key, out StateGraphValue<STATE> value);
             if (found && !IsValid(value) && value.InvalidAction != null) {
-                return value.InvalidAction(starting, ending);
+                return value.InvalidAction(startingState, endingState);
             }
             return null;
         } //IsTransitionValid
-        internal bool PerformTransition(STATE startingState, STATE endingState) {
-            State starting = CreateState(startingState);
-            State ending = CreateState(endingState);
+        public bool TryTransitionTo(STATE state, out string invalidTransitionReason) {
+            invalidTransitionReason = null;
+            State starting = CreateState(CurrentState);
+            State ending = CreateState(state);
             StateGraphKey key = new(starting, ending);
-            bool found = stateGraph.TryGetValue(key, out StateGraphValue value);
+            bool found = stateGraph.TryGetValue(key, out StateGraphValue<STATE> value);
             if (IsValid(value))
-                value.ValidAction(starting, ending);
+                value.ValidAction(CurrentState, state);
+            else
+                value.InvalidAction(CurrentState, state);
             return found;
-        } //PerformTransition
-        internal void PerformTransitionIndirect(STATE startingState, STATE endingState) {
+        } //TryTransitionTo
+        public void PerformTransitionIndirect(STATE startingState, STATE endingState) {
             //SA??? complicated algorithm of graph search
         } //PerformTransition
         StateSet stateSet = new();
-        StateGraph stateGraph = new();
+        System.Collections.Generic.Dictionary<StateGraphKey, StateGraphValue<STATE>> stateGraph = new();
     } //class StateMachine
 
     enum TestState { Draft, Denied, Approved, WaitForApprovalManager, WaitForApprovalTechnical, WaitForApprovalFinance, }

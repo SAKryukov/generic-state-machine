@@ -1,0 +1,19 @@
+﻿<!--
+    Copyright (C) 2024 by Sergey A Kryukov
+    https://www.SAKryukov.org
+    https://github.com/SAKryukov
+    https://www.codeproject.com/Members/SAKryukov
+-->
+
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>StateMachines</RootNamespace>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\StateMachine\StateMachine.csproj" />
+  </ItemGroup>
+
+</Project>
