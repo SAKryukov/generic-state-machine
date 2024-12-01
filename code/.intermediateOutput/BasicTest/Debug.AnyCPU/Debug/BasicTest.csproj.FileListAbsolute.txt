@@ -1,0 +1,14 @@
+C:\sa\papers\My\GitHub\state-machines\code\output.Debug.AnyCPU\BasicTest.exe
+C:\sa\papers\My\GitHub\state-machines\code\output.Debug.AnyCPU\BasicTest.deps.json
+C:\sa\papers\My\GitHub\state-machines\code\output.Debug.AnyCPU\BasicTest.runtimeconfig.json
+C:\sa\papers\My\GitHub\state-machines\code\output.Debug.AnyCPU\BasicTest.runtimeconfig.dev.json
+C:\sa\papers\My\GitHub\state-machines\code\output.Debug.AnyCPU\BasicTest.dll
+C:\sa\papers\My\GitHub\state-machines\code\output.Debug.AnyCPU\BasicTest.pdb
+C:\sa\papers\My\GitHub\state-machines\code\.intermediateOutput\BasicTest\Debug.AnyCPU\Debug\BasicTest.csproj.AssemblyReference.cache
+C:\sa\papers\My\GitHub\state-machines\code\.intermediateOutput\BasicTest\Debug.AnyCPU\Debug\BasicTest.GeneratedMSBuildEditorConfig.editorconfig
+C:\sa\papers\My\GitHub\state-machines\code\.intermediateOutput\BasicTest\Debug.AnyCPU\Debug\BasicTest.AssemblyInfoInputs.cache
+C:\sa\papers\My\GitHub\state-machines\code\.intermediateOutput\BasicTest\Debug.AnyCPU\Debug\BasicTest.AssemblyInfo.cs
+C:\sa\papers\My\GitHub\state-machines\code\.intermediateOutput\BasicTest\Debug.AnyCPU\Debug\BasicTest.csproj.CoreCompileInputs.cache
+C:\sa\papers\My\GitHub\state-machines\code\.intermediateOutput\BasicTest\Debug.AnyCPU\Debug\BasicTest.dll
+C:\sa\papers\My\GitHub\state-machines\code\.intermediateOutput\BasicTest\Debug.AnyCPU\Debug\BasicTest.pdb
+C:\sa\papers\My\GitHub\state-machines\code\.intermediateOutput\BasicTest\Debug.AnyCPU\Debug\BasicTest.genruntimeconfig.cache

@@ -1,0 +1,21 @@
+﻿<!--
+    Copyright (C) 2024 by Sergey A Kryukov
+    https://www.SAKryukov.org
+    https://github.com/SAKryukov
+    https://www.codeproject.com/Members/SAKryukov
+-->
+
+<Project>
+ 
+  <PropertyGroup> <!-- customize:  -->
+    <CustomUnifiedVersion>0.1.0.0</CustomUnifiedVersion>
+    <!-- can be alpha, beta, RC1, RC2, etc.: -->
+    <CustomInformationalVersionSuffix></CustomInformationalVersionSuffix>
+    <Copyright>Copyright © 2023 Sergey A Kryukov</Copyright>
+    <Product>State Machine Engine</Product>
+    <Description>Generic State Machine Engine based on enumeration type parameter</Description>
+    <Company>SA</Company>
+    <AssemblyTitle>$(Product) Demo</AssemblyTitle>
+  </PropertyGroup>
+
+</Project>

@@ -1,0 +1,51 @@
+﻿<!--
+    Copyright (C) 2024 by Sergey A Kryukov
+    https://www.SAKryukov.org
+    https://github.com/SAKryukov
+    https://www.codeproject.com/Members/SAKryukov
+-->
+
+<Project>
+    <Import Project="$(SolutionDir)/Metadata.props"/>
+ 
+  <PropertyGroup> <!-- customize:  -->
+    <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>SA</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup> <!-- change value, don't change property name: -->
+    <_intermediateOutputPathRoot>.intermediateOutput</_intermediateOutputPathRoot>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+
+  <PropertyGroup>
+
+    <NoWarn>$(NoWarn);NETSDK1138</NoWarn>
+
+    <BaseIntermediateOutputPath>$([System.IO.Path]::Combine(
+        $(SolutionDir),
+        $(_intermediateOutputPathRoot),
+        $(MSBuildProjectName),
+        $(Configuration).$(Platform)))</BaseIntermediateOutputPath>
+    <OutputPath>$([System.IO.Path]::Combine(
+        $(SolutionDir),
+        output.$(Configuration).$(Platform)))</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <!-- Placeholders: -->
+    <WarningsAsErrors></WarningsAsErrors>
+    <WarningsNotAsErrors></WarningsNotAsErrors>
+
+    <AssemblyVersion>$(CustomUnifiedVersion)</AssemblyVersion>
+    <FileVersion>$(CustomUnifiedVersion)</FileVersion>
+    <InformationalVersion>$(CustomUnifiedVersion) $(CustomInformationalVersionSuffix)</InformationalVersion>
+
+  </PropertyGroup>
+
+</Project>
