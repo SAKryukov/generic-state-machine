@@ -31,28 +31,28 @@ namespace StateMachines {
             } //loop
         } //StateMachine
         public STATE CurrentState { get; private set; }
-        State<STATE> CreateState(STATE value) {
+        State<STATE> FindState(STATE value) {
             if (stateSearchDictionary.TryGetValue(value, out State<STATE> state))
                 return state;
             else
-                return new(value.ToString(), value); // fallback for the value out of enum
-        } //CreateState
+                throw new InvalidStateException<STATE>(value); // fallback for the value out of enum
+        } //FindState
         bool IsValid(StateGraphValue<STATE> value) => value.ValidAction != null;
         public void AddValidStateTransition(STATE startingState, STATE endingState, StateTransitionAction<STATE> action) {
-            StateGraphKey<STATE> key = new(CreateState(startingState), CreateState(endingState));
+            StateGraphKey<STATE> key = new(FindState(startingState), FindState(endingState));
             if (stateGraph.TryGetValue(key, out StateGraphValue<STATE> value))
                 throw new StateMachineGraphPopulationException<STATE>(startingState, endingState);
             stateGraph.Add(key, new StateGraphValue<STATE>(action, null));
         } //AddValidStateTransition
         public void AddInvalidStateTransition(STATE startingState, STATE endingState, InvalidStateTransitionAction<STATE> action) {
-            StateGraphKey<STATE> key = new(CreateState(startingState), CreateState(endingState));
+            StateGraphKey<STATE> key = new(FindState(startingState), FindState(endingState));
             if (stateGraph.TryGetValue(key, out StateGraphValue<STATE> value))
                 throw new StateMachineGraphPopulationException<STATE>(startingState, endingState);
             stateGraph.Add(key, new StateGraphValue<STATE>(null, action));
         } //AddInvalidStateTransition
         public (bool IsValid, string ValidityComment) IsTransitionValid(STATE startingState, STATE endingState) {
-            State<STATE> starting = CreateState(startingState);
-            State<STATE> ending = CreateState(endingState);
+            State<STATE> starting = FindState(startingState);
+            State<STATE> ending = FindState(endingState);
             StateGraphKey<STATE> key = new(starting, ending);
             bool found = stateGraph.TryGetValue(key, out StateGraphValue<STATE> value);
             if (!found)
@@ -64,8 +64,8 @@ namespace StateMachines {
         } //IsTransitionValid
         public bool TryTransitionTo(STATE state, out string invalidTransitionReason) {
             invalidTransitionReason = null;
-            State<STATE> starting = CreateState(CurrentState);
-            State<STATE> ending = CreateState(state);
+            State<STATE> starting = FindState(CurrentState);
+            State<STATE> ending = FindState(state);
             StateGraphKey<STATE> key = new(starting, ending);
             bool found = stateGraph.TryGetValue(key, out StateGraphValue<STATE> value);
             if (IsValid(value))
@@ -87,8 +87,13 @@ namespace StateMachines {
 
     class StateMachineGraphPopulationException<STATE> : System.ApplicationException {
         internal StateMachineGraphPopulationException(STATE stargingState, STATE endingState)
-            : base(DefinitionSet<STATE>.ExceptionMessage(stargingState, endingState)) { }
+            : base(DefinitionSet<STATE>.StateMachineGraphPopulationExceptionMessage(stargingState, endingState)) { }
     } //class StateMachineGraphPopulationException
+
+    class InvalidStateException<STATE> : System.ApplicationException {
+        internal InvalidStateException(STATE state)
+            : base(DefinitionSet<STATE>.InvalidStateExceptionMessage(state)) { }
+    } //class InvalidStateException
 
     sealed class State<STATE> {
         internal State(string name, STATE underlyingMember) {
