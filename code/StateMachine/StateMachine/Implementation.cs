@@ -49,7 +49,13 @@ namespace StateMachines {
             if (stateGraph.TryGetValue(key, out StateGraphValue<STATE> value))
                 throw new StateMachineGraphPopulationException<STATE>(startingState, endingState);
             stateGraph.Add(key, new StateGraphValue<STATE>(null, action));
-        } //AddInvalidStateTransition
+        } //AddInvalidStateTransition       
+        (bool IsValid, string ValidityComment) IsTransitionValid(StateGraphValue<STATE> value, STATE startingState, STATE endingState) {
+            if (!IsValid(value) && value.InvalidAction != null) {
+                return (false, value.InvalidAction(startingState, endingState));
+            } //if
+            return (true, DefinitionSet<STATE>.TransitionIsValid(startingState, endingState));
+        } //IsTransitionValid
         public (bool IsValid, string ValidityComment) IsTransitionValid(STATE startingState, STATE endingState) {
             State<STATE> starting = FindState(startingState);
             State<STATE> ending = FindState(endingState);
@@ -57,29 +63,24 @@ namespace StateMachines {
             bool found = stateGraph.TryGetValue(key, out StateGraphValue<STATE> value);
             if (!found)
                 return (false, DefinitionSet<STATE>.TransitionNotDefined(startingState, endingState));
-            if (!IsValid(value) && value.InvalidAction != null) {
-                return (false, value.InvalidAction(startingState, endingState));
-            } //if
-            return (true, DefinitionSet<STATE>.TransitionIsValid(startingState, endingState));
+            return IsTransitionValid(value, startingState, endingState);
         } //IsTransitionValid
-        public bool TryTransitionTo(STATE state, out string invalidTransitionReason) {
-            invalidTransitionReason = null;
+        public (bool success, string invalidTransitionReason) TryTransitionTo(STATE state) {
             State<STATE> starting = FindState(CurrentState);
             State<STATE> ending = FindState(state);
             StateGraphKey<STATE> key = new(starting, ending);
             bool found = stateGraph.TryGetValue(key, out StateGraphValue<STATE> value);
-            if (IsValid(value))
+            string invalidTransitionReason = null;
+            if (found) {
+                var validity = IsTransitionValid(value, CurrentState, state);
+                if (!validity.IsValid)
+                    return (false, validity.ValidityComment);
                 value.ValidAction(CurrentState, state);
-            else
-                value.InvalidAction(CurrentState, state);
-            CurrentState = state;
-            return found;
+                CurrentState = state;
+            } else
+                return (false, null);
+            return (found, invalidTransitionReason); //SA??? generalize IsTransactionValid and checkup
         } //TryTransitionTo
-        public bool TryTransitionTo(STATE state) =>
-            TryTransitionTo(state, out string _);
-        public void PerformTransitionIndirect(STATE startingState, STATE endingState) {
-            //SA??? complicated algorithm of graph search to be implemented
-        } //PerformTransition
         System.Collections.Generic.HashSet<State<STATE>> stateSet = new();
         System.Collections.Generic.Dictionary<STATE, State<STATE>> stateSearchDictionary = new();
         System.Collections.Generic.Dictionary<StateGraphKey<STATE>, StateGraphValue<STATE>> stateGraph = new();
