@@ -31,9 +31,13 @@ namespace StateMachines {
                 if (value.Equals(initialState))
                     CurrentState = value;
             } //loop
+            this.initialState = CurrentState;
         } //StateMachine
 
         public STATE CurrentState { get; private set; }
+
+        public STATE ResetState() => // unconditional jump to initial state, ignoring the transition graph
+            CurrentState = initialState;
 
         public void AddValidStateTransition(STATE startingState, STATE endingState, StateTransitionAction<STATE> action, bool directed = true) {
             if (directed) {
@@ -114,6 +118,7 @@ namespace StateMachines {
         readonly System.Collections.Generic.HashSet<State> stateSet = new();
         readonly System.Collections.Generic.Dictionary<STATE, State> stateSearchDictionary = new();
         readonly System.Collections.Generic.Dictionary<StateGraphKey, StateGraphValue> stateGraph = new();
+        readonly STATE initialState;
 
         class StateMachineGraphPopulationException : System.ApplicationException {
             internal StateMachineGraphPopulationException(STATE stargingState, STATE endingState)

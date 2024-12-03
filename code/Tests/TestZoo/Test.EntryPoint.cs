@@ -87,6 +87,15 @@ namespace StateMachines {
             Console.WriteLine(stateMachine.TryTransitionTo(VisitorState.Alligator));
             Console.WriteLine(stateMachine.TryTransitionTo(VisitorState.Flamingo));
             Console.WriteLine(stateMachine.TryTransitionTo(VisitorState.Exit));
+            Console.WriteLine($"Resetting state: {stateMachine.ResetState()}. Let's make a shorter loop:");
+            Console.WriteLine(stateMachine.TryTransitionTo(VisitorState.Wallaby));
+            Console.WriteLine(stateMachine.TryTransitionTo(VisitorState.Llama));
+            Console.WriteLine(stateMachine.TryTransitionTo(VisitorState.Flamingo));
+            Console.WriteLine(stateMachine.TryTransitionTo(VisitorState.Exit));
+            Console.WriteLine($"Resetting state: {stateMachine.ResetState()}, Now a shortest loop:");
+            Console.WriteLine(stateMachine.TryTransitionTo(VisitorState.Llama));
+            Console.WriteLine(stateMachine.TryTransitionTo(VisitorState.Flamingo));
+            Console.WriteLine(stateMachine.TryTransitionTo(VisitorState.Exit));
         } //Main
 
     } //class Test
