@@ -20,7 +20,7 @@ namespace StateMachines {
 
         #region API
 
-        public StateMachine(STATE initialState = default(STATE)) {
+        public StateMachine(STATE initialState = default) {
             Type type = typeof(STATE);
             FieldInfo[] fields = type.GetFields(BindingFlags.Static | BindingFlags.Public);
             foreach (var field in fields) {
@@ -95,9 +95,9 @@ namespace StateMachines {
             return (true, DefinitionSet<STATE>.TransitionIsValid(startingState, endingState));
         } //IsTransitionValid
 
-        System.Collections.Generic.HashSet<State> stateSet = new();
-        System.Collections.Generic.Dictionary<STATE, State> stateSearchDictionary = new();
-        System.Collections.Generic.Dictionary<StateGraphKey, StateGraphValue> stateGraph = new();
+        readonly System.Collections.Generic.HashSet<State> stateSet = new();
+        readonly System.Collections.Generic.Dictionary<STATE, State> stateSearchDictionary = new();
+        readonly System.Collections.Generic.Dictionary<StateGraphKey, StateGraphValue> stateGraph = new();
 
         class StateMachineGraphPopulationException : System.ApplicationException {
             internal StateMachineGraphPopulationException(STATE stargingState, STATE endingState)
