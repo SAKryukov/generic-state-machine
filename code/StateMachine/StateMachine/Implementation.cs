@@ -35,12 +35,28 @@ namespace StateMachines {
 
         public STATE CurrentState { get; private set; }
 
-        public void AddValidStateTransition(STATE startingState, STATE endingState, StateTransitionAction<STATE> action) {
-            StateGraphKey key = new(FindState(startingState), FindState(endingState));
-            if (stateGraph.TryGetValue(key, out StateGraphValue value))
-                throw new StateMachineGraphPopulationException(startingState, endingState);
-            stateGraph.Add(key, new StateGraphValue(action, null));
+        public void AddValidStateTransition(STATE startingState, STATE endingState, StateTransitionAction<STATE> action, bool directed = true) {
+            if (directed) {
+                StateGraphKey key = new(FindState(startingState), FindState(endingState));
+                if (stateGraph.TryGetValue(key, out StateGraphValue value))
+                    throw new StateMachineGraphPopulationException(startingState, endingState);
+                stateGraph.Add(key, new StateGraphValue(action, null));
+            } else {
+                AddValidStateTransition(startingState, endingState, action);
+                AddValidStateTransition(endingState, startingState, action);
+            } //if
         } //AddValidStateTransition
+
+        public void AddValidStateTransitionChain(StateTransitionAction<STATE> action, bool directed, params STATE[] chain) {
+            if (chain == null) return;
+            if (chain.Length < 2) return;
+            STATE current = chain[0];
+            foreach (var state in chain) {
+                if (state.Equals(current)) return; // drop first
+                AddValidStateTransition(current, state, action, directed);
+                current = state;
+            } //loop
+        } //AddValidStateTransitionChain
 
         public void AddInvalidStateTransition(STATE startingState, STATE endingState, InvalidStateTransitionAction<STATE> action) {
             StateGraphKey key = new(FindState(startingState), FindState(endingState));
