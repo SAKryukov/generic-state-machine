@@ -47,18 +47,21 @@ namespace StateMachines {
             stateMachine.AddValidStateTransition(BoxDoorState.Closed, BoxDoorState.Locked, (starting, ending) => {
                 Console.WriteLine("Locking the door outside");
             });
-            stateMachine.AddInvalidStateTransition(BoxDoorState.Locked, BoxDoorState.OpenedInside, (starting, ending) => "You cannot get in through the locked door");
-            stateMachine.AddInvalidStateTransition(BoxDoorState.Locked, BoxDoorState.ClosedInside, (starting, ending) => "You cannot get in through the locked door");
-            stateMachine.AddInvalidStateTransition(BoxDoorState.Locked, BoxDoorState.LockedInside, (starting, ending) => "You cannot get in through the locked door");
-            stateMachine.AddInvalidStateTransition(BoxDoorState.Closed, BoxDoorState.OpenedInside, (starting, ending) => "You cannot get in through the closed door");
-            stateMachine.AddInvalidStateTransition(BoxDoorState.Closed, BoxDoorState.ClosedInside, (starting, ending) => "You cannot get in through the closed door");
-            stateMachine.AddInvalidStateTransition(BoxDoorState.Closed, BoxDoorState.LockedInside, (starting, ending) => "You cannot get in through the closed door");
-            stateMachine.AddInvalidStateTransition(BoxDoorState.LockedInside, BoxDoorState.Locked, (starting, ending) => "You cannot go out of the locked door");
-            stateMachine.AddInvalidStateTransition(BoxDoorState.LockedInside, BoxDoorState.Closed, (starting, ending) => "You cannot go out of the locked door");
-            stateMachine.AddInvalidStateTransition(BoxDoorState.LockedInside, BoxDoorState.Opened, (starting, ending) => "You cannot go out of the locked door");
-            stateMachine.AddInvalidStateTransition(BoxDoorState.ClosedInside, BoxDoorState.Locked, (starting, ending) => "You cannot go out of the closed door");
-            stateMachine.AddInvalidStateTransition(BoxDoorState.ClosedInside, BoxDoorState.Closed, (starting, ending) => "You cannot go out of the closed door");
-            stateMachine.AddInvalidStateTransition(BoxDoorState.ClosedInside, BoxDoorState.Opened, (starting, ending) => "You cannot go out of the closed door");
+
+            string YouCannot(string verb, string adjective) => $"You cannot {verb} the {adjective} door";
+            const string getIn = "get in"; const string goOut = "go out"; const string locked = nameof(locked); const string closed = nameof(closed);
+            stateMachine.AddInvalidStateTransition(BoxDoorState.Locked, BoxDoorState.OpenedInside, (starting, ending) => YouCannot(getIn, locked));
+            stateMachine.AddInvalidStateTransition(BoxDoorState.Locked, BoxDoorState.ClosedInside, (starting, ending) => YouCannot(getIn, locked));
+            stateMachine.AddInvalidStateTransition(BoxDoorState.Locked, BoxDoorState.LockedInside, (starting, ending) => YouCannot(getIn, locked));
+            stateMachine.AddInvalidStateTransition(BoxDoorState.Closed, BoxDoorState.OpenedInside, (starting, ending) => YouCannot(getIn, closed));
+            stateMachine.AddInvalidStateTransition(BoxDoorState.Closed, BoxDoorState.ClosedInside, (starting, ending) => YouCannot(getIn, closed));
+            stateMachine.AddInvalidStateTransition(BoxDoorState.Closed, BoxDoorState.LockedInside, (starting, ending) => YouCannot(getIn, closed));
+            stateMachine.AddInvalidStateTransition(BoxDoorState.LockedInside, BoxDoorState.Locked, (starting, ending) => YouCannot(goOut, locked));
+            stateMachine.AddInvalidStateTransition(BoxDoorState.LockedInside, BoxDoorState.Closed, (starting, ending) => YouCannot(goOut, locked));
+            stateMachine.AddInvalidStateTransition(BoxDoorState.LockedInside, BoxDoorState.Opened, (starting, ending) => YouCannot(goOut, locked));
+            stateMachine.AddInvalidStateTransition(BoxDoorState.ClosedInside, BoxDoorState.Locked, (starting, ending) => YouCannot(goOut, closed));
+            stateMachine.AddInvalidStateTransition(BoxDoorState.ClosedInside, BoxDoorState.Closed, (starting, ending) => YouCannot(goOut, locked));
+            stateMachine.AddInvalidStateTransition(BoxDoorState.ClosedInside, BoxDoorState.Opened, (starting, ending) => YouCannot(goOut, locked));
             return stateMachine;
         } //PopulateBox
 
