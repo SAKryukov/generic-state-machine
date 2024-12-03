@@ -128,7 +128,6 @@ namespace StateMachines {
                     localPath.Remove(followingStateIndex);
                 } //loop
                 visited[start] = false;
-                //SA??? main thing
             } //RecursiveWalk
             bool[] visited = new bool[stateSet.Count];
             State[] indexed = new State[stateSet.Count];
