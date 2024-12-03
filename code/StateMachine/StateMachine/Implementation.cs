@@ -86,8 +86,7 @@ namespace StateMachines {
                 var validity = IsTransitionValid(value, CurrentState, state);
                 if (!validity.IsValid)
                     return (false, validity.ValidityComment);
-                if (value.ValidAction != null)
-                    value.ValidAction(CurrentState, state);
+                value.ValidAction?.Invoke(CurrentState, state);
                 CurrentState = state;
             } else
                 return (false, DefinitionSet<STATE>.TransitionNotDefined(CurrentState, state));

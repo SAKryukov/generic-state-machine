@@ -47,7 +47,7 @@ namespace StateMachines {
             stateMachine.AddValidStateTransition(BoxDoorState.Closed, BoxDoorState.Locked, (starting, ending) => {
                 Console.WriteLine("Locking the door outside");
             });
-            string YouCannot(string verb, string adjective) => $"You cannot {verb} the {adjective} door";
+            static string YouCannot(string verb, string adjective) => $"You cannot {verb} the {adjective} door";
             const string getIn = "get in"; const string goOut = "go out"; const string locked = nameof(locked); const string closed = nameof(closed);
             stateMachine.AddInvalidStateTransition(BoxDoorState.Locked, BoxDoorState.OpenedInside, (starting, ending) => YouCannot(getIn, locked));
             stateMachine.AddInvalidStateTransition(BoxDoorState.Locked, BoxDoorState.ClosedInside, (starting, ending) => YouCannot(getIn, locked));
