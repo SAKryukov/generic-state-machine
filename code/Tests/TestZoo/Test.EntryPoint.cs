@@ -8,7 +8,7 @@
     https://stackoverflow.com/questions/79240035/how-to-correctly-implement-of-state-machine-pattern
 */
 
-#define TryAllRoutes // uncomment to try
+//#define TryAllRoutes // uncomment to try
 namespace StateMachines {
     using Console = System.Console;
 
