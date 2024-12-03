@@ -24,6 +24,12 @@ namespace StateMachines {
         internal static string TransitionIsValid(STATE stargingState, STATE endingState) =>
             $"The transition between {stargingState} and {endingState} is valid";
 
+        internal static string TransitionToTheSameState(STATE state) =>
+            $"Attempted transition to the same state {state}";
+
+        internal static string TransitionSuccess(STATE state) =>
+            $"{state}";
+
     } //DefinitionSet
 
 }

@@ -66,11 +66,13 @@ namespace StateMachines {
             return IsTransitionValid(value, startingState, endingState);
         } //IsTransitionValid
         public (bool success, string invalidTransitionReason) TryTransitionTo(STATE state) {
+            if (CurrentState.Equals(state))
+                return (true, DefinitionSet<STATE>.TransitionToTheSameState(CurrentState));
             State<STATE> starting = FindState(CurrentState);
             State<STATE> ending = FindState(state);
             StateGraphKey<STATE> key = new(starting, ending);
             bool found = stateGraph.TryGetValue(key, out StateGraphValue<STATE> value);
-            string invalidTransitionReason = null;
+            string invalidTransitionReason = DefinitionSet<STATE>.TransitionSuccess(state);
             if (found) {
                 var validity = IsTransitionValid(value, CurrentState, state);
                 if (!validity.IsValid)

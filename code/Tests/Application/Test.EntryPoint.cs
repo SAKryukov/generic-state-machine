@@ -11,24 +11,69 @@
 namespace StateMachines {
     using Console = System.Console;
 
-    enum TestState { Draft, Denied, Approved, WaitForApprovalManager, WaitForApprovalTechnical, WaitForApprovalFinance, }
 
     class Test {
-        static void Main() {
-            var stateMachine = new StateMachine<TestState>();
-            stateMachine.AddValidStateTransition(TestState.Draft, TestState.WaitForApprovalManager, (starting, ending) => {
-                Console.WriteLine("Trying to get approval from manager");
+
+        enum BoxDoorState { Locked, Closed, Opened, OpenedInside, ClosedInside, LockedInside };
+        static StateMachine<BoxDoorState> PopulateBox() {
+            StateMachine<BoxDoorState> stateMachine = new();
+            stateMachine.AddValidStateTransition(BoxDoorState.Locked, BoxDoorState.Closed, (starting, ending) => {
+                Console.WriteLine("Unlocking the door outside, clang-clang");
             });
-            stateMachine.AddValidStateTransition(TestState.Draft, TestState.WaitForApprovalTechnical, (starting, ending) => { });
-            stateMachine.AddValidStateTransition(TestState.Draft, TestState.WaitForApprovalFinance, (starting, ending) => { });
-            stateMachine.AddInvalidStateTransition(TestState.Denied, TestState.WaitForApprovalManager, (starting, ending) =>
-                $"{TestState.Denied} to {TestState.WaitForApprovalManager}? Come on! It is already denied, don't wait!");
-            Console.WriteLine(stateMachine.IsTransitionValid(TestState.Draft, TestState.WaitForApprovalManager));
-            Console.WriteLine(stateMachine.IsTransitionValid(TestState.Denied, TestState.WaitForApprovalManager));
-            Console.WriteLine(stateMachine.CurrentState);
-            stateMachine.TryTransitionTo(TestState.WaitForApprovalManager);
-            Console.WriteLine(stateMachine.CurrentState);
+            stateMachine.AddValidStateTransition(BoxDoorState.Closed, BoxDoorState.Opened, (starting, ending) => {
+                Console.WriteLine("Opening the door outside, squick-squick");
+            });
+            stateMachine.AddValidStateTransition(BoxDoorState.Opened, BoxDoorState.OpenedInside, (starting, ending) => {
+                Console.WriteLine("Getting inside");
+            });
+            stateMachine.AddValidStateTransition(BoxDoorState.OpenedInside, BoxDoorState.ClosedInside, (starting, ending) => {
+                Console.WriteLine("Closing the door inside");
+            });
+            stateMachine.AddValidStateTransition(BoxDoorState.ClosedInside, BoxDoorState.LockedInside, (starting, ending) => {
+                Console.WriteLine("Locking the door inside");
+            });
+            stateMachine.AddValidStateTransition(BoxDoorState.LockedInside, BoxDoorState.ClosedInside, (starting, ending) => {
+                Console.WriteLine("Unlocking the door inside");
+            });
+            stateMachine.AddValidStateTransition(BoxDoorState.ClosedInside, BoxDoorState.OpenedInside, (starting, ending) => {
+                Console.WriteLine("Opening the door inside");
+            });
+            stateMachine.AddValidStateTransition(BoxDoorState.OpenedInside, BoxDoorState.Opened, (starting, ending) => {
+                Console.WriteLine("Moving out");
+            });
+            stateMachine.AddValidStateTransition(BoxDoorState.Opened, BoxDoorState.Closed, (starting, ending) => {
+                Console.WriteLine("Closing the door outside");
+            });
+            stateMachine.AddValidStateTransition(BoxDoorState.Closed, BoxDoorState.Locked, (starting, ending) => {
+                Console.WriteLine("Locking the door outside");
+            });
+            stateMachine.AddInvalidStateTransition(BoxDoorState.Locked, BoxDoorState.OpenedInside, (starting, ending) => "You cannot get in through the locked door");
+            stateMachine.AddInvalidStateTransition(BoxDoorState.Locked, BoxDoorState.ClosedInside, (starting, ending) => "You cannot get in through the locked door");
+            stateMachine.AddInvalidStateTransition(BoxDoorState.Locked, BoxDoorState.LockedInside, (starting, ending) => "You cannot get in through the locked door");
+            stateMachine.AddInvalidStateTransition(BoxDoorState.Closed, BoxDoorState.OpenedInside, (starting, ending) => "You cannot get in through the closed door");
+            stateMachine.AddInvalidStateTransition(BoxDoorState.Closed, BoxDoorState.ClosedInside, (starting, ending) => "You cannot get in through the closed door");
+            stateMachine.AddInvalidStateTransition(BoxDoorState.Closed, BoxDoorState.LockedInside, (starting, ending) => "You cannot get in through the closed door");
+            stateMachine.AddInvalidStateTransition(BoxDoorState.LockedInside, BoxDoorState.Locked, (starting, ending) => "You cannot go out of the locked door");
+            stateMachine.AddInvalidStateTransition(BoxDoorState.LockedInside, BoxDoorState.Closed, (starting, ending) => "You cannot go out of the locked door");
+            stateMachine.AddInvalidStateTransition(BoxDoorState.LockedInside, BoxDoorState.Opened, (starting, ending) => "You cannot go out of the locked door");
+            stateMachine.AddInvalidStateTransition(BoxDoorState.ClosedInside, BoxDoorState.Locked, (starting, ending) => "You cannot go out of the closed door");
+            stateMachine.AddInvalidStateTransition(BoxDoorState.ClosedInside, BoxDoorState.Closed, (starting, ending) => "You cannot go out of the closed door");
+            stateMachine.AddInvalidStateTransition(BoxDoorState.ClosedInside, BoxDoorState.Opened, (starting, ending) => "You cannot go out of the closed door");
+            return stateMachine;
+        } //PopulateBox
+
+        enum TestState { Draft, Denied, Approved, WaitForApprovalManager, WaitForApprovalTechnical, WaitForApprovalFinance, }
+        static void Main() {
+            var boxDoorStateMachine = PopulateBox();
+            Console.WriteLine(boxDoorStateMachine.TryTransitionTo(BoxDoorState.LockedInside));
+            Console.WriteLine(boxDoorStateMachine.TryTransitionTo(BoxDoorState.Closed));
+            Console.WriteLine(boxDoorStateMachine.TryTransitionTo(BoxDoorState.Opened));
+            Console.WriteLine(boxDoorStateMachine.TryTransitionTo(BoxDoorState.OpenedInside));
+            Console.WriteLine(boxDoorStateMachine.TryTransitionTo(BoxDoorState.ClosedInside));
+            Console.WriteLine(boxDoorStateMachine.TryTransitionTo(BoxDoorState.LockedInside));
+            Console.WriteLine(boxDoorStateMachine.TryTransitionTo(BoxDoorState.Opened));
         } //Main
+
     } //class Test
 
 }
