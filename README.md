@@ -52,5 +52,5 @@ public STATE[][] Labyrinth(STATE start, STATE finish);
 STATE CurrentState { get; private set; }
 ~~~
 
-Here, the type `STATE` is a generic parameter of the class `StateMachine<STATE>`. It can be any numeric type, or, in fact, any type having some static public fields.
+Here, the type `STATE` is a generic parameter of the class `StateMachine<STATE>`. It can be any enumeration type, or, in principle, any type having some static public fields.
 Every such field is determined through reflection and interpreted as a state, and its reflected name is interpreted as a state name.
