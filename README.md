@@ -31,13 +31,19 @@ public StateMachine(STATE initialState = default);
 #### Public methods:
 
 ~~~
-ResetState();
-void AddValidStateTransition(STATE startingState, STATE endingState, StateTransitionAction<STATE> action, bool directed = true);
-void AddValidStateTransitionChain(StateTransitionAction<STATE> action, bool directed, params STATE[] chain);
-void AddInvalidStateTransition(STATE startingState, STATE endingState, InvalidStateTransitionAction<STATE> action);
+voidResetState();
+void AddValidStateTransition(
+    STATE startingState, STATE endingState,
+    StateTransitionAction<STATE> action, bool directed = true);
+void AddValidStateTransitionChain(
+   StateTransitionAction<STATE> action, bool directed, params STATE[] chain);
+void AddInvalidStateTransition(
+    STATE startingState, STATE endingState,
+    InvalidStateTransitionAction<STATE> action);
 (bool IsValid, string ValidityComment) IsTransitionValid(STATE startingState, STATE endingState);
 (bool success, string invalidTransitionReason) TryTransitionTo(STATE state);
-public STATE[][] Labyrinth(STATE start, STATE finish); // this method finds all permitted routes between two states
+// this method finds all permitted routes between two states:
+public STATE[][] Labyrinth(STATE start, STATE finish); 
 ~~~
 
 #### Public property:
