@@ -1,7 +1,7 @@
 AfricanPorcupine  ---------------- SnowLeopard  ------------ AfricanLion --------------  BengalTiger ------ DromedaryCamel ------------- WhiteRhino
 |                                                                                                                      |                                                                                                                                          |
 |                                                                                                                      |                                                                                                                                          |
-NorthAmericanPorcupine -- (Chimpanzee) -- Mandrill  - Sloths  |  ---  Coati --- Emu                                                                                                         |
+NorthAmericanPorcupine -- (Chimpanzee) -- Mandrill  - Sloth -- |  ---  Coati --- Emu                                                                                                         |
                                               |                                                                        |                                                                                                                                          |
                                               |                                                                        |                                                                                                                                          |
                                             Serval ----- Yak --------------- BactrianCamel ------------------------------------CapuchinMonkey ----- Kookaburra -- Tortoise

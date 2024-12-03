@@ -17,7 +17,7 @@ namespace StateMachines {
         enum VisitorState {
             Entry,
             AfricanPorcupine, SnowLeopard, AfricanLion, BengalTiger, DromedaryCamel, WhiteRhino,
-            NorthAmericanPorcupine, Chimpanzee, Mandrill, Sloths, Coati, Emu,
+            NorthAmericanPorcupine, Chimpanzee, Mandrill, Sloth, Coati, Emu,
             Serval, Yak, BactrianCamel, CapuchinMonkey, Kookaburra, Tortoise,
             Cheetah, Watusu, Alligator, Flamingo, Llama, Wallaby,
             Exit
@@ -31,7 +31,7 @@ namespace StateMachines {
             stateMachine.AddValidStateTransitionChain(Move, false, VisitorState.AfricanPorcupine, VisitorState.SnowLeopard,
                 VisitorState.AfricanLion, VisitorState.BengalTiger, VisitorState.DromedaryCamel, VisitorState.WhiteRhino);
             stateMachine.AddValidStateTransitionChain(Move, false, VisitorState.NorthAmericanPorcupine, VisitorState.Mandrill,
-                VisitorState.Sloths, VisitorState.Coati, VisitorState.Emu);
+                VisitorState.Sloth, VisitorState.Coati, VisitorState.Emu);
             stateMachine.AddValidStateTransitionChain(Move, false, VisitorState.Serval, VisitorState.Yak, VisitorState.BactrianCamel,
                 VisitorState.CapuchinMonkey, VisitorState.Kookaburra, VisitorState.Tortoise);
             stateMachine.AddValidStateTransitionChain(Move, false, VisitorState.Cheetah, VisitorState.Watusu, VisitorState.Alligator,
@@ -53,7 +53,7 @@ namespace StateMachines {
                 $"You cannot go directly from {start} to {finish}, you have to pass through the zoo");
             VisitorState[] openSites = new VisitorState[] { VisitorState.AfricanPorcupine, VisitorState.SnowLeopard,
                 VisitorState.AfricanLion, VisitorState.BengalTiger, VisitorState.DromedaryCamel, VisitorState.WhiteRhino,
-                VisitorState.NorthAmericanPorcupine, VisitorState.Mandrill, VisitorState.Sloths, VisitorState.Coati,
+                VisitorState.NorthAmericanPorcupine, VisitorState.Mandrill, VisitorState.Sloth, VisitorState.Coati,
                 VisitorState.Emu, VisitorState.Serval, VisitorState.Yak, VisitorState.BactrianCamel, VisitorState.CapuchinMonkey,
                 VisitorState.Kookaburra, VisitorState.Tortoise, VisitorState.Cheetah, VisitorState.Watusu,
                 VisitorState.Alligator, VisitorState.Flamingo, VisitorState.Llama, VisitorState.Wallaby,
@@ -99,7 +99,7 @@ namespace StateMachines {
             Console.WriteLine();
             Console.WriteLine("Labyrinth solution demo:");
             var labyrinthSolution = stateMachine.Labyrinth(VisitorState.Entry, VisitorState.Exit);
-            Console.WriteLine($"{labyrinthSolution.Length} possible paths from {VisitorState.Entry} to {VisitorState.Exit} found:");
+            Console.WriteLine($"{labyrinthSolution.Length} possible routes from {VisitorState.Entry} to {VisitorState.Exit} found:");
             int index = 1;
             foreach (var route in labyrinthSolution) {
                 Console.Write($"Route #{index++:D4}: [");
