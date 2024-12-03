@@ -31,7 +31,7 @@ public StateMachine(STATE initialState = default);
 #### Public methods:
 
 ~~~
-voidResetState();
+void ResetState();
 void AddValidStateTransition(
     STATE startingState, STATE endingState,
     StateTransitionAction<STATE> action, bool directed = true);
