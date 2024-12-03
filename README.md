@@ -28,7 +28,7 @@ For example, in the hardware automation applications, it can operate the hardwar
 public StateMachine(STATE initialState = default);
 ~~~
 
-### Public methods:
+#### Public methods:
 
 ~~~
 ResetState();
@@ -40,7 +40,7 @@ void AddInvalidStateTransition(STATE startingState, STATE endingState, InvalidSt
 public STATE[][] Labyrinth(STATE start, STATE finish); // this method finds all permitted routes between two states
 ~~~
 
-### Public property:
+#### Public property:
 
 ~~~
 STATE CurrentState { get; private set; }
