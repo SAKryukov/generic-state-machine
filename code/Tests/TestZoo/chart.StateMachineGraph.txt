@@ -1,13 +1,13 @@
-AfricanPorcupine  ---------------- SnowLeopard  ------------ AfricanLion --------------  BengalTiger ------ DromedaryCamel ------------- WhiteRhino
-|                                                                                                                      |                                                                                                                                          |
-|                                                                                                                      |                                                                                                                                          |
-NorthAmericanPorcupine -- (Chimpanzee) -- Mandrill  - Sloth -- |  ---  Coati --- Emu                                                                                                         |
-                                              |                                                                        |                                                                                                                                          |
-                                              |                                                                        |                                                                                                                                          |
-                                            Serval ----- Yak --------------- BactrianCamel ------------------------------------CapuchinMonkey ----- Kookaburra -- Tortoise
-                                              |                                                 |                                                                                                          |                        |
-                                              |                                                 |                                                                                                          |                        |
-                                          Cheetah ------------------ Watusu ----- Alligator -- Flamingo --------------------------------- Llama ------- Wallaby
-                                                                                                                                               |                                                            |                        |
-                                                                                                                                               |                                                            |                        |
-                                                                                                                                             Exit                                                          |________Entry
+AfricanPorcupine  ---------------- SnowLeopard  ---------------------- AfricanLion --- BengalTiger --- DromedaryCamel ---- WhiteRhino
+|                                                                            |                                                     |
+|                                                                            |                                                     |
+NorthAmericanPorcupine -- (Chimpanzee) -- Mandrill -- Sloth -- Coati -- Emu  |                                                     |
+                                              |                              |                                                     |
+                                              |                              |                                                     |
+                                            Serval ----- Yak -------- BactrianCamel ------------ CapuchinMonkey --- Kookaburra -- Tortoise
+                                              |                         |                                    |          |
+                                              |                         |                                    |          |
+                                          Cheetah ------------------ Watusu ----- Alligator -- Flamingo --- Llama ---- Wallaby
+                                                                                                   |                |    
+                                                                                                   |                |             
+                                                                                                  Exit            Entry
