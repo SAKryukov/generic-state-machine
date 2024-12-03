@@ -31,7 +31,7 @@ public StateMachine(STATE initialState = default);
 #### Public methods:
 
 ~~~
-void ResetState();
+void ResetState(); // unconditional jump to the initial state, ignoring the transition graph
 void AddValidStateTransition(
     STATE startingState, STATE endingState,
     StateTransitionAction<STATE> action, bool directed = true);
