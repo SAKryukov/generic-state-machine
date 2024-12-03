@@ -25,7 +25,7 @@ namespace StateMachines {
             $"The transition between {stargingState} and {endingState} is valid";
 
         internal static string TransitionToTheSameState(STATE state) =>
-            $"Attempted transition to the same state {state}";
+            $"Attempted transition to the same state: {state}";
 
         internal static string TransitionSuccess(STATE state) =>
             $"{state}";

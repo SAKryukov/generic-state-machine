@@ -18,49 +18,42 @@ namespace StateMachines {
 
     public class StateMachine<STATE> {
 
+        #region API
+
         public StateMachine(STATE initialState = default(STATE)) {
             Type type = typeof(STATE);
             FieldInfo[] fields = type.GetFields(BindingFlags.Static | BindingFlags.Public);
             foreach (var field in fields) {
                 STATE value = (STATE)field.GetValue(null);
-                State<STATE> state = new(field.Name, value);
+                State state = new(field.Name, value);
                 stateSet.Add(state);
                 stateSearchDictionary.Add(value, state);
                 if (value.Equals(initialState))
                     CurrentState = value;
             } //loop
         } //StateMachine
+
         public STATE CurrentState { get; private set; }
-        State<STATE> FindState(STATE value) {
-            if (stateSearchDictionary.TryGetValue(value, out State<STATE> state))
-                return state;
-            else
-                throw new InvalidStateException<STATE>(value); // fallback for the value out of enum
-        } //FindState
-        bool IsValid(StateGraphValue<STATE> value) => value.ValidAction != null;
+
         public void AddValidStateTransition(STATE startingState, STATE endingState, StateTransitionAction<STATE> action) {
-            StateGraphKey<STATE> key = new(FindState(startingState), FindState(endingState));
-            if (stateGraph.TryGetValue(key, out StateGraphValue<STATE> value))
-                throw new StateMachineGraphPopulationException<STATE>(startingState, endingState);
-            stateGraph.Add(key, new StateGraphValue<STATE>(action, null));
+            StateGraphKey key = new(FindState(startingState), FindState(endingState));
+            if (stateGraph.TryGetValue(key, out StateGraphValue value))
+                throw new StateMachineGraphPopulationException(startingState, endingState);
+            stateGraph.Add(key, new StateGraphValue(action, null));
         } //AddValidStateTransition
+
         public void AddInvalidStateTransition(STATE startingState, STATE endingState, InvalidStateTransitionAction<STATE> action) {
-            StateGraphKey<STATE> key = new(FindState(startingState), FindState(endingState));
-            if (stateGraph.TryGetValue(key, out StateGraphValue<STATE> value))
-                throw new StateMachineGraphPopulationException<STATE>(startingState, endingState);
-            stateGraph.Add(key, new StateGraphValue<STATE>(null, action));
+            StateGraphKey key = new(FindState(startingState), FindState(endingState));
+            if (stateGraph.TryGetValue(key, out StateGraphValue value))
+                throw new StateMachineGraphPopulationException(startingState, endingState);
+            stateGraph.Add(key, new StateGraphValue(null, action));
         } //AddInvalidStateTransition       
-        (bool IsValid, string ValidityComment) IsTransitionValid(StateGraphValue<STATE> value, STATE startingState, STATE endingState) {
-            if (!IsValid(value) && value.InvalidAction != null) {
-                return (false, value.InvalidAction(startingState, endingState));
-            } //if
-            return (true, DefinitionSet<STATE>.TransitionIsValid(startingState, endingState));
-        } //IsTransitionValid
+
         public (bool IsValid, string ValidityComment) IsTransitionValid(STATE startingState, STATE endingState) {
-            State<STATE> starting = FindState(startingState);
-            State<STATE> ending = FindState(endingState);
-            StateGraphKey<STATE> key = new(starting, ending);
-            bool found = stateGraph.TryGetValue(key, out StateGraphValue<STATE> value);
+            State starting = FindState(startingState);
+            State ending = FindState(endingState);
+            StateGraphKey key = new(starting, ending);
+            bool found = stateGraph.TryGetValue(key, out StateGraphValue value);
             if (!found)
                 return (false, DefinitionSet<STATE>.TransitionNotDefined(startingState, endingState));
             return IsTransitionValid(value, startingState, endingState);
@@ -68,10 +61,10 @@ namespace StateMachines {
         public (bool success, string invalidTransitionReason) TryTransitionTo(STATE state) {
             if (CurrentState.Equals(state))
                 return (true, DefinitionSet<STATE>.TransitionToTheSameState(CurrentState));
-            State<STATE> starting = FindState(CurrentState);
-            State<STATE> ending = FindState(state);
-            StateGraphKey<STATE> key = new(starting, ending);
-            bool found = stateGraph.TryGetValue(key, out StateGraphValue<STATE> value);
+            State starting = FindState(CurrentState);
+            State ending = FindState(state);
+            StateGraphKey key = new(starting, ending);
+            bool found = stateGraph.TryGetValue(key, out StateGraphValue value);
             string invalidTransitionReason = DefinitionSet<STATE>.TransitionSuccess(state);
             if (found) {
                 var validity = IsTransitionValid(value, CurrentState, state);
@@ -81,74 +74,94 @@ namespace StateMachines {
                 CurrentState = state;
             } else
                 return (false, null);
-            return (found, invalidTransitionReason); //SA??? generalize IsTransactionValid and checkup
+            return (found, invalidTransitionReason);
         } //TryTransitionTo
-        System.Collections.Generic.HashSet<State<STATE>> stateSet = new();
-        System.Collections.Generic.Dictionary<STATE, State<STATE>> stateSearchDictionary = new();
-        System.Collections.Generic.Dictionary<StateGraphKey<STATE>, StateGraphValue<STATE>> stateGraph = new();
+
+        #endregion API
+
+        State FindState(STATE value) {
+            if (stateSearchDictionary.TryGetValue(value, out State state))
+                return state;
+            else
+                throw new InvalidStateException(value);
+        } //FindState
+
+        static bool IsValid(StateGraphValue value) => value.ValidAction != null;
+
+        static (bool IsValid, string ValidityComment) IsTransitionValid(StateGraphValue value, STATE startingState, STATE endingState) {
+            if (!IsValid(value) && value.InvalidAction != null) {
+                return (false, value.InvalidAction(startingState, endingState));
+            } //if
+            return (true, DefinitionSet<STATE>.TransitionIsValid(startingState, endingState));
+        } //IsTransitionValid
+
+        System.Collections.Generic.HashSet<State> stateSet = new();
+        System.Collections.Generic.Dictionary<STATE, State> stateSearchDictionary = new();
+        System.Collections.Generic.Dictionary<StateGraphKey, StateGraphValue> stateGraph = new();
+
+        class StateMachineGraphPopulationException : System.ApplicationException {
+            internal StateMachineGraphPopulationException(STATE stargingState, STATE endingState)
+                : base(DefinitionSet<STATE>.StateMachineGraphPopulationExceptionMessage(stargingState, endingState)) { }
+        } //class StateMachineGraphPopulationException
+
+        class InvalidStateException : System.ApplicationException {
+            internal InvalidStateException(STATE state)
+                : base(DefinitionSet<STATE>.InvalidStateExceptionMessage(state)) { }
+        } //class InvalidStateException
+
+        sealed class State {
+            internal State(string name, STATE underlyingMember) {
+                Name = name;
+                UnderlyingMember = underlyingMember;
+            } //State
+            internal string Name { get; init; }
+            internal STATE UnderlyingMember { get; init; }
+        } //class State
+
+        class StateGraphKey {
+            internal StateGraphKey(State starting, State ending) {
+                StartingState = starting; EndingState = ending;
+            }
+            public override int GetHashCode() { // important!
+                return StartingState.Name.GetHashCode()
+                    ^ EndingState.Name.GetHashCode();
+            }
+            public override bool Equals(object @object) { // important!
+                if (@object == null) return false;
+                if (@object is not StateGraphKey objectStateGraphKey) return false;
+                return objectStateGraphKey.StartingState.Name == StartingState.Name
+                    && objectStateGraphKey.EndingState.Name == EndingState.Name;
+            }
+            internal State StartingState { get; init; }
+            internal State EndingState { get; init; }
+        } //class StateGraphKey
+
+        class StateGraphValue {
+            internal StateGraphValue(StateTransitionAction<STATE> valid, InvalidStateTransitionAction<STATE> invalid) {
+                ValidAction = valid; InvalidAction = invalid;
+            }
+            internal StateTransitionAction<STATE> ValidAction { get; init; }
+            internal InvalidStateTransitionAction<STATE> InvalidAction { get; init; }
+        } //class StateGraphValue
+
+        abstract class StateTransition : StateGraphKey {
+            internal StateTransition(State starting, State ending) :
+                base(starting, ending) { }
+            internal abstract bool IsValid { get; }
+        } //StateTransition
+
+        class ValidStateTransition : StateTransition {
+            internal ValidStateTransition(State starting, State ending) :
+                base(starting, ending) { }
+            internal override bool IsValid { get { return true; } }
+        } //class ValidStateTransition
+
+        class InvalidStateTransition : StateTransition {
+            internal InvalidStateTransition(State starting, State ending) :
+                base(starting, ending) { }
+            internal override bool IsValid { get { return false; } }
+        } //class ValidStateTransition
+
     } //class StateMachine
-
-    class StateMachineGraphPopulationException<STATE> : System.ApplicationException {
-        internal StateMachineGraphPopulationException(STATE stargingState, STATE endingState)
-            : base(DefinitionSet<STATE>.StateMachineGraphPopulationExceptionMessage(stargingState, endingState)) { }
-    } //class StateMachineGraphPopulationException
-
-    class InvalidStateException<STATE> : System.ApplicationException {
-        internal InvalidStateException(STATE state)
-            : base(DefinitionSet<STATE>.InvalidStateExceptionMessage(state)) { }
-    } //class InvalidStateException
-
-    sealed class State<STATE> {
-        internal State(string name, STATE underlyingMember) {
-            Name = name;
-            UnderlyingMember = underlyingMember;
-        } //State
-        internal string Name { get; init; }
-        internal STATE UnderlyingMember { get; init; }
-    } //class State
-
-    class StateGraphKey<STATE> {
-        internal StateGraphKey(State<STATE> starting, State<STATE> ending) {
-            StartingState = starting; EndingState = ending;
-        }
-        public override int GetHashCode() { // important!
-            return StartingState.Name.GetHashCode()
-                ^ EndingState.Name.GetHashCode();
-        }
-        public override bool Equals(object @object) { // important!
-            if (@object == null) return false;
-            if (@object is not StateGraphKey<STATE> objectStateGraphKey) return false;
-            return objectStateGraphKey.StartingState.Name == StartingState.Name
-                && objectStateGraphKey.EndingState.Name == EndingState.Name;
-        }
-        internal State<STATE> StartingState { get; init; }
-        internal State<STATE> EndingState { get; init; }
-    } //class StateGraphKey
-
-    class StateGraphValue<STATE> {
-        internal StateGraphValue(StateTransitionAction<STATE> valid, InvalidStateTransitionAction<STATE> invalid) {
-            ValidAction = valid; InvalidAction = invalid;
-        }
-        internal StateTransitionAction<STATE> ValidAction { get; init; }
-        internal InvalidStateTransitionAction<STATE> InvalidAction { get; init; }
-    } //class StateGraphValue
-
-    abstract class StateTransition<STATE> : StateGraphKey<STATE> {
-        internal StateTransition(State<STATE> starting, State<STATE> ending) :
-            base(starting, ending) { }
-        internal abstract bool IsValid { get; }
-    } //StateTransition
-
-    class ValidStateTransition<STATE> : StateTransition<STATE> {
-        internal ValidStateTransition(State<STATE> starting, State<STATE> ending) :
-            base(starting, ending) { }
-        internal override bool IsValid { get { return true; } }
-    } //class ValidStateTransition
-
-    class InvalidStateTransition<STATE> : StateTransition<STATE> {
-        internal InvalidStateTransition(State<STATE> starting, State<STATE> ending) :
-            base(starting, ending) { }
-        internal override bool IsValid { get { return false; } }
-    } //class ValidStateTransition
 
 }
