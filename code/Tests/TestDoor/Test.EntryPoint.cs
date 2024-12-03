@@ -14,67 +14,67 @@ namespace StateMachines {
 
     class Test {
 
-        enum BoxDoorState { Locked, Closed, Opened, OpenedInside, ClosedInside, LockedInside };
-        static StateMachine<BoxDoorState> PopulateBox() {
-            StateMachine<BoxDoorState> stateMachine = new();
-            stateMachine.AddValidStateTransition(BoxDoorState.Locked, BoxDoorState.Closed, (starting, ending) => {
-                Console.WriteLine("Unlocking the door outside, clang-clang");
+        enum RoomDoorState { Locked, Closed, Opened, OpenedInside, ClosedInside, LockedInside };
+        static StateMachine<RoomDoorState> PopulateRoom() {
+            StateMachine<RoomDoorState> stateMachine = new();
+            stateMachine.AddValidStateTransition(RoomDoorState.Locked, RoomDoorState.Closed, (starting, ending) => {
+                Console.WriteLine("Unlocking the door outside");
             });
-            stateMachine.AddValidStateTransition(BoxDoorState.Closed, BoxDoorState.Opened, (starting, ending) => {
-                Console.WriteLine("Opening the door outside, squick-squick");
+            stateMachine.AddValidStateTransition(RoomDoorState.Closed, RoomDoorState.Opened, (starting, ending) => {
+                Console.WriteLine("Opening the door outside");
             });
-            stateMachine.AddValidStateTransition(BoxDoorState.Opened, BoxDoorState.OpenedInside, (starting, ending) => {
+            stateMachine.AddValidStateTransition(RoomDoorState.Opened, RoomDoorState.OpenedInside, (starting, ending) => {
                 Console.WriteLine("Getting inside");
             });
-            stateMachine.AddValidStateTransition(BoxDoorState.OpenedInside, BoxDoorState.ClosedInside, (starting, ending) => {
+            stateMachine.AddValidStateTransition(RoomDoorState.OpenedInside, RoomDoorState.ClosedInside, (starting, ending) => {
                 Console.WriteLine("Closing the door inside");
             });
-            stateMachine.AddValidStateTransition(BoxDoorState.ClosedInside, BoxDoorState.LockedInside, (starting, ending) => {
+            stateMachine.AddValidStateTransition(RoomDoorState.ClosedInside, RoomDoorState.LockedInside, (starting, ending) => {
                 Console.WriteLine("Locking the door inside");
             });
-            stateMachine.AddValidStateTransition(BoxDoorState.LockedInside, BoxDoorState.ClosedInside, (starting, ending) => {
+            stateMachine.AddValidStateTransition(RoomDoorState.LockedInside, RoomDoorState.ClosedInside, (starting, ending) => {
                 Console.WriteLine("Unlocking the door inside");
             });
-            stateMachine.AddValidStateTransition(BoxDoorState.ClosedInside, BoxDoorState.OpenedInside, (starting, ending) => {
+            stateMachine.AddValidStateTransition(RoomDoorState.ClosedInside, RoomDoorState.OpenedInside, (starting, ending) => {
                 Console.WriteLine("Opening the door inside");
             });
-            stateMachine.AddValidStateTransition(BoxDoorState.OpenedInside, BoxDoorState.Opened, (starting, ending) => {
+            stateMachine.AddValidStateTransition(RoomDoorState.OpenedInside, RoomDoorState.Opened, (starting, ending) => {
                 Console.WriteLine("Moving out");
             });
-            stateMachine.AddValidStateTransition(BoxDoorState.Opened, BoxDoorState.Closed, (starting, ending) => {
+            stateMachine.AddValidStateTransition(RoomDoorState.Opened, RoomDoorState.Closed, (starting, ending) => {
                 Console.WriteLine("Closing the door outside");
             });
-            stateMachine.AddValidStateTransition(BoxDoorState.Closed, BoxDoorState.Locked, (starting, ending) => {
+            stateMachine.AddValidStateTransition(RoomDoorState.Closed, RoomDoorState.Locked, (starting, ending) => {
                 Console.WriteLine("Locking the door outside");
             });
-            static string YouCannot(string verb, string adjective) => $"You cannot {verb} the {adjective} door";
+            static string YouCannot(string verb, string adjective) => $"You cannot {verb} through the {adjective} door";
             const string getIn = "get in"; const string goOut = "go out"; const string locked = nameof(locked); const string closed = nameof(closed);
-            stateMachine.AddInvalidStateTransition(BoxDoorState.Locked, BoxDoorState.OpenedInside, (starting, ending) => YouCannot(getIn, locked));
-            stateMachine.AddInvalidStateTransition(BoxDoorState.Locked, BoxDoorState.ClosedInside, (starting, ending) => YouCannot(getIn, locked));
-            stateMachine.AddInvalidStateTransition(BoxDoorState.Locked, BoxDoorState.LockedInside, (starting, ending) => YouCannot(getIn, locked));
-            stateMachine.AddInvalidStateTransition(BoxDoorState.Closed, BoxDoorState.OpenedInside, (starting, ending) => YouCannot(getIn, closed));
-            stateMachine.AddInvalidStateTransition(BoxDoorState.Closed, BoxDoorState.ClosedInside, (starting, ending) => YouCannot(getIn, closed));
-            stateMachine.AddInvalidStateTransition(BoxDoorState.Closed, BoxDoorState.LockedInside, (starting, ending) => YouCannot(getIn, closed));
-            stateMachine.AddInvalidStateTransition(BoxDoorState.LockedInside, BoxDoorState.Locked, (starting, ending) => YouCannot(goOut, locked));
-            stateMachine.AddInvalidStateTransition(BoxDoorState.LockedInside, BoxDoorState.Closed, (starting, ending) => YouCannot(goOut, locked));
-            stateMachine.AddInvalidStateTransition(BoxDoorState.LockedInside, BoxDoorState.Opened, (starting, ending) => YouCannot(goOut, locked));
-            stateMachine.AddInvalidStateTransition(BoxDoorState.ClosedInside, BoxDoorState.Locked, (starting, ending) => YouCannot(goOut, closed));
-            stateMachine.AddInvalidStateTransition(BoxDoorState.ClosedInside, BoxDoorState.Closed, (starting, ending) => YouCannot(goOut, locked));
-            stateMachine.AddInvalidStateTransition(BoxDoorState.ClosedInside, BoxDoorState.Opened, (starting, ending) => YouCannot(goOut, locked));
+            stateMachine.AddInvalidStateTransition(RoomDoorState.Locked, RoomDoorState.OpenedInside, (starting, ending) => YouCannot(getIn, locked));
+            stateMachine.AddInvalidStateTransition(RoomDoorState.Locked, RoomDoorState.ClosedInside, (starting, ending) => YouCannot(getIn, locked));
+            stateMachine.AddInvalidStateTransition(RoomDoorState.Locked, RoomDoorState.LockedInside, (starting, ending) => YouCannot(getIn, locked));
+            stateMachine.AddInvalidStateTransition(RoomDoorState.Closed, RoomDoorState.OpenedInside, (starting, ending) => YouCannot(getIn, closed));
+            stateMachine.AddInvalidStateTransition(RoomDoorState.Closed, RoomDoorState.ClosedInside, (starting, ending) => YouCannot(getIn, closed));
+            stateMachine.AddInvalidStateTransition(RoomDoorState.Closed, RoomDoorState.LockedInside, (starting, ending) => YouCannot(getIn, closed));
+            stateMachine.AddInvalidStateTransition(RoomDoorState.LockedInside, RoomDoorState.Locked, (starting, ending) => YouCannot(goOut, locked));
+            stateMachine.AddInvalidStateTransition(RoomDoorState.LockedInside, RoomDoorState.Closed, (starting, ending) => YouCannot(goOut, locked));
+            stateMachine.AddInvalidStateTransition(RoomDoorState.LockedInside, RoomDoorState.Opened, (starting, ending) => YouCannot(goOut, locked));
+            stateMachine.AddInvalidStateTransition(RoomDoorState.ClosedInside, RoomDoorState.Locked, (starting, ending) => YouCannot(goOut, closed));
+            stateMachine.AddInvalidStateTransition(RoomDoorState.ClosedInside, RoomDoorState.Closed, (starting, ending) => YouCannot(goOut, locked));
+            stateMachine.AddInvalidStateTransition(RoomDoorState.ClosedInside, RoomDoorState.Opened, (starting, ending) => YouCannot(goOut, locked));
             return stateMachine;
         } //PopulateBox
 
         enum TestState { Draft, Denied, Approved, WaitForApprovalManager, WaitForApprovalTechnical, WaitForApprovalFinance, }
         static void Main() {
-            var boxDoorStateMachine = PopulateBox();
-            Console.WriteLine(boxDoorStateMachine.TryTransitionTo(BoxDoorState.LockedInside));
-            Console.WriteLine(boxDoorStateMachine.TryTransitionTo(BoxDoorState.Closed));
-            Console.WriteLine(boxDoorStateMachine.TryTransitionTo(BoxDoorState.Opened));
-            Console.WriteLine(boxDoorStateMachine.TryTransitionTo(BoxDoorState.Opened));
-            Console.WriteLine(boxDoorStateMachine.TryTransitionTo(BoxDoorState.OpenedInside));
-            Console.WriteLine(boxDoorStateMachine.TryTransitionTo(BoxDoorState.ClosedInside));
-            Console.WriteLine(boxDoorStateMachine.TryTransitionTo(BoxDoorState.LockedInside));
-            Console.WriteLine(boxDoorStateMachine.TryTransitionTo(BoxDoorState.Opened));
+            var boxDoorStateMachine = PopulateRoom();
+            Console.WriteLine(boxDoorStateMachine.TryTransitionTo(RoomDoorState.LockedInside));
+            Console.WriteLine(boxDoorStateMachine.TryTransitionTo(RoomDoorState.Closed));
+            Console.WriteLine(boxDoorStateMachine.TryTransitionTo(RoomDoorState.Opened));
+            Console.WriteLine(boxDoorStateMachine.TryTransitionTo(RoomDoorState.Opened));
+            Console.WriteLine(boxDoorStateMachine.TryTransitionTo(RoomDoorState.OpenedInside));
+            Console.WriteLine(boxDoorStateMachine.TryTransitionTo(RoomDoorState.ClosedInside));
+            Console.WriteLine(boxDoorStateMachine.TryTransitionTo(RoomDoorState.LockedInside));
+            Console.WriteLine(boxDoorStateMachine.TryTransitionTo(RoomDoorState.Opened));
         } //Main
 
     } //class Test
