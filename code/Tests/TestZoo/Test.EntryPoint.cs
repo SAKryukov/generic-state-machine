@@ -8,9 +8,9 @@
     https://stackoverflow.com/questions/79240035/how-to-correctly-implement-of-state-machine-pattern
 */
 
+#define TryAllRoutes // uncomment to try
 namespace StateMachines {
     using Console = System.Console;
-
 
     class Test {
 
@@ -96,6 +96,26 @@ namespace StateMachines {
             Console.WriteLine(stateMachine.TryTransitionTo(VisitorState.Llama));
             Console.WriteLine(stateMachine.TryTransitionTo(VisitorState.Flamingo));
             Console.WriteLine(stateMachine.TryTransitionTo(VisitorState.Exit));
+            Console.WriteLine();
+            Console.WriteLine("Labyrinth solution demo:");
+            var labyrinthSolution = stateMachine.Labyrinth(VisitorState.Entry, VisitorState.Exit);
+            Console.WriteLine($"{labyrinthSolution.Length} possible paths from {VisitorState.Entry} to {VisitorState.Exit} found:");
+            int index = 1;
+            foreach (var route in labyrinthSolution) {
+                Console.Write($"Route #{index++:D4}: [");
+                foreach (var state in route)
+                    Console.Write($" {state}");
+                Console.WriteLine(" ]");
+            } //loop
+#if TryAllRoutes
+            index = 1;
+            foreach (var route in labyrinthSolution) {
+                stateMachine.ResetState();
+                Console.WriteLine($"================================= Route #{index++:D4}:");
+                foreach (var state in route)
+                    Console.WriteLine(stateMachine.TryTransitionTo(state));
+            } //loop
+#endif //TryAllRoutes
         } //Main
 
     } //class Test

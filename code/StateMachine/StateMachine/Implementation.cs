@@ -12,6 +12,7 @@ namespace StateMachines {
     using Type = System.Type;
     using BindingFlags = System.Reflection.BindingFlags;
     using FieldInfo = System.Reflection.FieldInfo;
+    using System.Collections.Generic;
 
     public delegate void StateTransitionAction<STATE>(STATE startingState, STATE endingState);
     public delegate string InvalidStateTransitionAction<STATE>(STATE startingState, STATE endingState);
@@ -44,7 +45,7 @@ namespace StateMachines {
                 StateGraphKey key = new(FindState(startingState), FindState(endingState));
                 if (stateGraph.TryGetValue(key, out StateGraphValue value))
                     throw new StateMachineGraphPopulationException(startingState, endingState);
-                stateGraph.Add(key, new StateGraphValue(action, null));
+                stateGraph.Add(key, new StateGraphValue(true, action, null));
             } else {
                 AddValidStateTransition(startingState, endingState, action);
                 AddValidStateTransition(endingState, startingState, action);
@@ -66,7 +67,7 @@ namespace StateMachines {
             StateGraphKey key = new(FindState(startingState), FindState(endingState));
             if (stateGraph.TryGetValue(key, out StateGraphValue value))
                 throw new StateMachineGraphPopulationException(startingState, endingState);
-            stateGraph.Add(key, new StateGraphValue(null, action));
+            stateGraph.Add(key, new StateGraphValue(false, null, action));
         } //AddInvalidStateTransition       
 
         public (bool IsValid, string ValidityComment) IsTransitionValid(STATE startingState, STATE endingState) {
@@ -78,6 +79,7 @@ namespace StateMachines {
                 return (false, DefinitionSet<STATE>.TransitionNotDefined(startingState, endingState));
             return IsTransitionValid(value, startingState, endingState);
         } //IsTransitionValid
+  
         public (bool success, string invalidTransitionReason) TryTransitionTo(STATE state) {
             if (CurrentState.Equals(state))
                 return (true, DefinitionSet<STATE>.TransitionToTheSameState(CurrentState));
@@ -97,7 +99,68 @@ namespace StateMachines {
             return (found, invalidTransitionReason);
         } //TryTransitionTo
 
+        public STATE[][] Labyrinth(STATE start, STATE finish) {
+            List<State> BuildFollowingStates(int startIndex, State[] indexed) {
+                if (followingNodes.TryGetValue(indexed[startIndex], out List<State> nodes))
+                    return nodes;
+                List<State> newList = new();
+                foreach (var pair in stateGraph) {
+                    if (!pair.Value.IsValid) continue;
+                    if (!pair.Key.StartingState.UnderlyingMember.Equals(indexed[startIndex].UnderlyingMember)) continue;
+                    newList.Add(pair.Key.EndingState);
+                } //loop
+                followingNodes.Add(indexed[startIndex], newList);
+                return newList;
+            } //BuildFollowingStates
+            void RecursiveWalk(int start, int finish, bool[] visited, List<int> localPath, State[] indexed, Dictionary<State, int> stateIndex, List<List<int>> solution) {
+                if (start == finish) {
+                    List<int> solutionElement = new(localPath);
+                    solution.Add(solutionElement);
+                    return;
+                } //if
+                visited[start] = true;
+                List<State> followingStates = BuildFollowingStates(start, indexed);
+                foreach (var followingState in followingStates) {
+                    int followingStateIndex = stateIndex[followingState];
+                    if (visited[followingStateIndex]) continue;
+                    localPath.Add(followingStateIndex);
+                    RecursiveWalk(followingStateIndex, finish, visited, localPath, indexed, stateIndex, solution);
+                    localPath.Remove(followingStateIndex);
+                } //loop
+                visited[start] = false;
+                //SA??? main thing
+            } //RecursiveWalk
+            bool[] visited = new bool[stateSet.Count];
+            State[] indexed = new State[stateSet.Count];
+            Dictionary<State, int> stateIndex = new();
+            int index = 0;
+            int startIndex = 0, finishIndex = 0;
+            foreach (var value in stateSet) {
+                indexed[index] = value;
+                if (start.Equals(value.UnderlyingMember))
+                    startIndex = index;
+                if (finish.Equals(value.UnderlyingMember))
+                    finishIndex = index;
+                stateIndex.Add(value, index);
+                ++index;
+            } //loop
+            List<List<int>> solution = new();
+            RecursiveWalk(startIndex, finishIndex, visited, new List<int>(), indexed, stateIndex, solution);
+            STATE[][] stateSolution = new STATE[solution.Count][];
+            index = 0;
+            foreach (var element in solution) {
+                STATE[] row = new STATE[element.Count];
+                int indexInRow = 0;
+                foreach (int stateIndex0 in element)
+                    row[indexInRow++] = indexed[stateIndex0].UnderlyingMember;
+                stateSolution[index++] = row;
+            } //loop
+            return stateSolution;
+        } //Labyrinth
+
         #endregion API
+
+        #region implementation
 
         State FindState(STATE value) {
             if (stateSearchDictionary.TryGetValue(value, out State state))
@@ -115,10 +178,11 @@ namespace StateMachines {
             return (true, DefinitionSet<STATE>.TransitionIsValid(startingState, endingState));
         } //IsTransitionValid
 
-        readonly System.Collections.Generic.HashSet<State> stateSet = new();
-        readonly System.Collections.Generic.Dictionary<STATE, State> stateSearchDictionary = new();
-        readonly System.Collections.Generic.Dictionary<StateGraphKey, StateGraphValue> stateGraph = new();
+        readonly HashSet<State> stateSet = new();
+        readonly Dictionary<STATE, State> stateSearchDictionary = new();
+        readonly Dictionary<StateGraphKey, StateGraphValue> stateGraph = new();
         readonly STATE initialState;
+        readonly Dictionary<State, List<State>> followingNodes = new(); // populated on call
 
         class StateMachineGraphPopulationException : System.ApplicationException {
             internal StateMachineGraphPopulationException(STATE stargingState, STATE endingState)
@@ -158,9 +222,11 @@ namespace StateMachines {
         } //class StateGraphKey
 
         class StateGraphValue {
-            internal StateGraphValue(StateTransitionAction<STATE> valid, InvalidStateTransitionAction<STATE> invalid) {
+            internal StateGraphValue(bool isValid, StateTransitionAction<STATE> valid, InvalidStateTransitionAction<STATE> invalid) {
+                IsValid = isValid;
                 ValidAction = valid; InvalidAction = invalid;
             }
+            internal bool IsValid { get; init; }
             internal StateTransitionAction<STATE> ValidAction { get; init; }
             internal InvalidStateTransitionAction<STATE> InvalidAction { get; init; }
         } //class StateGraphValue
@@ -182,6 +248,8 @@ namespace StateMachines {
                 base(starting, ending) { }
             internal override bool IsValid { get { return false; } }
         } //class ValidStateTransition
+
+        #endregion implementation
 
     } //class StateMachine
 
