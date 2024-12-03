@@ -52,7 +52,7 @@ namespace StateMachines {
             if (chain.Length < 2) return;
             STATE current = chain[0];
             foreach (var state in chain) {
-                if (state.Equals(current)) return; // drop first
+                if (state.Equals(current)) continue; // drop first
                 AddValidStateTransition(current, state, action, directed);
                 current = state;
             } //loop
