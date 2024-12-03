@@ -68,6 +68,7 @@ namespace StateMachines {
             Console.WriteLine(boxDoorStateMachine.TryTransitionTo(BoxDoorState.LockedInside));
             Console.WriteLine(boxDoorStateMachine.TryTransitionTo(BoxDoorState.Closed));
             Console.WriteLine(boxDoorStateMachine.TryTransitionTo(BoxDoorState.Opened));
+            Console.WriteLine(boxDoorStateMachine.TryTransitionTo(BoxDoorState.Opened));
             Console.WriteLine(boxDoorStateMachine.TryTransitionTo(BoxDoorState.OpenedInside));
             Console.WriteLine(boxDoorStateMachine.TryTransitionTo(BoxDoorState.ClosedInside));
             Console.WriteLine(boxDoorStateMachine.TryTransitionTo(BoxDoorState.LockedInside));
