@@ -13,7 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\StateMachine\StateMachine.csproj" />
+    <ProjectReference Include="..\..\StateMachine\StateMachine.csproj" />
   </ItemGroup>
 
 </Project>

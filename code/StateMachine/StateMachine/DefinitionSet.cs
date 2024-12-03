@@ -19,10 +19,10 @@ namespace StateMachines {
             $"The value {state} is not a part of the State Machine state set";
 
         internal static string TransitionNotDefined(STATE stargingState, STATE endingState) =>
-            $"The transition between {stargingState} and {endingState} is not defined";
+            $"The transition between {stargingState} and {endingState} is not permitted";
 
         internal static string TransitionIsValid(STATE stargingState, STATE endingState) =>
-            $"The transition between {stargingState} and {endingState} is valid";
+            $"The transition between {stargingState} and {endingState} is permitted";
 
         internal static string TransitionToTheSameState(STATE state) =>
             $"Attempted transition to the same state: {state}";
