@@ -118,10 +118,10 @@ namespace StateMachines {
                 Console.WriteLine($"        {longestNumberOfPaths} routes from {start} to {finish}");
             Console.WriteLine();
             Console.WriteLine("Labyrinth solution demo:");
-            var labyrinthSolution = stateMachine.Labyrinth(VisitorState.Entry, VisitorState.Exit);
-            Console.WriteLine($"{labyrinthSolution.Length} possible routes from {VisitorState.Entry} to {VisitorState.Exit} found:");
-            PresentRoutesOfRoutes(labyrinthSolution);
-            labyrinthSolution = stateMachine.Labyrinth(VisitorState.Entry, VisitorState.Emu);
+            var fullLabyrinthSolution = stateMachine.Labyrinth(VisitorState.Entry, VisitorState.Exit);
+            Console.WriteLine($"{fullLabyrinthSolution.Length} possible routes from {VisitorState.Entry} to {VisitorState.Exit} found:");
+            PresentRoutesOfRoutes(fullLabyrinthSolution);
+            var labyrinthSolution = stateMachine.Labyrinth(VisitorState.Entry, VisitorState.Emu);
             Console.WriteLine($"      Even more, {labyrinthSolution.Length} possible routes from {VisitorState.Entry} to {VisitorState.Emu} found");
             labyrinthSolution = stateMachine.Labyrinth(VisitorState.Entry, VisitorState.Yak);
             Console.WriteLine($"      Even more, {labyrinthSolution.Length} possible routes from {VisitorState.Entry} to {VisitorState.Yak} found");
@@ -132,8 +132,9 @@ namespace StateMachines {
             PresentRoutesOfRoutes(labyrinthSolution);
 #if TryAllRoutes
             Console.WriteLine();
-            index = 1;
-            foreach (var route in labyrinthSolution) {
+            Console.WriteLine("Trying all routes from {VisitorState.Entry} to {VisitorState.Exit}:");
+            int index = 1;
+            foreach (var route in fullLabyrinthSolution) {
                 stateMachine.ResetState();
                 Console.WriteLine($"================================= Route #{index++:D4}:");
                 foreach (var state in route)
