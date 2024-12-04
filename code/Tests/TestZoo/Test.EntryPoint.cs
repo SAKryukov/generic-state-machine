@@ -106,16 +106,16 @@ namespace StateMachines {
             Console.WriteLine(stateMachine.TryTransitionTo(VisitorState.Llama));
             Console.WriteLine(stateMachine.TryTransitionTo(VisitorState.Flamingo));
             Console.WriteLine(stateMachine.TryTransitionTo(VisitorState.Exit));
-            var statistics = stateMachine.LongestPaths;
+            var (numberOfPaths, longestPathLength, longestPaths) = stateMachine.LongestPaths;
             Console.WriteLine();
-            Console.WriteLine($"Total number of routes: {statistics.numberOfPaths}, longest route: {statistics.longestPathLength}, longest routes:");
-            if (statistics.longestPaths.Length > 0)
-                PresentRoutesOfRoutes(statistics.longestPaths);
+            Console.WriteLine($"Total number of routes: {numberOfPaths}, longest route: {longestPathLength}, longest routes:");
+            if (longestPaths.Length > 0)
+                PresentRoutesOfRoutes(longestPaths);
             Console.WriteLine();
-            var anotherStatistics = stateMachine.LongestNumberOfPaths;
-            Console.WriteLine($"Maximum number of routes: {anotherStatistics.longestNumberOfPaths}");
-            foreach (var tuple in anotherStatistics.shortestPoints)
-                Console.WriteLine($"        {anotherStatistics.longestNumberOfPaths} routes from {tuple.start} to {tuple.finish}");
+            var (longestNumberOfPaths, pointsAtMax) = stateMachine.LongestNumberOfPaths;
+            Console.WriteLine($"Maximum number of routes: {longestNumberOfPaths}");
+            foreach (var (start, finish) in pointsAtMax)
+                Console.WriteLine($"        {longestNumberOfPaths} routes from {start} to {finish}");
             Console.WriteLine();
             Console.WriteLine("Labyrinth solution demo:");
             var labyrinthSolution = stateMachine.Labyrinth(VisitorState.Entry, VisitorState.Exit);
