@@ -43,7 +43,7 @@ void AddInvalidStateTransition(
 (bool IsValid, string ValidityComment) IsTransitionValid(STATE startingState, STATE endingState);
 (bool success, string invalidTransitionReason) TryTransitionTo(STATE state);
 // this method finds all permitted routes between two states:
-public STATE[][] Labyrinth(STATE start, STATE finish); 
+public STATE[][] Labyrinth(STATE start, STATE finish, bool shortest = false); 
 ~~~
 
 #### Public properties:

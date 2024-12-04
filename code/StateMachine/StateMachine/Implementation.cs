@@ -99,7 +99,7 @@ namespace StateMachines {
             return (found, invalidTransitionReason);
         } //TryTransitionTo
 
-        public STATE[][] Labyrinth(STATE start, STATE finish) {
+        public STATE[][] Labyrinth(STATE start, STATE finish, bool shortest = false) {
             Dictionary<State, List<State>> followingNodes = new(); // populated on call
             List<State> BuildFollowingStates(int stateIndex, State[] indexed) {
                 if (followingNodes.TryGetValue(indexed[stateIndex], out List<State> nodes))
@@ -148,13 +148,23 @@ namespace StateMachines {
             RecursiveWalk(startIndex, finishIndex, visited, new List<int>(), indexed, stateIndex, solution);
             STATE[][] stateSolution = new STATE[solution.Count][];
             index = 0;
+            int shortestPathLength = int.MaxValue;
             foreach (var element in solution) {
+                if (element.Count < shortestPathLength)
+                    shortestPathLength = element.Count;
                 STATE[] row = new STATE[element.Count];
                 int indexInRow = 0;
                 foreach (int stateIndex0 in element)
                     row[indexInRow++] = indexed[stateIndex0].UnderlyingMember;
                 stateSolution[index++] = row;
             } //loop
+            if (shortest) {
+                List<STATE[]> shortestList = new();
+                foreach (var element in stateSolution)
+                    if (element.Length == shortestPathLength)
+                        shortestList.Add(element);
+                return shortestList.ToArray();
+            } //if
             return stateSolution;
         } //Labyrinth
 

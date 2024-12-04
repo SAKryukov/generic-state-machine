@@ -112,11 +112,9 @@ namespace StateMachines {
             if (statistics.longestPaths.Length > 0)
                 PresentRoutesOfRoutes(statistics.longestPaths);
             Console.WriteLine();
-
             var anotherStatistics = stateMachine.LongestNumberOfPaths;
             Console.WriteLine($"Maximum number of routes: {anotherStatistics.start} to {anotherStatistics.finish}: {anotherStatistics.longestNumberOfPaths}");
             Console.WriteLine();
-
             Console.WriteLine("Labyrinth solution demo:");
             var labyrinthSolution = stateMachine.Labyrinth(VisitorState.Entry, VisitorState.Exit);
             Console.WriteLine($"{labyrinthSolution.Length} possible routes from {VisitorState.Entry} to {VisitorState.Exit} found:");
@@ -125,6 +123,10 @@ namespace StateMachines {
             Console.WriteLine($"Even more, {labyrinthSolution.Length} possible routes from {VisitorState.Entry} to {VisitorState.Emu} found");
             labyrinthSolution = stateMachine.Labyrinth(VisitorState.Entry, VisitorState.Yak);
             Console.WriteLine($"Even more, {labyrinthSolution.Length} possible routes from {VisitorState.Entry} to {VisitorState.Yak} found");
+            labyrinthSolution = stateMachine.Labyrinth(VisitorState.Entry, VisitorState.Exit, shortest: true);
+            string plural = labyrinthSolution.Length == 1 ? "" : "s";
+            Console.WriteLine($"{labyrinthSolution.Length} shortest route{plural} from {VisitorState.Entry} to {VisitorState.Exit} found:");
+            PresentRoutesOfRoutes(labyrinthSolution);
 #if TryAllRoutes
             Console.WriteLine();
             index = 1;
