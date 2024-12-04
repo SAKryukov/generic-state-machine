@@ -31,7 +31,7 @@ public StateMachine(STATE initialState = default);
 #### Public methods:
 
 ~~~
-void ResetState(); // unconditional jump to the initial state, ignoring the transition graph
+void ResetState(); // jump to the initial state, ignoring the transition graph
 void AddValidStateTransition(
     STATE startingState, STATE endingState,
     StateTransitionAction<STATE> action, bool directed = true);
@@ -40,7 +40,8 @@ void AddValidStateTransitionChain(
 void AddInvalidStateTransition(
     STATE startingState, STATE endingState,
     InvalidStateTransitionAction<STATE> action);
-(bool IsValid, string ValidityComment) IsTransitionValid(STATE startingState, STATE endingState);
+(bool IsValid, string validityComment) IsTransitionValid(STATE startingState, STATE endingState);
+(bool success, string validityComment) TryTransitionTo(STATE state);
 (bool success, string invalidTransitionReason) TryTransitionTo(STATE state);
 // this method finds all permitted routes between two states:
 public STATE[][] Labyrinth(STATE start, STATE finish, bool shortest = false); 
@@ -51,7 +52,7 @@ public STATE[][] Labyrinth(STATE start, STATE finish, bool shortest = false);
 ~~~
 STATE CurrentState { get; private set; }
 
-//NP-hard:
+// NP-hard:
 (int numberOfPaths, int longestPathLength, STATE[][] longestPaths) LongestPaths;
 (int longestNumberOfPaths, STATE start, STATE finish) LongestNumberOfPaths;
 ~~~
