@@ -46,10 +46,14 @@ void AddInvalidStateTransition(
 public STATE[][] Labyrinth(STATE start, STATE finish); 
 ~~~
 
-#### Public property:
+#### Public properties:
 
 ~~~
 STATE CurrentState { get; private set; }
+
+//NP-hard:
+(int numberOfPaths, int longestPathLength, STATE[][] longestPaths) LongestPaths;
+(int longestNumberOfPaths, STATE start, STATE finish) LongestNumberOfPaths;
 ~~~
 
 Here, the type `STATE` is a generic parameter of the class `StateMachine<STATE>`. It can be any enumeration type, or, in principle, any type having some static public fields.
