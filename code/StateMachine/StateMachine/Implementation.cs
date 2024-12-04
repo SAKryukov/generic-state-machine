@@ -70,7 +70,7 @@ namespace StateMachines {
             stateGraph.Add(key, new StateGraphValue(false, null, action));
         } //AddInvalidStateTransition       
 
-        public (bool IsValid, string ValidityComment) IsTransitionValid(STATE startingState, STATE endingState) {
+        public (bool IsValid, string validityComment) IsTransitionValid(STATE startingState, STATE endingState) {
             State starting = FindState(startingState);
             State ending = FindState(endingState);
             StateGraphKey key = new(starting, ending);
