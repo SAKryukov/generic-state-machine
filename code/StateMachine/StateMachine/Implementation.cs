@@ -100,16 +100,17 @@ namespace StateMachines {
         } //TryTransitionTo
 
         public STATE[][] Labyrinth(STATE start, STATE finish) {
-            List<State> BuildFollowingStates(int startIndex, State[] indexed) {
-                if (followingNodes.TryGetValue(indexed[startIndex], out List<State> nodes))
+            Dictionary<State, List<State>> followingNodes = new(); // populated on call
+            List<State> BuildFollowingStates(int stateIndex, State[] indexed) {
+                if (followingNodes.TryGetValue(indexed[stateIndex], out List<State> nodes))
                     return nodes;
                 List<State> newList = new();
                 foreach (var pair in stateGraph) {
                     if (!pair.Value.IsValid) continue;
-                    if (!pair.Key.StartingState.UnderlyingMember.Equals(indexed[startIndex].UnderlyingMember)) continue;
+                    if (!pair.Key.StartingState.UnderlyingMember.Equals(indexed[stateIndex].UnderlyingMember)) continue;
                     newList.Add(pair.Key.EndingState);
                 } //loop
-                followingNodes.Add(indexed[startIndex], newList);
+                followingNodes.Add(indexed[stateIndex], newList);
                 return newList;
             } //BuildFollowingStates
             void RecursiveWalk(int start, int finish, bool[] visited, List<int> localPath, State[] indexed, Dictionary<State, int> stateIndex, List<List<int>> solution) {
@@ -181,7 +182,6 @@ namespace StateMachines {
         readonly Dictionary<STATE, State> stateSearchDictionary = new();
         readonly Dictionary<StateGraphKey, StateGraphValue> stateGraph = new();
         readonly STATE initialState;
-        readonly Dictionary<State, List<State>> followingNodes = new(); // populated on call
 
         class StateMachineGraphPopulationException : System.ApplicationException {
             internal StateMachineGraphPopulationException(STATE stargingState, STATE endingState)

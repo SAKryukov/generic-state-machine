@@ -1,13 +1,13 @@
-AfricanPorcupine  ---------------- SnowLeopard  ---------------------- AfricanLion --- BengalTiger --- DromedaryCamel ---- WhiteRhino
-|                                                                        |                                                        |
-|                                                                        |                                                        |
-NorthAmericanPorcupine ----- Mandrill -- Sloth -- Coati -- Emu           |                   (Chimpanzee)                         |
-                                          |                              |                                                        |
-                                          |                              |                                                        |
-                                        Serval ----- Yak -------- BactrianCamel ------------ CapuchinMonkey --- Kookaburra -- Tortoise
-                                          |                         |                                    |          |
-                                          |                         |                                    |          |
-                                      Cheetah ------------------ Watusu ----- Alligator -- Flamingo --- Llama ---- Wallaby
-                                                                                               |                |    
-                                                                                               |                |             
-                                                                                              Exit            Entry
+AfricanPorcupine  ------------- SnowLeopard  ---------------------- AfricanLion --- BengalTiger --- DromedaryCamel ---- WhiteRhino
+|                                                                      |                                                     |
+|                                                                      |                                                     |
+NorthAmericanPorcupine -- Mandrill -- Sloth -- Coati -- Emu            |                   (Chimpanzee)                      |
+                                       |                               |                                                     |
+                                       |                               |                                                     |
+                                    Serval ------- Yak ----- BactrianCamel ------------ CapuchinMonkey --- Kookaburra -- Tortoise
+                                       |                       |                                    |            |
+                                       |                       |                                    |            |
+                                    Cheetah --------------- Watusu ----- Alligator -- Flamingo --- Llama ---- Wallaby
+                                                                                          |                |    
+                                                                                          |                |             
+                                                                                         Exit            Entry
