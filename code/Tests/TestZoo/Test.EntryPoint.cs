@@ -64,6 +64,16 @@ namespace StateMachines {
             return stateMachine;
         } //PopulateTrails
 
+        static void PresentRoutesOfRoutes(VisitorState[][] routes) {
+            int index = 1;
+            foreach (var route in routes) {
+                Console.Write($"Route #{index++:D4}: [");
+                foreach (var state in route)
+                    Console.Write($" {state}");
+                Console.WriteLine(" ]");
+            } //loop
+        } //PresentRoutesOfRoutes
+
         enum TestState { Draft, Denied, Approved, WaitForApprovalManager, WaitForApprovalTechnical, WaitForApprovalFinance, }
         static void Main() {
             var stateMachine = PopulateTrails();
@@ -96,18 +106,27 @@ namespace StateMachines {
             Console.WriteLine(stateMachine.TryTransitionTo(VisitorState.Llama));
             Console.WriteLine(stateMachine.TryTransitionTo(VisitorState.Flamingo));
             Console.WriteLine(stateMachine.TryTransitionTo(VisitorState.Exit));
+            var statistics = stateMachine.LongestPaths;
             Console.WriteLine();
+            Console.WriteLine($"Total number of routes: {statistics.numberOfPaths}, longest route: {statistics.longestPathLength}, longest routes:");
+            if (statistics.longestPaths.Length > 0)
+                PresentRoutesOfRoutes(statistics.longestPaths);
+            Console.WriteLine();
+
+            var anotherStatistics = stateMachine.LongestNumberOfPaths;
+            Console.WriteLine($"Maximum number of routes: {anotherStatistics.start} to {anotherStatistics.finish}: {anotherStatistics.longestNumberOfPaths}");
+            Console.WriteLine();
+
             Console.WriteLine("Labyrinth solution demo:");
             var labyrinthSolution = stateMachine.Labyrinth(VisitorState.Entry, VisitorState.Exit);
             Console.WriteLine($"{labyrinthSolution.Length} possible routes from {VisitorState.Entry} to {VisitorState.Exit} found:");
-            int index = 1;
-            foreach (var route in labyrinthSolution) {
-                Console.Write($"Route #{index++:D4}: [");
-                foreach (var state in route)
-                    Console.Write($" {state}");
-                Console.WriteLine(" ]");
-            } //loop
+            PresentRoutesOfRoutes(labyrinthSolution);
+            labyrinthSolution = stateMachine.Labyrinth(VisitorState.Entry, VisitorState.Emu);
+            Console.WriteLine($"Even more, {labyrinthSolution.Length} possible routes from {VisitorState.Entry} to {VisitorState.Emu} found");
+            labyrinthSolution = stateMachine.Labyrinth(VisitorState.Entry, VisitorState.Yak);
+            Console.WriteLine($"Even more, {labyrinthSolution.Length} possible routes from {VisitorState.Entry} to {VisitorState.Yak} found");
 #if TryAllRoutes
+            Console.WriteLine();
             index = 1;
             foreach (var route in labyrinthSolution) {
                 stateMachine.ResetState();

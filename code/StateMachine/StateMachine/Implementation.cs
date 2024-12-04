@@ -158,6 +158,46 @@ namespace StateMachines {
             return stateSolution;
         } //Labyrinth
 
+        public (int numberOfPaths, int longestPathLength, STATE[][] longestPaths) LongestPaths { //NP-hard
+            get {
+                List<STATE[]> longestPaths = new();
+                int max = -1;
+                int pathCount = 0;
+                foreach(var start in stateSet)
+                    foreach (var finish in stateSet) {
+                        STATE[][] solution = Labyrinth(start.UnderlyingMember, finish.UnderlyingMember);
+                        pathCount += solution.Length;
+                        foreach (STATE[] item in solution) {
+                            if (item.Length >= max) {
+                                if (item.Length > max)
+                                    longestPaths.Clear();
+                                longestPaths.Add(item);
+                                max = item.Length;
+                            } //if
+                        } // inner loop
+                    } //outer loop
+                return (pathCount, max, longestPaths.ToArray());
+            } //get LongestPaths
+        } //LongestPaths
+
+        public (int longestNumberOfPaths, STATE start, STATE finish) LongestNumberOfPaths { //NP-hard
+            get {
+                int max = 0;
+                STATE currentStart = default;
+                STATE currentFinish = default;
+                foreach (var start in stateSet)
+                    foreach (var finish in stateSet) {
+                        STATE[][] solution = Labyrinth(start.UnderlyingMember, finish.UnderlyingMember);
+                        if (solution.Length > max) {
+                            max = solution.Length;
+                            currentStart = start.UnderlyingMember;
+                            currentFinish = finish.UnderlyingMember;
+                        } //if
+                    } //outer loop
+                return (max, currentStart, currentFinish);
+            } //get LongestNumberOfPaths 
+        } //LongestNumberOfPaths 
+
         #endregion API
 
         #region implementation
