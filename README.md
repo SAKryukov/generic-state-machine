@@ -54,7 +54,7 @@ STATE CurrentState { get; private set; }
 
 // NP-hard:
 (int numberOfPaths, int longestPathLength, STATE[][] longestPaths) LongestPaths;
-(int longestNumberOfPaths, STATE start, STATE finish) LongestNumberOfPaths;
+(int longestNumberOfPaths, (STATE start, STATE finish)[] pointsAtMax) LongestNumberOfPaths;
 ~~~
 
 Here, the type `STATE` is a generic parameter of the class `StateMachine<STATE>`. It can be any enumeration type, or, in principle, any type having some static public fields.
