@@ -112,9 +112,9 @@ namespace StateMachines {
             if (longestPaths.Length > 0)
                 PresentRoutesOfRoutes(longestPaths);
             Console.WriteLine();
-            var (longestNumberOfPaths, pointsAtMax) = stateMachine.LongestNumberOfPaths;
+            var (longestNumberOfPaths, pairsAtMax) = stateMachine.LongestNumberOfPaths;
             Console.WriteLine($"Maximum number of routes: {longestNumberOfPaths}");
-            foreach (var (start, finish) in pointsAtMax)
+            foreach (var (start, finish) in pairsAtMax)
                 Console.WriteLine($"        {longestNumberOfPaths} routes from {start} to {finish}");
             Console.WriteLine();
             Console.WriteLine("Labyrinth solution demo:");
