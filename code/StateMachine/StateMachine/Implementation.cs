@@ -80,14 +80,14 @@ namespace StateMachines {
             return IsTransitionValid(value, startingState, endingState);
         } //IsTransitionValid
   
-        public (bool success, string invalidTransitionReason) TryTransitionTo(STATE state) {
+        public (bool success, string validityComment) TryTransitionTo(STATE state) {
             if (CurrentState.Equals(state))
                 return (true, DefinitionSet<STATE>.TransitionToTheSameState(CurrentState));
             State starting = FindState(CurrentState);
             State ending = FindState(state);
             StateGraphKey key = new(starting, ending);
             bool found = stateGraph.TryGetValue(key, out StateGraphValue value);
-            string invalidTransitionReason = DefinitionSet<STATE>.TransitionSuccess(state);
+            string validityComment = DefinitionSet<STATE>.TransitionSuccess(state);
             if (found) {
                 var validity = IsTransitionValid(value, CurrentState, state);
                 if (!validity.IsValid)
@@ -96,7 +96,7 @@ namespace StateMachines {
                 CurrentState = state;
             } else
                 return (false, DefinitionSet<STATE>.TransitionNotDefined(CurrentState, state));
-            return (found, invalidTransitionReason);
+            return (found, validityComment);
         } //TryTransitionTo
 
         public STATE[][] Labyrinth(STATE start, STATE finish, bool shortest = false) {
