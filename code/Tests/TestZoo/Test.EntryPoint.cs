@@ -113,16 +113,19 @@ namespace StateMachines {
                 PresentRoutesOfRoutes(statistics.longestPaths);
             Console.WriteLine();
             var anotherStatistics = stateMachine.LongestNumberOfPaths;
-            Console.WriteLine($"Maximum number of routes: {anotherStatistics.start} to {anotherStatistics.finish}: {anotherStatistics.longestNumberOfPaths}");
+            Console.WriteLine($"Maximum number of routes: {anotherStatistics.longestNumberOfPaths}");
+            foreach (var tuple in anotherStatistics.shortestPoints)
+                Console.WriteLine($"        {anotherStatistics.longestNumberOfPaths} routes from {tuple.start} to {tuple.finish}");
             Console.WriteLine();
             Console.WriteLine("Labyrinth solution demo:");
             var labyrinthSolution = stateMachine.Labyrinth(VisitorState.Entry, VisitorState.Exit);
             Console.WriteLine($"{labyrinthSolution.Length} possible routes from {VisitorState.Entry} to {VisitorState.Exit} found:");
             PresentRoutesOfRoutes(labyrinthSolution);
             labyrinthSolution = stateMachine.Labyrinth(VisitorState.Entry, VisitorState.Emu);
-            Console.WriteLine($"Even more, {labyrinthSolution.Length} possible routes from {VisitorState.Entry} to {VisitorState.Emu} found");
+            Console.WriteLine($"      Even more, {labyrinthSolution.Length} possible routes from {VisitorState.Entry} to {VisitorState.Emu} found");
             labyrinthSolution = stateMachine.Labyrinth(VisitorState.Entry, VisitorState.Yak);
-            Console.WriteLine($"Even more, {labyrinthSolution.Length} possible routes from {VisitorState.Entry} to {VisitorState.Yak} found");
+            Console.WriteLine($"      Even more, {labyrinthSolution.Length} possible routes from {VisitorState.Entry} to {VisitorState.Yak} found");
+            Console.WriteLine();
             labyrinthSolution = stateMachine.Labyrinth(VisitorState.Entry, VisitorState.Exit, shortest: true);
             string plural = labyrinthSolution.Length == 1 ? "" : "s";
             Console.WriteLine($"{labyrinthSolution.Length} shortest route{plural} from {VisitorState.Entry} to {VisitorState.Exit} found:");

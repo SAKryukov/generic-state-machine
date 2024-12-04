@@ -190,21 +190,21 @@ namespace StateMachines {
             } //get LongestPaths
         } //LongestPaths
 
-        public (int longestNumberOfPaths, STATE start, STATE finish) LongestNumberOfPaths { //NP-hard
+        public (int longestNumberOfPaths, (STATE start, STATE finish)[] shortestPoints) LongestNumberOfPaths { //NP-hard
             get {
                 int max = 0;
-                STATE currentStart = default;
-                STATE currentFinish = default;
+                List<(STATE start, STATE finish)> pairList = new();
                 foreach (var start in stateSet)
                     foreach (var finish in stateSet) {
                         STATE[][] solution = Labyrinth(start.UnderlyingMember, finish.UnderlyingMember);
-                        if (solution.Length > max) {
+                        if (solution.Length >= max) {
+                            if (solution.Length > max)
+                                pairList.Clear();
                             max = solution.Length;
-                            currentStart = start.UnderlyingMember;
-                            currentFinish = finish.UnderlyingMember;
+                            pairList.Add((start.UnderlyingMember, finish.UnderlyingMember));
                         } //if
                     } //outer loop
-                return (max, currentStart, currentFinish);
+                return (max, pairList.ToArray());
             } //get LongestNumberOfPaths 
         } //LongestNumberOfPaths 
 
