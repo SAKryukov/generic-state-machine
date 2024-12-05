@@ -40,25 +40,25 @@ namespace StateMachines {
         public STATE ResetState() => // unconditional jump to initial state, ignoring the transition graph
             CurrentState = initialState;
 
-        public void AddValidStateTransition(STATE startingState, STATE endingState, StateTransitionAction<STATE> action, bool directed = true) {
-            if (directed) {
+        public void AddValidStateTransition(STATE startingState, STATE endingState, StateTransitionAction<STATE> action, bool undirected = false) {
+            if (undirected) {
+                AddValidStateTransition(startingState, endingState, action);
+                AddValidStateTransition(endingState, startingState, action);
+            } else {
                 StateGraphKey key = new(FindState(startingState), FindState(endingState));
                 if (stateGraph.TryGetValue(key, out StateGraphValue value))
                     throw new StateMachineGraphPopulationException(startingState, endingState);
                 stateGraph.Add(key, new StateGraphValue(true, action, null));
-            } else {
-                AddValidStateTransition(startingState, endingState, action);
-                AddValidStateTransition(endingState, startingState, action);
             } //if
         } //AddValidStateTransition
 
-        public void AddValidStateTransitionChain(StateTransitionAction<STATE> action, bool directed, params STATE[] chain) {
+        public void AddValidStateTransitionChain(StateTransitionAction<STATE> action, bool undirected = false, params STATE[] chain) {
             if (chain == null) return;
             if (chain.Length < 2) return;
             STATE current = chain[0];
             foreach (var state in chain) {
                 if (state.Equals(current)) continue; // drop first
-                AddValidStateTransition(current, state, action, directed);
+                AddValidStateTransition(current, state, action, undirected);
                 current = state;
             } //loop
         } //AddValidStateTransitionChain
@@ -70,7 +70,7 @@ namespace StateMachines {
             stateGraph.Add(key, new StateGraphValue(false, null, action));
         } //AddInvalidStateTransition       
 
-        public (bool IsValid, string validityComment) IsTransitionValid(STATE startingState, STATE endingState) {
+        public (bool isValid, string validityComment) IsTransitionValid(STATE startingState, STATE endingState) {
             State starting = FindState(startingState);
             State ending = FindState(endingState);
             StateGraphKey key = new(starting, ending);
@@ -190,7 +190,7 @@ namespace StateMachines {
             } //get LongestPaths
         } //LongestPaths
 
-        public (int longestNumberOfPaths, (STATE start, STATE finish)[] pairsAtMax) LongestNumberOfPaths { //NP-hard
+        public (int maximumNumberOfPaths, (STATE start, STATE finish)[] pairsAtMax) MaximumNumberOfPaths { //NP-hard
             get {
                 int max = 0;
                 List<(STATE start, STATE finish)> pairList = new();

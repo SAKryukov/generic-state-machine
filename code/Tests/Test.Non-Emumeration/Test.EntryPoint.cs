@@ -14,16 +14,24 @@ namespace StateMachines {
 
     class Test {
 
-        static StateMachine<System.Double> PopulateNumericStateMachine() {
-            StateMachine<System.Double> stateMachine = new(System.Double.NaN);
-            stateMachine.AddValidStateTransition(System.Double.MaxValue, System.Double.MinValue, (start, finish) => {
+        static StateMachine<double> PopulateNumericStateMachine() {
+            StateMachine<double> stateMachine = new(double.NaN);
+            stateMachine.AddValidStateTransition(double.MinValue, double.MaxValue, (start, finish) => {
                 Console.WriteLine("Maximum is one step away from minumum");
+            }, undirected: true);
+            stateMachine.AddValidStateTransition(double.NaN, double.MinValue, (start, finish) => {
+                Console.WriteLine("Who needs NaN?");
+            });
+            stateMachine.AddValidStateTransition(double.NaN, double.MaxValue, (start, finish) => {
+                Console.WriteLine("Who needs NaN? :-)");
             });
             return stateMachine;
         } //PopulateBox
 
         static void Main() {
             var stateMachine = PopulateNumericStateMachine();
+            stateMachine.TryTransitionTo(double.MaxValue);
+            stateMachine.TryTransitionTo(double.MinValue);
         } //Main
 
     } //class Test

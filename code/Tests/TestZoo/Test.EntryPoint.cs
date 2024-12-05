@@ -28,27 +28,27 @@ namespace StateMachines {
             static void Move(VisitorState start, VisitorState finish) =>
                 Console.WriteLine($"Moving from {start} to {finish}...");
             // horizontal trails:
-            stateMachine.AddValidStateTransitionChain(Move, false, VisitorState.AfricanPorcupine, VisitorState.SnowLeopard,
+            stateMachine.AddValidStateTransitionChain(Move, undirected: true, VisitorState.AfricanPorcupine, VisitorState.SnowLeopard,
                 VisitorState.AfricanLion, VisitorState.BengalTiger, VisitorState.DromedaryCamel, VisitorState.WhiteRhino);
-            stateMachine.AddValidStateTransitionChain(Move, false, VisitorState.NorthAmericanPorcupine, VisitorState.Mandrill,
+            stateMachine.AddValidStateTransitionChain(Move, undirected: true, VisitorState.NorthAmericanPorcupine, VisitorState.Mandrill,
                 VisitorState.Sloth, VisitorState.Coati, VisitorState.Emu);
-            stateMachine.AddValidStateTransitionChain(Move, false, VisitorState.Serval, VisitorState.Yak, VisitorState.BactrianCamel,
+            stateMachine.AddValidStateTransitionChain(Move, undirected: true, VisitorState.Serval, VisitorState.Yak, VisitorState.BactrianCamel,
                 VisitorState.CapuchinMonkey, VisitorState.Kookaburra, VisitorState.Tortoise);
-            stateMachine.AddValidStateTransitionChain(Move, false, VisitorState.Cheetah, VisitorState.Watusu, VisitorState.Alligator,
+            stateMachine.AddValidStateTransitionChain(Move, undirected: true, VisitorState.Cheetah, VisitorState.Watusu, VisitorState.Alligator,
                 VisitorState.Flamingo, VisitorState.Llama, VisitorState.Wallaby);
             // vertical passages:
-            stateMachine.AddValidStateTransitionChain(Move, false,
+            stateMachine.AddValidStateTransitionChain(Move, undirected: true,
                 VisitorState.AfricanPorcupine, VisitorState.NorthAmericanPorcupine, VisitorState.Serval, VisitorState.Cheetah);
-            stateMachine.AddValidStateTransitionChain(Move, false,
+            stateMachine.AddValidStateTransitionChain(Move, undirected: true,
                 VisitorState.AfricanLion, VisitorState.BactrianCamel, VisitorState.Watusu);
-            stateMachine.AddValidStateTransition(VisitorState.WhiteRhino, VisitorState.Tortoise, Move, directed: false);
+            stateMachine.AddValidStateTransition(VisitorState.WhiteRhino, VisitorState.Tortoise, Move, undirected: true);
             // vertical chains from entry:
-            stateMachine.AddValidStateTransitionChain(Move, false,
+            stateMachine.AddValidStateTransitionChain(Move, undirected: true,
                 VisitorState.Entry, VisitorState.Llama, VisitorState.CapuchinMonkey);
-            stateMachine.AddValidStateTransitionChain(Move, false,
+            stateMachine.AddValidStateTransitionChain(Move, undirected: true,
                 VisitorState.Entry, VisitorState.Wallaby, VisitorState.Kookaburra);
             // exit
-            stateMachine.AddValidStateTransition(VisitorState.Flamingo, VisitorState.Exit, Move, directed: true);
+            stateMachine.AddValidStateTransition(VisitorState.Flamingo, VisitorState.Exit, Move, undirected: false);
             stateMachine.AddInvalidStateTransition(VisitorState.Entry, VisitorState.Exit, (start, finish) =>
                 $"You cannot go directly from {start} to {finish}, you have to pass through the zoo");
             VisitorState[] openSites = new VisitorState[] { VisitorState.AfricanPorcupine, VisitorState.SnowLeopard,
@@ -112,10 +112,10 @@ namespace StateMachines {
             if (longestPaths.Length > 0)
                 PresentRoutesOfRoutes(longestPaths);
             Console.WriteLine();
-            var (longestNumberOfPaths, pairsAtMax) = stateMachine.LongestNumberOfPaths;
-            Console.WriteLine($"Maximum number of routes: {longestNumberOfPaths}");
+            var (maximumNumberOfPaths, pairsAtMax) = stateMachine.MaximumNumberOfPaths;
+            Console.WriteLine($"Maximum number of routes: {maximumNumberOfPaths}");
             foreach (var (start, finish) in pairsAtMax)
-                Console.WriteLine($"        {longestNumberOfPaths} routes from {start} to {finish}");
+                Console.WriteLine($"        {maximumNumberOfPaths} routes from {start} to {finish}");
             Console.WriteLine();
             Console.WriteLine("Labyrinth solution demo:");
             var fullLabyrinthSolution = stateMachine.Labyrinth(VisitorState.Entry, VisitorState.Exit);

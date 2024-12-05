@@ -11,7 +11,7 @@ Then the transition graph can be populated:
 
 ~~~
 stateMachine.AddValidStateTransition(RoomDoorState.ClosedInside, RoomDoorState.LockedInside, (starting, ending) => {
-    Console.WriteLine("Locking the door inside");
+    // command hardware actuator to lock the door
 });
 //...
 stateMachine.AddInvalidStateTransition(RoomDoorState.Locked, RoomDoorState.LockedInside, (starting, ending) =>
@@ -34,13 +34,13 @@ public StateMachine(STATE initialState = default);
 void ResetState(); // jump to the initial state, ignoring the transition graph
 void AddValidStateTransition(
     STATE startingState, STATE endingState,
-    StateTransitionAction<STATE> action, bool directed = true);
+    StateTransitionAction<STATE> action, bool, bool undirected = false);
 void AddValidStateTransitionChain(
-   StateTransitionAction<STATE> action, bool directed, params STATE[] chain);
+   StateTransitionAction<STATE> action, bool undirected = false, params STATE[] chain);
 void AddInvalidStateTransition(
     STATE startingState, STATE endingState,
     InvalidStateTransitionAction<STATE> action);
-(bool IsValid, string validityComment) IsTransitionValid(STATE startingState, STATE endingState);
+(bool isValid, string validityComment) IsTransitionValid(STATE startingState, STATE endingState);
 (bool success, string validityComment) TryTransitionTo(STATE state);
 (bool success, string invalidTransitionReason) TryTransitionTo(STATE state);
 // this method finds all permitted paths between two states:
@@ -54,7 +54,7 @@ STATE CurrentState { get; private set; }
 
 // NP-hard:
 (int numberOfPaths, int longestPathLength, STATE[][] longestPaths) LongestPaths;
-(int longestNumberOfPaths, (STATE start, STATE finish)[] pairsAtMax) LongestNumberOfPaths;
+(int maximumNumberOfPaths, (STATE start, STATE finish)[] pairsAtMax) MaximumNumberOfPaths;
 ~~~
 
 Here, the type `STATE` is a generic parameter of the class `StateMachine<STATE>`. It can be any enumeration type, or, in principle, any type having some static public fields.
