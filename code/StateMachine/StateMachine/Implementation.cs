@@ -27,8 +27,7 @@ namespace StateMachines {
             foreach (var field in fields) {
                 STATE value = (STATE)field.GetValue(null);
                 State state = new(field.Name, value);
-                stateSet.Add(state);
-                stateSearchDictionary.Add(value, state);
+                stateDictionary.Add(value, state);
                 if (value.Equals(initialState))
                     CurrentState = value;
             } //loop
@@ -130,18 +129,18 @@ namespace StateMachines {
                 } //loop
                 visited[start] = false;
             } //RecursiveWalk
-            bool[] visited = new bool[stateSet.Count];
-            State[] indexed = new State[stateSet.Count];
+            bool[] visited = new bool[stateDictionary.Count];
+            State[] indexed = new State[stateDictionary.Count];
             Dictionary<State, int> stateIndex = new();
             int index = 0;
             int startIndex = 0, finishIndex = 0;
-            foreach (var value in stateSet) {
-                indexed[index] = value;
-                if (start.Equals(value.UnderlyingMember))
+            foreach (var pair in stateDictionary) {
+                indexed[index] = pair.Value;
+                if (start.Equals(pair.Value.UnderlyingMember))
                     startIndex = index;
-                if (finish.Equals(value.UnderlyingMember))
+                if (finish.Equals(pair.Value.UnderlyingMember))
                     finishIndex = index;
-                stateIndex.Add(value, index);
+                stateIndex.Add(pair.Value, index);
                 ++index;
             } //loop
             List<List<int>> solution = new();
@@ -173,9 +172,9 @@ namespace StateMachines {
                 List<STATE[]> longestPaths = new();
                 int max = -1;
                 int pathCount = 0;
-                foreach(var start in stateSet)
-                    foreach (var finish in stateSet) {
-                        STATE[][] solution = Labyrinth(start.UnderlyingMember, finish.UnderlyingMember);
+                foreach(var startPair in stateDictionary)
+                    foreach (var finishPair in stateDictionary) {
+                        STATE[][] solution = Labyrinth(startPair.Value.UnderlyingMember, finishPair.Value.UnderlyingMember);
                         pathCount += solution.Length;
                         foreach (STATE[] item in solution) {
                             if (item.Length >= max) {
@@ -194,14 +193,14 @@ namespace StateMachines {
             get {
                 int max = 0;
                 List<(STATE start, STATE finish)> pairList = new();
-                foreach (var start in stateSet)
-                    foreach (var finish in stateSet) {
-                        STATE[][] solution = Labyrinth(start.UnderlyingMember, finish.UnderlyingMember);
+                foreach (var startPair in stateDictionary)
+                    foreach (var finishPair in stateDictionary) {
+                        STATE[][] solution = Labyrinth(startPair.Value.UnderlyingMember, finishPair.Value.UnderlyingMember);
                         if (solution.Length >= max) {
                             if (solution.Length > max)
                                 pairList.Clear();
                             max = solution.Length;
-                            pairList.Add((start.UnderlyingMember, finish.UnderlyingMember));
+                            pairList.Add((startPair.Value.UnderlyingMember, finishPair.Value.UnderlyingMember));
                         } //if
                     } //outer loop
                 return (max, pairList.ToArray());
@@ -213,7 +212,7 @@ namespace StateMachines {
         #region implementation
 
         State FindState(STATE value) {
-            if (stateSearchDictionary.TryGetValue(value, out State state))
+            if (stateDictionary.TryGetValue(value, out State state))
                 return state;
             else
                 throw new InvalidStateException(value);
@@ -228,8 +227,7 @@ namespace StateMachines {
             return (true, DefinitionSet<STATE>.TransitionIsValid(startingState, endingState));
         } //IsTransitionValid
 
-        readonly HashSet<State> stateSet = new();
-        readonly Dictionary<STATE, State> stateSearchDictionary = new();
+        readonly Dictionary<STATE, State> stateDictionary = new();
         readonly Dictionary<StateGraphKey, StateGraphValue> stateGraph = new();
         readonly STATE initialState;
 
