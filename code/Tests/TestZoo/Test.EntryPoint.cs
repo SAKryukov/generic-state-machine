@@ -112,7 +112,7 @@ namespace StateMachines {
             if (longestPaths.Length > 0)
                 PresentRoutesOfRoutes(longestPaths);
             Console.WriteLine();
-            var (maximumNumberOfPaths, pairsAtMax) = stateMachine.MaximumNumberOfPaths;
+            var (maximumNumberOfPaths, pairsAtMax) = stateMachine.MaximumPaths;
             Console.WriteLine($"Maximum number of routes: {maximumNumberOfPaths}");
             foreach (var (start, finish) in pairsAtMax)
                 Console.WriteLine($"        {maximumNumberOfPaths} routes from {start} to {finish}");

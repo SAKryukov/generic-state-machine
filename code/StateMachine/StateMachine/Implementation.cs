@@ -190,7 +190,7 @@ namespace StateMachines {
             } //get LongestPaths
         } //LongestPaths
 
-        public (int maximumNumberOfPaths, (STATE start, STATE finish)[] pairsAtMax) MaximumNumberOfPaths { //NP-hard
+        public (int maximumNumberOfPaths, (STATE start, STATE finish)[] pairsAtMax) MaximumPaths { //NP-hard
             get {
                 int max = 0;
                 List<(STATE start, STATE finish)> pairList = new();
