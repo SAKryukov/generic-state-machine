@@ -64,7 +64,6 @@ namespace StateMachines {
             return stateMachine;
         } //PopulateBox
 
-        enum TestState { Draft, Denied, Approved, WaitForApprovalManager, WaitForApprovalTechnical, WaitForApprovalFinance, }
         static void Main() {
             var boxDoorStateMachine = PopulateRoom();
             Console.WriteLine(boxDoorStateMachine.TryTransitionTo(RoomDoorState.LockedInside));
