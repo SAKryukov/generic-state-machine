@@ -73,8 +73,8 @@ namespace StateMachines {
             State starting = FindState(startingState);
             State ending = FindState(endingState);
             StateGraphKey key = new(starting, ending);
-            bool found = stateGraph.TryGetValue(key, out StateGraphValue value);
-            if (!found)
+            var (_, value) = key.GetTransitionTarget(stateGraph);
+            if (value == null)
                 return (false, DefinitionSet<STATE>.TransitionNotDefined(startingState, endingState));
             return IsTransitionValid(value, startingState, endingState);
         } //IsTransitionValid
@@ -85,7 +85,8 @@ namespace StateMachines {
             State starting = FindState(CurrentState);
             State ending = FindState(state);
             StateGraphKey key = new(starting, ending);
-            bool found = stateGraph.TryGetValue(key, out StateGraphValue value);
+            var (_, value) = key.GetTransitionTarget(stateGraph);
+            bool found = value != null;
             string validityComment = DefinitionSet<STATE>.TransitionSuccess(state);
             if (found) {
                 var validity = IsTransitionValid(value, CurrentState, state);
@@ -106,8 +107,9 @@ namespace StateMachines {
                 List<State> newList = new();
                 foreach (var pair in stateGraph) {
                     if (!pair.Value.IsValid) continue;
+                    var (endingState, _) = pair.Key.GetTransitionTarget(stateGraph);
                     if (!pair.Key.StartingState.UnderlyingMember.Equals(indexed[stateIndex].UnderlyingMember)) continue;
-                    newList.Add(pair.Key.EndingState);
+                    newList.Add(endingState);
                 } //loop
                 followingNodes.Add(indexed[stateIndex], newList);
                 return newList;
@@ -266,6 +268,12 @@ namespace StateMachines {
             }
             internal State StartingState { get; init; }
             internal State EndingState { get; init; }
+            internal (State state, StateGraphValue transition) GetTransitionTarget(Dictionary<StateGraphKey, StateGraphValue> stateGraph) {
+                if (stateGraph.TryGetValue(this, out StateGraphValue value))
+                    return (EndingState, value);
+                else
+                    return (null, null);
+            } //GetTransitionTarget
         } //class StateGraphKey
 
         class StateGraphValue {
