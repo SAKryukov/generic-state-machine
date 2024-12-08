@@ -40,15 +40,10 @@ namespace StateMachines {
             CurrentState = initialState;
 
         public void AddValidStateTransition(STATE startingState, STATE endingState, StateTransitionAction<STATE> action, bool undirected = false) {
-            if (undirected) {
-                AddValidStateTransition(startingState, endingState, action);
-                AddValidStateTransition(endingState, startingState, action);
-            } else {
-                StateGraphKey key = new(FindState(startingState), FindState(endingState));
-                if (stateGraph.TryGetValue(key, out StateGraphValue value))
-                    throw new StateMachineGraphPopulationException(startingState, endingState);
-                stateGraph.Add(key, new StateGraphValue(true, action, null));
-            } //if
+            StateGraphKey key = new(FindState(startingState), FindState(endingState), undirected);
+            if (stateGraph.TryGetValue(key, out StateGraphValue value))
+                throw new StateMachineGraphPopulationException(startingState, endingState);
+            stateGraph.Add(key, new StateGraphValue(true, action, null));
         } //AddValidStateTransition
 
         public void AddValidStateTransitionChain(StateTransitionAction<STATE> action, bool undirected = false, params STATE[] chain) {
@@ -101,19 +96,25 @@ namespace StateMachines {
 
         public STATE[][] Labyrinth(STATE start, STATE finish, bool shortest = false) {
             Dictionary<State, List<State>> followingNodes = new(); // populated on call
-            List<State> BuildFollowingStates(int stateIndex, State[] indexed) {
-                if (followingNodes.TryGetValue(indexed[stateIndex], out List<State> nodes))
-                    return nodes;
-                List<State> newList = new();
-                foreach (var pair in stateGraph) {
-                    if (!pair.Value.IsValid) continue;
-                    var (endingState, _) = pair.Key.GetTransitionTarget(stateGraph);
-                    if (!pair.Key.StartingState.UnderlyingMember.Equals(indexed[stateIndex].UnderlyingMember)) continue;
-                    newList.Add(endingState);
+            void BuildFollowingStates(State[] indexed) {
+                for (int stateIndex = 0; stateIndex < indexed.Length; ++stateIndex)
+                    followingNodes.Add(indexed[stateIndex], new List<State>());
+               for (int stateIndex = 0; stateIndex < indexed.Length; ++stateIndex) {
+                    List<State> newList = new();
+                    foreach (var pair in stateGraph) {
+                        if (!pair.Value.IsValid) continue;
+                        if (!pair.Key.StartingState.UnderlyingMember.Equals(indexed[stateIndex].UnderlyingMember)) continue;
+                        var list = followingNodes[pair.Key.StartingState];
+                        list.Add(pair.Key.EndingState);
+                        if (pair.Key.IsUndirected) {
+                            var invertedList = followingNodes[pair.Key.EndingState];
+                            invertedList.Add(pair.Key.StartingState);
+                        } //if undirected
+                    } //stateGraph loop
                 } //loop
-                followingNodes.Add(indexed[stateIndex], newList);
-                return newList;
             } //BuildFollowingStates
+            List<State> GetFollowingStates(int stateIndex, State[] indexed) =>
+                followingNodes[indexed[stateIndex]];
             void RecursiveWalk(int start, int finish, bool[] visited, List<int> localPath, State[] indexed, Dictionary<State, int> stateIndex, List<List<int>> solution) {
                 if (start == finish) {
                     List<int> solutionElement = new(localPath);
@@ -121,7 +122,7 @@ namespace StateMachines {
                     return;
                 } //if
                 visited[start] = true;
-                List<State> followingStates = BuildFollowingStates(start, indexed);
+                List<State> followingStates = GetFollowingStates(start, indexed);
                 foreach (var followingState in followingStates) {
                     int followingStateIndex = stateIndex[followingState];
                     if (visited[followingStateIndex]) continue;
@@ -145,6 +146,7 @@ namespace StateMachines {
                 stateIndex.Add(pair.Value, index);
                 ++index;
             } //loop
+            BuildFollowingStates(indexed);
             List<List<int>> solution = new();
             RecursiveWalk(startIndex, finishIndex, visited, new List<int>(), indexed, stateIndex, solution);
             STATE[][] stateSolution = new STATE[solution.Count][];
@@ -253,8 +255,9 @@ namespace StateMachines {
         } //class State
 
         class StateGraphKey {
-            internal StateGraphKey(State starting, State ending) {
+            internal StateGraphKey(State starting, State ending, bool undirected = false) {
                 StartingState = starting; EndingState = ending;
+                IsUndirected = undirected;
             }
             public override int GetHashCode() { // important!
                 return StartingState.Name.GetHashCode()
@@ -263,11 +266,17 @@ namespace StateMachines {
             public override bool Equals(object @object) { // important!
                 if (@object == null) return false;
                 if (@object is not StateGraphKey objectStateGraphKey) return false;
-                return objectStateGraphKey.StartingState.Name == StartingState.Name
+                return IsUndirected
+                    ? (objectStateGraphKey.StartingState.Name == StartingState.Name
+                    && objectStateGraphKey.EndingState.Name == EndingState.Name)
+                    || (objectStateGraphKey.StartingState.Name == EndingState.Name
+                    && objectStateGraphKey.EndingState.Name == StartingState.Name)
+                    : objectStateGraphKey.StartingState.Name == StartingState.Name
                     && objectStateGraphKey.EndingState.Name == EndingState.Name;
-            }
+            } //Equals
             internal State StartingState { get; init; }
             internal State EndingState { get; init; }
+            internal bool IsUndirected { get; init; }
             internal (State state, StateGraphValue transition) GetTransitionTarget(Dictionary<StateGraphKey, StateGraphValue> stateGraph) {
                 if (stateGraph.TryGetValue(this, out StateGraphValue value))
                     return (EndingState, value);
