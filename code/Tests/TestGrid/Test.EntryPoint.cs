@@ -42,9 +42,18 @@ namespace StateMachines {
         static void Main() {
             var stateMachine = PopulateGrid();
             var (maximumNumberOfPaths, pairsAtMax) = stateMachine.MaximumPaths;
-            Console.WriteLine($"Maximum number of paths: {maximumNumberOfPaths}");
+            Console.WriteLine($"Maximum number of paths: {maximumNumberOfPaths}, those paths are between states:");
             foreach (var pair in pairsAtMax)
-                Console.WriteLine($"{pair.start} to {pair.finish}");
+                Console.WriteLine($"      {pair.start} to {pair.finish}");
+            var (numberOfPaths, longestPathLength, longestPaths) = stateMachine.LongestPaths;
+            Console.Write($"Total number of paths: {numberOfPaths}, longest path length: {longestPathLength}");
+            Console.WriteLine(", for example:");
+            if (longestPaths.Length < 1) return;
+            if (longestPaths[0].Length < 1) return;
+            Console.Write($"[");
+            foreach (var state in longestPaths[0])
+                Console.Write($" {state}");
+            Console.WriteLine(" ]");
         } //Main
 
     } //class Test
