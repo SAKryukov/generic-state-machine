@@ -32,19 +32,16 @@ public StateMachine(STATE initialState = default);
 
 ~~~
 void ResetState(); // jump to the initial state, ignoring the transition graph
-void AddValidStateTransition(
-    STATE startingState, STATE endingState,
-    StateTransitionAction<STATE> action, bool, bool undirected = false);
+void AddValidStateTransition(STATE startState, STATE finishState,
+    StateTransitionAction<STATE> action, bool undirected = false);
 void AddValidStateTransitionChain(
-   StateTransitionAction<STATE> action, bool undirected = false, params STATE[] chain);
-void AddInvalidStateTransition(
-    STATE startingState, STATE endingState,
+    StateTransitionAction<STATE> action, bool undirected = false, params STATE[] chain);
+void AddInvalidStateTransition(STATE startState, STATE finishState,
     InvalidStateTransitionAction<STATE> action);
-(bool isValid, string validityComment) IsTransitionValid(STATE startingState, STATE endingState);
+(bool isValid, string validityComment) IsTransitionValid(STATE startState, STATE finishState);
 (bool success, string validityComment) TryTransitionTo(STATE state);
-(bool success, string invalidTransitionReason) TryTransitionTo(STATE state);
 // this method finds all permitted paths between two states:
-public STATE[][] Labyrinth(STATE start, STATE finish, bool shortest = false); 
+STATE[][] Labyrinth(STATE start, STATE finish, bool shortest = false); 
 ~~~
 
 #### Public properties:

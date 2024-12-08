@@ -12,17 +12,17 @@ namespace StateMachines {
 
     static class DefinitionSet<STATE> {
 
-        internal static string StateMachineGraphPopulationExceptionMessage(STATE stargingState, STATE endingState) =>
-            $"The transition between {stargingState} and {endingState} is already added to the State Machine transition graph";
+        internal static string StateMachineGraphPopulationExceptionMessage(STATE startState, STATE finishState) =>
+            $"The transition between {startState} and {finishState} is already added to the State Machine transition graph";
 
         internal static string InvalidStateExceptionMessage(STATE state) =>
             $"The value {state} is not a part of the State Machine state set";
 
-        internal static string TransitionNotDefined(STATE stargingState, STATE endingState) =>
-            $"The transition between {stargingState} and {endingState} is not permitted";
+        internal static string TransitionNotDefined(STATE startState, STATE finishState) =>
+            $"The transition between {startState} and {finishState} is not permitted";
 
-        internal static string TransitionIsValid(STATE stargingState, STATE endingState) =>
-            $"The transition between {stargingState} and {endingState} is permitted";
+        internal static string TransitionIsValid(STATE startState, STATE finishState) =>
+            $"The transition between {startState} and {finishState} is permitted";
 
         internal static string TransitionToTheSameState(STATE state) =>
             $"Attempted transition to the same state: {state}";
