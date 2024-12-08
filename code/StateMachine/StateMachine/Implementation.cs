@@ -286,24 +286,6 @@ namespace StateMachines {
             internal InvalidStateTransitionAction<STATE> InvalidAction { get; init; }
         } //class StateGraphValue
 
-        abstract class StateTransition : StateGraphKey {
-            internal StateTransition(State starting, State ending) :
-                base(starting, ending) { }
-            internal abstract bool IsValid { get; }
-        } //StateTransition
-
-        class ValidStateTransition : StateTransition {
-            internal ValidStateTransition(State starting, State ending) :
-                base(starting, ending) { }
-            internal override bool IsValid { get { return true; } }
-        } //class ValidStateTransition
-
-        class InvalidStateTransition : StateTransition {
-            internal InvalidStateTransition(State starting, State ending) :
-                base(starting, ending) { }
-            internal override bool IsValid { get { return false; } }
-        } //class ValidStateTransition
-
         #endregion implementation
 
     } //class StateMachine
