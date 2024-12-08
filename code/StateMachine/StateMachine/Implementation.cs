@@ -14,8 +14,8 @@ namespace StateMachines {
     using FieldInfo = System.Reflection.FieldInfo;
     using System.Collections.Generic;
 
-    public delegate void StateTransitionAction<STATE>(STATE startingState, STATE endingState);
-    public delegate string InvalidStateTransitionAction<STATE>(STATE startingState, STATE endingState);
+    public delegate void StateTransitionAction<STATE>(STATE startState, STATE finishState);
+    public delegate string InvalidStateTransitionAction<STATE>(STATE startState, STATE finishState);
 
     public class StateMachine<STATE> {
 
@@ -32,6 +32,7 @@ namespace StateMachines {
                     CurrentState = value;
             } //loop
             this.initialState = CurrentState;
+            digest = new(this);
         } //StateMachine
 
         public STATE CurrentState { get; private set; }
@@ -39,47 +40,51 @@ namespace StateMachines {
         public STATE ResetState() => // unconditional jump to initial state, ignoring the transition graph
             CurrentState = initialState;
 
-        public void AddValidStateTransition(STATE startingState, STATE endingState, StateTransitionAction<STATE> action, bool undirected = false) {
-            StateGraphKey key = new(FindState(startingState), FindState(endingState), undirected);
+        public void AddValidStateTransition(STATE startState, STATE finishState, StateTransitionAction<STATE> action, bool undirected = false) {
+            StateGraphKey key = new(FindState(startState), FindState(finishState), undirected);
             if (stateGraph.TryGetValue(key, out StateGraphValue value))
-                throw new StateMachineGraphPopulationException(startingState, endingState);
+                throw new StateMachineGraphPopulationException(startState, finishState);
             stateGraph.Add(key, new StateGraphValue(true, action, null));
+            digest.Invalidate();
         } //AddValidStateTransition
 
-        public void AddValidStateTransitionChain(StateTransitionAction<STATE> action, bool undirected = false, params STATE[] chain) {
-            if (chain == null) return;
-            if (chain.Length < 2) return;
+        public int AddValidStateTransitionChain(StateTransitionAction<STATE> action, bool undirected = false, params STATE[] chain) {
+            if (chain == null) return 0;
+            if (chain.Length < 2) return 0;
             STATE current = chain[0];
+            int count = 0;
             foreach (var state in chain) {
                 if (state.Equals(current)) continue; // drop first
                 AddValidStateTransition(current, state, action, undirected);
+                ++count;
                 current = state;
             } //loop
+            return count;
         } //AddValidStateTransitionChain
 
-        public void AddInvalidStateTransition(STATE startingState, STATE endingState, InvalidStateTransitionAction<STATE> action) {
-            StateGraphKey key = new(FindState(startingState), FindState(endingState));
+        public void AddInvalidStateTransition(STATE startState, STATE finishState, InvalidStateTransitionAction<STATE> action) {
+            StateGraphKey key = new(FindState(startState), FindState(finishState));
             if (stateGraph.TryGetValue(key, out StateGraphValue value))
-                throw new StateMachineGraphPopulationException(startingState, endingState);
+                throw new StateMachineGraphPopulationException(startState, finishState);
             stateGraph.Add(key, new StateGraphValue(false, null, action));
         } //AddInvalidStateTransition       
 
-        public (bool isValid, string validityComment) IsTransitionValid(STATE startingState, STATE endingState) {
-            State starting = FindState(startingState);
-            State ending = FindState(endingState);
-            StateGraphKey key = new(starting, ending);
+        public (bool isValid, string validityComment) IsTransitionValid(STATE startState, STATE finishState) {
+            State start = FindState(startState);
+            State finish = FindState(finishState);
+            StateGraphKey key = new(start, finish);
             var (_, value) = key.GetTransitionTarget(stateGraph);
             if (value == null)
-                return (false, DefinitionSet<STATE>.TransitionNotDefined(startingState, endingState));
-            return IsTransitionValid(value, startingState, endingState);
+                return (false, DefinitionSet<STATE>.TransitionNotDefined(startState, finishState));
+            return IsTransitionValid(value, startState, finishState);
         } //IsTransitionValid
   
         public (bool success, string validityComment) TryTransitionTo(STATE state) {
             if (CurrentState.Equals(state))
                 return (true, DefinitionSet<STATE>.TransitionToTheSameState(CurrentState));
-            State starting = FindState(CurrentState);
-            State ending = FindState(state);
-            StateGraphKey key = new(starting, ending);
+            State start = FindState(CurrentState);
+            State finish = FindState(state);
+            StateGraphKey key = new(start, finish);
             var (_, value) = key.GetTransitionTarget(stateGraph);
             bool found = value != null;
             string validityComment = DefinitionSet<STATE>.TransitionSuccess(state);
@@ -94,27 +99,35 @@ namespace StateMachines {
             return (found, validityComment);
         } //TryTransitionTo
 
-        public STATE[][] Labyrinth(STATE start, STATE finish, bool shortest = false) {
-            Dictionary<State, List<State>> followingNodes = new(); // populated on call
-            void BuildFollowingStates(State[] indexed) {
-                for (int stateIndex = 0; stateIndex < indexed.Length; ++stateIndex)
-                    followingNodes.Add(indexed[stateIndex], new List<State>());
-               for (int stateIndex = 0; stateIndex < indexed.Length; ++stateIndex) {
-                    List<State> newList = new();
-                    foreach (var pair in stateGraph) {
+        class Digest {
+            internal Digest(StateMachine<STATE> owner) { this.owner = owner; }
+            readonly StateMachine<STATE> owner;
+            readonly Dictionary<State, List<State>> followingNodes = new();
+            internal void BuildFollowingStates() {
+                if (followingNodes.Count > 0) return;
+                foreach (var statePair in owner.stateDictionary)
+                    followingNodes.Add(statePair.Value, new List<State>());
+                foreach (var statePair in owner.stateDictionary) {
+                    foreach (var pair in owner.stateGraph) {
                         if (!pair.Value.IsValid) continue;
-                        if (!pair.Key.StartingState.UnderlyingMember.Equals(indexed[stateIndex].UnderlyingMember)) continue;
-                        var list = followingNodes[pair.Key.StartingState];
-                        list.Add(pair.Key.EndingState);
+                        if (!pair.Key.StartState.UnderlyingMember.Equals(statePair.Value.UnderlyingMember)) continue;
+                        var list = followingNodes[pair.Key.StartState];
+                        list.Add(pair.Key.FinishState);
                         if (pair.Key.IsUndirected) {
-                            var invertedList = followingNodes[pair.Key.EndingState];
-                            invertedList.Add(pair.Key.StartingState);
+                            var invertedList = followingNodes[pair.Key.FinishState];
+                            invertedList.Add(pair.Key.StartState);
                         } //if undirected
                     } //stateGraph loop
                 } //loop
             } //BuildFollowingStates
-            List<State> GetFollowingStates(int stateIndex, State[] indexed) =>
-                followingNodes[indexed[stateIndex]];
+            internal List<State> GetFollowingStates(State state) =>
+                followingNodes[state];
+            internal void Invalidate() { followingNodes.Clear(); }
+        } //class Digest
+
+        public STATE[][] Labyrinth(STATE start, STATE finish, bool shortest = false) {
+            digest.BuildFollowingStates();
+            Dictionary<State, List<State>> followingNodes = new(); // populated on call
             void RecursiveWalk(int start, int finish, bool[] visited, List<int> localPath, State[] indexed, Dictionary<State, int> stateIndex, List<List<int>> solution) {
                 if (start == finish) {
                     List<int> solutionElement = new(localPath);
@@ -122,7 +135,7 @@ namespace StateMachines {
                     return;
                 } //if
                 visited[start] = true;
-                List<State> followingStates = GetFollowingStates(start, indexed);
+                List<State> followingStates = digest.GetFollowingStates(indexed[start]);
                 foreach (var followingState in followingStates) {
                     int followingStateIndex = stateIndex[followingState];
                     if (visited[followingStateIndex]) continue;
@@ -146,7 +159,6 @@ namespace StateMachines {
                 stateIndex.Add(pair.Value, index);
                 ++index;
             } //loop
-            BuildFollowingStates(indexed);
             List<List<int>> solution = new();
             RecursiveWalk(startIndex, finishIndex, visited, new List<int>(), indexed, stateIndex, solution);
             STATE[][] stateSolution = new STATE[solution.Count][];
@@ -224,20 +236,21 @@ namespace StateMachines {
 
         static bool IsValid(StateGraphValue value) => value.ValidAction != null;
 
-        static (bool IsValid, string ValidityComment) IsTransitionValid(StateGraphValue value, STATE startingState, STATE endingState) {
+        static (bool IsValid, string ValidityComment) IsTransitionValid(StateGraphValue value, STATE startState, STATE finishState) {
             if (!IsValid(value) && value.InvalidAction != null) {
-                return (false, value.InvalidAction(startingState, endingState));
+                return (false, value.InvalidAction(startState, finishState));
             } //if
-            return (true, DefinitionSet<STATE>.TransitionIsValid(startingState, endingState));
+            return (true, DefinitionSet<STATE>.TransitionIsValid(startState, finishState));
         } //IsTransitionValid
 
         readonly Dictionary<STATE, State> stateDictionary = new();
         readonly Dictionary<StateGraphKey, StateGraphValue> stateGraph = new();
+        readonly Digest digest;
         readonly STATE initialState;
 
         class StateMachineGraphPopulationException : System.ApplicationException {
-            internal StateMachineGraphPopulationException(STATE stargingState, STATE endingState)
-                : base(DefinitionSet<STATE>.StateMachineGraphPopulationExceptionMessage(stargingState, endingState)) { }
+            internal StateMachineGraphPopulationException(STATE startState, STATE finishState)
+                : base(DefinitionSet<STATE>.StateMachineGraphPopulationExceptionMessage(startState, finishState)) { }
         } //class StateMachineGraphPopulationException
 
         class InvalidStateException : System.ApplicationException {
@@ -255,31 +268,31 @@ namespace StateMachines {
         } //class State
 
         class StateGraphKey {
-            internal StateGraphKey(State starting, State ending, bool undirected = false) {
-                StartingState = starting; EndingState = ending;
+            internal StateGraphKey(State start, State finish, bool undirected = false) {
+                StartState = start; FinishState = finish;
                 IsUndirected = undirected;
             }
             public override int GetHashCode() { // important!
-                return StartingState.Name.GetHashCode()
-                    ^ EndingState.Name.GetHashCode();
+                return StartState.Name.GetHashCode()
+                    ^ FinishState.Name.GetHashCode();
             }
             public override bool Equals(object @object) { // important!
                 if (@object == null) return false;
                 if (@object is not StateGraphKey objectStateGraphKey) return false;
                 return IsUndirected
-                    ? (objectStateGraphKey.StartingState.Name == StartingState.Name
-                    && objectStateGraphKey.EndingState.Name == EndingState.Name)
-                    || (objectStateGraphKey.StartingState.Name == EndingState.Name
-                    && objectStateGraphKey.EndingState.Name == StartingState.Name)
-                    : objectStateGraphKey.StartingState.Name == StartingState.Name
-                    && objectStateGraphKey.EndingState.Name == EndingState.Name;
+                    ? (objectStateGraphKey.StartState.Name == StartState.Name
+                    && objectStateGraphKey.FinishState.Name == FinishState.Name)
+                    || (objectStateGraphKey.StartState.Name == FinishState.Name
+                    && objectStateGraphKey.FinishState.Name == StartState.Name)
+                    : objectStateGraphKey.StartState.Name == StartState.Name
+                    && objectStateGraphKey.FinishState.Name == FinishState.Name;
             } //Equals
-            internal State StartingState { get; init; }
-            internal State EndingState { get; init; }
+            internal State StartState { get; init; }
+            internal State FinishState { get; init; }
             internal bool IsUndirected { get; init; }
             internal (State state, StateGraphValue transition) GetTransitionTarget(Dictionary<StateGraphKey, StateGraphValue> stateGraph) {
                 if (stateGraph.TryGetValue(this, out StateGraphValue value))
-                    return (EndingState, value);
+                    return (FinishState, value);
                 else
                     return (null, null);
             } //GetTransitionTarget
