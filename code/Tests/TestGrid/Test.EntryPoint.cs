@@ -39,12 +39,11 @@ namespace StateMachines {
             return stateMachine;
         } //PopulateBox
 
-        static void Main() {
-            var stateMachine = PopulateGrid();
+        static void Present(StateMachine<Node> stateMachine) {
             var (maximumNumberOfPaths, pairsAtMax) = stateMachine.MaximumPaths;
             Console.WriteLine($"Maximum number of paths: {maximumNumberOfPaths}, those paths are between states:");
-            foreach (var pair in pairsAtMax)
-                Console.WriteLine($"      {pair.start} to {pair.finish}");
+            foreach (var (start, finish) in pairsAtMax)
+                Console.WriteLine($"      {start} to {finish}");
             var (numberOfPaths, longestPathLength, longestPaths) = stateMachine.LongestPaths;
             Console.Write($"Total number of paths: {numberOfPaths}, longest path length: {longestPathLength}");
             Console.WriteLine(", for example:");
@@ -54,6 +53,11 @@ namespace StateMachines {
             foreach (var state in longestPaths[0])
                 Console.Write($" {state}");
             Console.WriteLine(" ]");
+        } //Present
+
+        static void Main() {
+            var stateMachine = PopulateGrid();
+            Present(stateMachine);
         } //Main
 
     } //class Test
