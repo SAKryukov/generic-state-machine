@@ -73,7 +73,7 @@ namespace StateMachines {
             State start = FindState(startState);
             State finish = FindState(finishState);
             StateGraphKey key = new(start, finish);
-            var transition = key.GetTransitionTarget(stateGraph).transition;
+            var transition = stateGraph.TryGetValue(key, out StateGraphValue value) ? value : null;
             if (transition == null)
                 return (false, DefinitionSet<STATE>.TransitionNotDefined(startState, finishState));
             return IsTransitionValid(transition, startState, finishState);
@@ -85,14 +85,14 @@ namespace StateMachines {
             State start = FindState(CurrentState);
             State finish = FindState(state);
             StateGraphKey key = new(start, finish);
-            var value = key.GetTransitionTarget(stateGraph).transition;
-            bool found = value != null;
+            var transition = stateGraph.TryGetValue(key, out StateGraphValue value) ? value : null;
+            bool found = transition != null;
             string validityComment = DefinitionSet<STATE>.TransitionSuccess(state);
             if (found) {
                 var validity = IsTransitionValid(value, CurrentState, state);
                 if (!validity.IsValid)
                     return (false, validity.ValidityComment);
-                value.ValidAction?.Invoke(CurrentState, state);
+                transition.ValidAction?.Invoke(CurrentState, state);
                 CurrentState = state;
             } else
                 return (false, DefinitionSet<STATE>.TransitionNotDefined(CurrentState, state));
@@ -292,12 +292,6 @@ namespace StateMachines {
             internal State StartState { get; init; }
             internal State FinishState { get; init; }
             internal bool IsUndirected { get; init; }
-            internal (State state, StateGraphValue transition) GetTransitionTarget(Dictionary<StateGraphKey, StateGraphValue> stateGraph) {
-                if (stateGraph.TryGetValue(this, out StateGraphValue value))
-                    return (FinishState, value);
-                else
-                    return (null, null);
-            } //GetTransitionTarget
         } //class StateGraphKey
 
         class StateGraphValue {
