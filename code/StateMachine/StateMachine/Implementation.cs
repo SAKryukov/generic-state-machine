@@ -73,10 +73,10 @@ namespace StateMachines {
             State start = FindState(startState);
             State finish = FindState(finishState);
             StateGraphKey key = new(start, finish);
-            var (_, value) = key.GetTransitionTarget(stateGraph);
-            if (value == null)
+            var transition = key.GetTransitionTarget(stateGraph).transition;
+            if (transition == null)
                 return (false, DefinitionSet<STATE>.TransitionNotDefined(startState, finishState));
-            return IsTransitionValid(value, startState, finishState);
+            return IsTransitionValid(transition, startState, finishState);
         } //IsTransitionValid
   
         public (bool success, string validityComment) TryTransitionTo(STATE state) {
@@ -85,7 +85,7 @@ namespace StateMachines {
             State start = FindState(CurrentState);
             State finish = FindState(state);
             StateGraphKey key = new(start, finish);
-            var (_, value) = key.GetTransitionTarget(stateGraph);
+            var value = key.GetTransitionTarget(stateGraph).transition;
             bool found = value != null;
             string validityComment = DefinitionSet<STATE>.TransitionSuccess(state);
             if (found) {
@@ -103,7 +103,7 @@ namespace StateMachines {
             internal void BuildFollowingStates() {
                 if (followingNodes.Count > 0) return;
                 used = true;
-                foreach (var (_, stateValue) in owner.stateDictionary)
+                foreach (var stateValue in owner.stateDictionary.Values)
                     followingNodes.Add(stateValue, new List<State>());
                 foreach (var (key, value) in owner.stateGraph) {
                     if (!value.IsValid) continue;
@@ -190,8 +190,8 @@ namespace StateMachines {
                 List<STATE[]> longestPaths = new();
                 int max = -1;
                 int pathCount = 0;
-                foreach(var (_, startValue) in stateDictionary)
-                    foreach (var (_, finishValue) in stateDictionary) {
+                foreach (var startValue in stateDictionary.Values)
+                    foreach (var finishValue in stateDictionary.Values) {
                         STATE[][] solution = Labyrinth(startValue.UnderlyingMember, finishValue.UnderlyingMember);
                         pathCount += solution.Length;
                         foreach (STATE[] item in solution) {
@@ -211,8 +211,8 @@ namespace StateMachines {
             get {
                 int max = 0;
                 List<(STATE start, STATE finish)> pairList = new();
-                foreach (var (_, startValue) in stateDictionary)
-                    foreach (var (_, finishValue) in stateDictionary) {
+                foreach (var startValue in stateDictionary.Values)
+                    foreach (var finishValue in stateDictionary.Values) {
                         STATE[][] solution = Labyrinth(startValue.UnderlyingMember, finishValue.UnderlyingMember);
                         if (solution.Length >= max) {
                             if (solution.Length > max)

@@ -60,8 +60,8 @@ namespace StateMachines {
                 VisitorState.Alligator, VisitorState.Flamingo, VisitorState.Llama, VisitorState.Wallaby,
                 VisitorState.Entry, VisitorState.Exit };
             foreach (VisitorState state in openSites)
-                stateMachine.AddInvalidStateTransition(state, VisitorState.Chimpanzee, (start, _) =>
-                    $"{VisitorState.Chimpanzee} area is temporarily closed");
+                stateMachine.AddInvalidStateTransition(state, VisitorState.Chimpanzee, (start, finish) =>
+                    $"Moving from {start}: {finish} area is temporarily closed");
             return stateMachine;
         } //PopulateTrails
 
