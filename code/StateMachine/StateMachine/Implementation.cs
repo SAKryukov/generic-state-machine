@@ -103,8 +103,8 @@ namespace StateMachines {
             internal void BuildFollowingStates() {
                 if (followingNodes.Count > 0) return;
                 used = true;
-                foreach (var statePair in owner.stateDictionary)
-                    followingNodes.Add(statePair.Value, new List<State>());
+                foreach (var (_, stateValue) in owner.stateDictionary)
+                    followingNodes.Add(stateValue, new List<State>());
                 foreach (var (key, value) in owner.stateGraph) {
                     if (!value.IsValid) continue;
                     Update(key);
@@ -211,14 +211,14 @@ namespace StateMachines {
             get {
                 int max = 0;
                 List<(STATE start, STATE finish)> pairList = new();
-                foreach (var startPair in stateDictionary)
-                    foreach (var finishPair in stateDictionary) {
-                        STATE[][] solution = Labyrinth(startPair.Value.UnderlyingMember, finishPair.Value.UnderlyingMember);
+                foreach (var (_, startValue) in stateDictionary)
+                    foreach (var (_, finishValue) in stateDictionary) {
+                        STATE[][] solution = Labyrinth(startValue.UnderlyingMember, finishValue.UnderlyingMember);
                         if (solution.Length >= max) {
                             if (solution.Length > max)
                                 pairList.Clear();
                             max = solution.Length;
-                            pairList.Add((startPair.Value.UnderlyingMember, finishPair.Value.UnderlyingMember));
+                            pairList.Add((startValue.UnderlyingMember, finishValue.UnderlyingMember));
                         } //if
                     } //outer loop
                 return (max, pairList.ToArray());
