@@ -45,7 +45,7 @@ namespace StateMachines {
             if (stateGraph.TryGetValue(key, out StateGraphValue value))
                 throw new StateMachineGraphPopulationException(startState, finishState);
             stateGraph.Add(key, new StateGraphValue(true, action, null));
-            digest.Invalidate();
+            digest.Update(key);
         } //AddValidStateTransition
 
         public int AddValidStateTransitionChain(StateTransitionAction<STATE> action, bool undirected = false, params STATE[] chain) {
@@ -100,29 +100,31 @@ namespace StateMachines {
         } //TryTransitionTo
 
         class Digest {
-            internal Digest(StateMachine<STATE> owner) { this.owner = owner; }
-            readonly StateMachine<STATE> owner;
-            readonly Dictionary<State, List<State>> followingNodes = new();
             internal void BuildFollowingStates() {
                 if (followingNodes.Count > 0) return;
+                used = true;
                 foreach (var statePair in owner.stateDictionary)
                     followingNodes.Add(statePair.Value, new List<State>());
-                foreach (var statePair in owner.stateDictionary) {
-                    foreach (var pair in owner.stateGraph) {
-                        if (!pair.Value.IsValid) continue;
-                        if (!pair.Key.StartState.UnderlyingMember.Equals(statePair.Value.UnderlyingMember)) continue;
-                        var list = followingNodes[pair.Key.StartState];
-                        list.Add(pair.Key.FinishState);
-                        if (pair.Key.IsUndirected) {
-                            var invertedList = followingNodes[pair.Key.FinishState];
-                            invertedList.Add(pair.Key.StartState);
-                        } //if undirected
-                    } //stateGraph loop
+                foreach (var (key, value) in owner.stateGraph) {
+                    if (!value.IsValid) continue;
+                    Update(key);
                 } //loop
             } //BuildFollowingStates
             internal List<State> GetFollowingStates(State state) =>
                 followingNodes[state];
-            internal void Invalidate() { followingNodes.Clear(); }
+            internal void Update(StateGraphKey key) {
+                if (!used) return;
+                Update(key.StartState, key.FinishState);
+                if (key.IsUndirected)
+                    Update(key.FinishState, key.StartState);
+            } //Update
+            void Update(State start, State finish) {
+                followingNodes[start].Add(finish);
+            } //Update
+            internal Digest(StateMachine<STATE> owner) { this.owner = owner; }
+            readonly StateMachine<STATE> owner;
+            readonly Dictionary<State, List<State>> followingNodes = new();
+            bool used;
         } //class Digest
 
         public STATE[][] Labyrinth(STATE start, STATE finish, bool shortest = false) {
@@ -150,13 +152,13 @@ namespace StateMachines {
             Dictionary<State, int> stateIndex = new();
             int index = 0;
             int startIndex = 0, finishIndex = 0;
-            foreach (var pair in stateDictionary) {
-                indexed[index] = pair.Value;
-                if (start.Equals(pair.Value.UnderlyingMember))
+            foreach (var (key, value) in stateDictionary) {
+                indexed[index] = value;
+                if (start.Equals(value.UnderlyingMember))
                     startIndex = index;
-                if (finish.Equals(pair.Value.UnderlyingMember))
+                if (finish.Equals(value.UnderlyingMember))
                     finishIndex = index;
-                stateIndex.Add(pair.Value, index);
+                stateIndex.Add(value, index);
                 ++index;
             } //loop
             List<List<int>> solution = new();
@@ -188,9 +190,9 @@ namespace StateMachines {
                 List<STATE[]> longestPaths = new();
                 int max = -1;
                 int pathCount = 0;
-                foreach(var startPair in stateDictionary)
-                    foreach (var finishPair in stateDictionary) {
-                        STATE[][] solution = Labyrinth(startPair.Value.UnderlyingMember, finishPair.Value.UnderlyingMember);
+                foreach(var (_, startValue) in stateDictionary)
+                    foreach (var (_, finishValue) in stateDictionary) {
+                        STATE[][] solution = Labyrinth(startValue.UnderlyingMember, finishValue.UnderlyingMember);
                         pathCount += solution.Length;
                         foreach (STATE[] item in solution) {
                             if (item.Length >= max) {
