@@ -68,10 +68,8 @@ namespace StateMachines {
         static void PresentRoutesOfRoutes(VisitorState[][] routes) {
             int index = 1;
             foreach (var route in routes) {
-                Console.Write($"Route #{index++:D4}: [");
-                foreach (var state in route)
-                    Console.Write($" {state}");
-                Console.WriteLine(" ]");
+                string routePresentation = string.Join(" ", route);
+                Console.WriteLine($"Route #{index++:D4}: [ {routePresentation} ]");
             } //loop
         } //PresentRoutesOfRoutes
 
@@ -131,6 +129,10 @@ namespace StateMachines {
             string plural = labyrinthSolution.Length == 1 ? "" : "s";
             Console.WriteLine($"{labyrinthSolution.Length} shortest route{plural} from {VisitorState.Entry} to {VisitorState.Exit} found:");
             PresentRoutesOfRoutes(labyrinthSolution);
+            Console.WriteLine();
+            var deadEnds = stateMachine.FindDeadEnds(VisitorState.Entry, VisitorState.Exit);
+            string deadEndsPresentation = string.Join(", ", deadEnds);
+            Console.WriteLine($"Dead ends found on the routes from {VisitorState.Entry} to {VisitorState.Exit}: {deadEndsPresentation}");
 #if TryAllRoutes
             Console.WriteLine();
             Console.WriteLine("Trying all routes from {VisitorState.Entry} to {VisitorState.Exit}:");
