@@ -4,18 +4,21 @@
     Copyright (C) 2024 by Sergey A Kryukov
     https://www.SAKryukov.org
     https://github.com/SAKryukov
-    Answering to:
-    https://stackoverflow.com/questions/79240035/how-to-correctly-implement-of-state-machine-pattern
 */
 
 namespace StateMachines {
     using Type = System.Type;
     using BindingFlags = System.Reflection.BindingFlags;
     using FieldInfo = System.Reflection.FieldInfo;
+    using Attribute = System.Attribute;
+    using AttributeTargets = System.AttributeTargets;
     using System.Collections.Generic;
 
     public delegate void StateTransitionAction<STATE>(STATE startState, STATE finishState);
     public delegate string InvalidStateTransitionAction<STATE>(STATE startState, STATE finishState);
+
+    [System.AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = false)]
+    public class NotAStateAttribute : Attribute {}
 
     public class StateMachine<STATE> {
 
@@ -25,6 +28,7 @@ namespace StateMachines {
             Type type = typeof(STATE);
             FieldInfo[] fields = type.GetFields(BindingFlags.Static | BindingFlags.Public);
             foreach (var field in fields) {
+                if (field.GetCustomAttributes(typeof(NotAStateAttribute), inherit: false).Length > 0) continue;
                 STATE value = (STATE)field.GetValue(null);
                 State state = new(field.Name, value);
                 stateDictionary.Add(value, state);
