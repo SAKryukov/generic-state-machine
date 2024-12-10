@@ -10,15 +10,13 @@ namespace StateMachines {
     using Type = System.Type;
     using BindingFlags = System.Reflection.BindingFlags;
     using FieldInfo = System.Reflection.FieldInfo;
-    using Attribute = System.Attribute;
-    using AttributeTargets = System.AttributeTargets;
     using System.Collections.Generic;
 
     public delegate void StateTransitionAction<STATE>(STATE startState, STATE finishState);
     public delegate string InvalidStateTransitionAction<STATE>(STATE startState, STATE finishState);
 
-    [System.AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = false)]
-    public class NotAStateAttribute : Attribute {}
+    [System.AttributeUsage(System.AttributeTargets.Field, AllowMultiple = false, Inherited = false)]
+    public class NotAStateAttribute : System.Attribute {}
 
     public class StateMachine<STATE> {
 
@@ -103,80 +101,39 @@ namespace StateMachines {
             return (found, validityComment);
         } //TryTransitionTo
 
-        class Digest {
-            internal void BuildFollowingStates() {
-                if (followingNodes.Count > 0) return;
-                used = true;
-                foreach (var stateValue in owner.stateDictionary.Values)
-                    followingNodes.Add(stateValue, new List<State>());
-                foreach (var (key, value) in owner.stateGraph) {
-                    if (!value.IsValid) continue;
-                    Update(key);
-                } //loop
-            } //BuildFollowingStates
-            internal List<State> GetFollowingStates(State state) =>
-                followingNodes[state];
-            internal void Update(StateGraphKey key) {
-                if (!used) return;
-                Update(key.StartState, key.FinishState);
-                if (key.IsUndirected)
-                    Update(key.FinishState, key.StartState);
-            } //Update
-            void Update(State start, State finish) {
-                followingNodes[start].Add(finish);
-            } //Update
-            internal Digest(StateMachine<STATE> owner) { this.owner = owner; }
-            readonly StateMachine<STATE> owner;
-            readonly Dictionary<State, List<State>> followingNodes = new();
-            bool used;
-        } //class Digest
-
         public STATE[][] Labyrinth(STATE start, STATE finish, bool shortest = false) {
             digest.BuildFollowingStates();
             Dictionary<State, List<State>> followingNodes = new(); // populated on call
-            void RecursiveWalk(int start, int finish, bool[] visited, List<int> localPath, State[] indexed, Dictionary<State, int> stateIndex, List<List<int>> solution) {
+            void RecursiveWalk(State start, State finish, Dictionary<State, bool> visited, List<State> localPath, List<List<State>> solution) {
                 if (start == finish) {
-                    List<int> solutionElement = new(localPath);
+                    List<State> solutionElement = new(localPath);
                     solution.Add(solutionElement);
                     return;
                 } //if
                 visited[start] = true;
-                List<State> followingStates = digest.GetFollowingStates(indexed[start]);
+                List<State> followingStates = digest.GetFollowingStates(start);
                 foreach (var followingState in followingStates) {
-                    int followingStateIndex = stateIndex[followingState];
-                    if (visited[followingStateIndex]) continue;
-                    localPath.Add(followingStateIndex);
-                    RecursiveWalk(followingStateIndex, finish, visited, localPath, indexed, stateIndex, solution);
-                    localPath.Remove(followingStateIndex);
+                    if (visited[followingState]) continue;
+                    localPath.Add(followingState);
+                    RecursiveWalk(followingState, finish, visited, localPath, solution);
+                    localPath.Remove(followingState);
                 } //loop
                 visited[start] = false;
             } //RecursiveWalk
-            bool[] visited = new bool[stateDictionary.Count];
-            State[] indexed = new State[stateDictionary.Count];
-            Dictionary<State, int> stateIndex = new();
-            int index = 0;
-            int startIndex = 0, finishIndex = 0;
-            foreach (var (key, value) in stateDictionary) {
-                indexed[index] = value;
-                if (start.Equals(value.UnderlyingMember))
-                    startIndex = index;
-                if (finish.Equals(value.UnderlyingMember))
-                    finishIndex = index;
-                stateIndex.Add(value, index);
-                ++index;
-            } //loop
-            List<List<int>> solution = new();
-            RecursiveWalk(startIndex, finishIndex, visited, new List<int>(), indexed, stateIndex, solution);
+            Dictionary<State, bool> visited = new();
+            foreach (var state in stateDictionary.Values)
+                visited.Add(state, false);
+            List<List<State>> solution = new();
+            RecursiveWalk(FindState(start), FindState(finish), visited, new List<State>(), solution);
             STATE[][] stateSolution = new STATE[solution.Count][];
-            index = 0;
             int shortestPathLength = int.MaxValue;
+            int index = 0;
             foreach (var element in solution) {
                 if (element.Count < shortestPathLength)
                     shortestPathLength = element.Count;
                 STATE[] row = new STATE[element.Count];
-                int indexInRow = 0;
-                foreach (int stateIndex0 in element)
-                    row[indexInRow++] = indexed[stateIndex0].UnderlyingMember;
+                for (var indexInRow = 0; indexInRow < row.Length; ++indexInRow)
+                    row[indexInRow] = element[indexInRow].UnderlyingMember;
                 stateSolution[index++] = row;
             } //loop
             if (shortest) {
@@ -188,6 +145,21 @@ namespace StateMachines {
             } //if
             return stateSolution;
         } //Labyrinth
+
+        public STATE[] FindDeadEnds(STATE start, STATE[][] paths) {
+            HashSet<STATE> found = new(new STATE[1] { start });
+            foreach (var row in paths)
+                foreach (STATE state in row)
+                    found.Add(state);
+            List<STATE> deadEnds = new();
+            foreach (STATE state in stateDictionary.Keys)
+                if (!found.Contains(state))
+                    deadEnds.Add(state);
+            return deadEnds.ToArray();
+        } //FindDeadEnds
+
+        public STATE[] FindDeadEnds(STATE start, STATE end) =>
+            FindDeadEnds(start, Labyrinth(start, end, shortest: false));
 
         public (int numberOfPaths, int longestPathLength, STATE[][] longestPaths) LongestPaths { //NP-hard
             get {
@@ -229,9 +201,39 @@ namespace StateMachines {
             } //get LongestNumberOfPaths 
         } //LongestNumberOfPaths 
 
+
+
         #endregion API
 
         #region implementation
+
+        class Digest {
+            internal void BuildFollowingStates() {
+                if (followingNodes.Count > 0) return;
+                used = true;
+                foreach (var stateValue in owner.stateDictionary.Values)
+                    followingNodes.Add(stateValue, new List<State>());
+                foreach (var (key, value) in owner.stateGraph) {
+                    if (!value.IsValid) continue;
+                    Update(key);
+                } //loop
+            } //BuildFollowingStates
+            internal List<State> GetFollowingStates(State state) =>
+                followingNodes[state];
+            internal void Update(StateGraphKey key) {
+                if (!used) return;
+                Update(key.StartState, key.FinishState);
+                if (key.IsUndirected)
+                    Update(key.FinishState, key.StartState);
+            } //Update
+            void Update(State start, State finish) {
+                followingNodes[start].Add(finish);
+            } //Update
+            internal Digest(StateMachine<STATE> owner) { this.owner = owner; }
+            readonly StateMachine<STATE> owner;
+            readonly Dictionary<State, List<State>> followingNodes = new();
+            bool used;
+        } //class Digest
 
         State FindState(STATE value) {
             if (stateDictionary.TryGetValue(value, out State state))
