@@ -3,19 +3,22 @@
 Generic State Machine can be instantiated with any enumeration type representing the set of states.
 
 ~~~
-enum RoomDoorState { Locked, Closed, Opened, OpenedInside, ClosedInside, LockedInside };
+enum RoomDoorState { Locked, Closed, Opened,
+                     OpenedInside, ClosedInside, LockedInside };
 StateMachine<RoomDoorState> stateMachine = new();
 ~~~
 
 Then the transition graph can be populated:
 
 ~~~
-stateMachine.AddValidStateTransition(RoomDoorState.ClosedInside, RoomDoorState.LockedInside, (start, finish) => {
-    // command hardware actuator to lock the door
+stateMachine.AddValidStateTransition(RoomDoorState.ClosedInside, RoomDoorState.LockedInside,
+    (start, finish) => {
+        // command hardware actuator to lock the door
 });
 //...
-stateMachine.AddInvalidStateTransition(RoomDoorState.Locked, RoomDoorState.LockedInside, (start, finish) =>
-    $"You cannot get in through the locked door"));
+stateMachine.AddInvalidStateTransition(RoomDoorState.Locked, RoomDoorState.LockedInside,
+    (start, finish) =>
+        $"You cannot get in through the locked door"));
 ~~~
 
 Note that both valid and some invalid transitions can be defined. The purpose of the invalid transition is to provide some information on why the transition is not permitted.
@@ -40,8 +43,13 @@ void AddInvalidStateTransition(STATE startState, STATE finishState,
     InvalidStateTransitionAction<STATE> action);
 (bool isValid, string validityComment) IsTransitionValid(STATE startState, STATE finishState);
 (bool success, string validityComment) TryTransitionTo(STATE state);
-// this method finds all permitted paths between two states:
+
+// Find all permitted paths between two states:
 STATE[][] Labyrinth(STATE start, STATE finish, bool shortest = false); 
+
+// Find all states not visited along any of the paths between start and finish states:
+(STATE[][] allPaths, STATE[] deadEnds) FindDeadEnds(STATE start, STATE finish);
+STATE[] FindDeadEnds(STATE start, STATE[][] allPaths);
 ~~~
 
 #### Public properties:
