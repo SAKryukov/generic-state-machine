@@ -120,22 +120,20 @@ namespace StateMachines {
             } //RecursiveWalk
             List<List<State>> solution = new();
             RecursiveWalk(FindState(start), FindState(finish), new List<State>(), solution);
-            STATE[][] stateSolution = new STATE[solution.Count][];
-            int shortestPathLength = int.MaxValue;
-            for (int index = 0; index < solution.Count; ++index) {
-                var path = solution[index];
-                if (path.Count < shortestPathLength)
-                    shortestPathLength = path.Count;
-                STATE[] row = System.Array.ConvertAll(path.ToArray(), state => state.UnderlyingMember);
-                stateSolution[index] = row;
-            } //loop
+            STATE[][] stateSolution = System.Array.ConvertAll(solution.ToArray(), path => System.Array.ConvertAll(path.ToArray(), state => state.UnderlyingMember));
             if (shortest) {
+                int shortestPathLength = int.MaxValue;
+                foreach (var path in stateSolution) {
+                    if (path.Length < shortestPathLength)
+                        shortestPathLength = path.Length;
+                } //loop
                 List<STATE[]> shortestList = new();
-                foreach (var element in stateSolution)
-                    if (element.Length == shortestPathLength)
-                        shortestList.Add(element);
-                return shortestList.ToArray();
-            } //if
+                foreach (var path in stateSolution) {
+                    if (path.Length == shortestPathLength)
+                        shortestList.Add(path);
+                } //loop
+                stateSolution = shortestList.ToArray();
+            } //if shortest
             return stateSolution;
         } //Labyrinth
 
