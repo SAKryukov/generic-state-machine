@@ -130,7 +130,7 @@ namespace StateMachines {
             Console.WriteLine($"{labyrinthSolution.Length} shortest route{plural} from {VisitorState.Entry} to {VisitorState.Exit} found:");
             PresentRoutesOfRoutes(labyrinthSolution);
             Console.WriteLine();
-            var deadEnds = stateMachine.FindDeadEnds(VisitorState.Entry, VisitorState.Exit);
+            var deadEnds = stateMachine.FindDeadEnds(VisitorState.Entry, VisitorState.Exit).deadEnds;
             string deadEndsPresentation = string.Join(", ", deadEnds);
             Console.WriteLine($"Dead ends found on the routes from {VisitorState.Entry} to {VisitorState.Exit}: {deadEndsPresentation}");
 #if TryAllRoutes
