@@ -103,29 +103,25 @@ namespace StateMachines {
 
         public STATE[][] Labyrinth(STATE start, STATE finish, bool shortest = false) {
             digest.BuildFollowingStates();
-            Dictionary<State, List<State>> followingNodes = new(); // populated on call
-            void RecursiveWalk(State start, State finish, Dictionary<State, bool> visited, List<State> localPath, List<List<State>> solution) {
+            static void RecursiveWalk(State start, State finish, List<State> localPath, List<List<State>> solution) {
                 if (start == finish) {
                     List<State> solutionElement = new(localPath);
                     solution.Add(solutionElement);
                     return;
                 } //if
-                visited[start] = true;
-                List<State> followingStates = digest.GetFollowingStates(start);
-                foreach (var followingState in followingStates) {
-                    if (visited[followingState]) continue;
+                start.digest.isVisited = true;
+                foreach (var followingState in start.digest.followingStates) {
+                    if (followingState.digest.isVisited) continue;
                     localPath.Add(followingState);
-                    RecursiveWalk(followingState, finish, visited, localPath, solution);
+                    RecursiveWalk(followingState, finish, localPath, solution);
                     localPath.Remove(followingState);
                 } //loop
-                visited[start] = false;
+                start.digest.isVisited = false;
             } //RecursiveWalk
-            Dictionary<State, bool> visited = new();
-            foreach (var state in stateDictionary.Values)
-                visited.Add(state, false);
             List<List<State>> solution = new();
-            RecursiveWalk(FindState(start), FindState(finish), visited, new List<State>(), solution);
+            RecursiveWalk(FindState(start), FindState(finish), new List<State>(), solution);
             STATE[][] stateSolution = new STATE[solution.Count][];
+            
             int shortestPathLength = int.MaxValue;
             int index = 0;
             foreach (var element in solution) {
@@ -213,30 +209,21 @@ namespace StateMachines {
 
         class Digest {
             internal void BuildFollowingStates() {
-                if (followingNodes.Count > 0) return;
-                used = true;
-                foreach (var stateValue in owner.stateDictionary.Values)
-                    followingNodes.Add(stateValue, new List<State>());
-                foreach (var (key, value) in owner.stateGraph) {
-                    if (!value.IsValid) continue;
-                    Update(key);
-                } //loop
+                if (populated) return;
+                populated = true;
+                foreach (var (key, value) in owner.stateGraph)
+                    if (value.IsValid)
+                        Update(key);
             } //BuildFollowingStates
-            internal List<State> GetFollowingStates(State state) =>
-                followingNodes[state];
             internal void Update(StateGraphKey key) {
-                if (!used) return;
-                Update(key.StartState, key.FinishState);
+                if (!populated) return;
+                key.StartState.digest.followingStates.Add(key.FinishState);
                 if (key.IsUndirected)
-                    Update(key.FinishState, key.StartState);
-            } //Update
-            void Update(State start, State finish) {
-                followingNodes[start].Add(finish);
+                    key.FinishState.digest.followingStates.Add(key.StartState);
             } //Update
             internal Digest(StateMachine<STATE> owner) { this.owner = owner; }
             readonly StateMachine<STATE> owner;
-            readonly Dictionary<State, List<State>> followingNodes = new();
-            bool used;
+            bool populated;
         } //class Digest
 
         State FindState(STATE value) {
@@ -274,9 +261,11 @@ namespace StateMachines {
             internal State(string name, STATE underlyingMember) {
                 Name = name;
                 UnderlyingMember = underlyingMember;
+                digest.isVisited = false; digest.followingStates = new();
             } //State
             internal string Name { get; init; }
             internal STATE UnderlyingMember { get; init; }
+            internal (bool isVisited, List<State> followingStates) digest;
         } //class State
 
         class StateGraphKey {
