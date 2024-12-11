@@ -7,7 +7,6 @@
 */
 
 namespace StateMachines {
-    using Type = System.Type;
     using BindingFlags = System.Reflection.BindingFlags;
     using FieldInfo = System.Reflection.FieldInfo;
     using System.Collections.Generic;
@@ -23,8 +22,7 @@ namespace StateMachines {
         #region API
 
         public StateMachine(STATE initialState = default) {
-            Type type = typeof(STATE);
-            FieldInfo[] fields = type.GetFields(BindingFlags.Static | BindingFlags.Public);
+            FieldInfo[] fields = typeof(STATE).GetFields(BindingFlags.Static | BindingFlags.Public);
             foreach (var field in fields) {
                 if (field.GetCustomAttributes(typeof(NotAStateAttribute), inherit: false).Length > 0) continue;
                 STATE value = (STATE)field.GetValue(null);
@@ -275,13 +273,13 @@ namespace StateMachines {
             public override bool Equals(object @object) { // important!
                 if (@object == null) return false;
                 if (@object is not StateGraphKey objectStateGraphKey) return false;
+                bool nameMatch = (objectStateGraphKey.StartState.Name == StartState.Name
+                    && objectStateGraphKey.FinishState.Name == FinishState.Name);
                 return IsUndirected
-                    ? (objectStateGraphKey.StartState.Name == StartState.Name
-                    && objectStateGraphKey.FinishState.Name == FinishState.Name)
-                    || (objectStateGraphKey.StartState.Name == FinishState.Name
-                    && objectStateGraphKey.FinishState.Name == StartState.Name)
-                    : objectStateGraphKey.StartState.Name == StartState.Name
-                    && objectStateGraphKey.FinishState.Name == FinishState.Name;
+                    ? nameMatch || 
+                        (objectStateGraphKey.StartState.Name == FinishState.Name
+                        && objectStateGraphKey.FinishState.Name == StartState.Name)
+                    : nameMatch;
             } //Equals
             internal State StartState { get; init; }
             internal State FinishState { get; init; }
