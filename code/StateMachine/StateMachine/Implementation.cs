@@ -146,9 +146,12 @@ namespace StateMachines {
             return stateSolution;
         } //Labyrinth
 
-        public STATE[] FindDeadEnds(STATE start, STATE[][] paths) {
+        // Find all states not visited along any of the paths between start and finish states
+        // It is assumed that the object paths is returned by Labyrinth, and the finish state is
+        // the last state of each path
+        public STATE[] FindDeadEnds(STATE start, STATE[][] allPaths) {
             HashSet<STATE> found = new(new STATE[1] { start });
-            foreach (var row in paths)
+            foreach (var row in allPaths)
                 foreach (STATE state in row)
                     found.Add(state);
             List<STATE> deadEnds = new();
@@ -158,8 +161,11 @@ namespace StateMachines {
             return deadEnds.ToArray();
         } //FindDeadEnds
 
-        public STATE[] FindDeadEnds(STATE start, STATE end) =>
-            FindDeadEnds(start, Labyrinth(start, end, shortest: false));
+        // Find all states not visited along any of the paths between start and finish states
+        public (STATE[][] allPaths, STATE[] deadEnds) FindDeadEnds(STATE start, STATE finish) {
+            STATE[][] allPaths = Labyrinth(start, finish, shortest: false);
+            return (allPaths, FindDeadEnds(start, allPaths));
+        } //FindDeadEnds
 
         public (int numberOfPaths, int longestPathLength, STATE[][] longestPaths) LongestPaths { //NP-hard
             get {
@@ -199,9 +205,7 @@ namespace StateMachines {
                     } //outer loop
                 return (max, pairList.ToArray());
             } //get LongestNumberOfPaths 
-        } //LongestNumberOfPaths 
-
-
+        } //LongestNumberOfPaths
 
         #endregion API
 
