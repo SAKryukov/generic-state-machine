@@ -121,16 +121,13 @@ namespace StateMachines {
             List<List<State>> solution = new();
             RecursiveWalk(FindState(start), FindState(finish), new List<State>(), solution);
             STATE[][] stateSolution = new STATE[solution.Count][];
-            
             int shortestPathLength = int.MaxValue;
-            int index = 0;
-            foreach (var element in solution) {
-                if (element.Count < shortestPathLength)
-                    shortestPathLength = element.Count;
-                STATE[] row = new STATE[element.Count];
-                for (var indexInRow = 0; indexInRow < row.Length; ++indexInRow)
-                    row[indexInRow] = element[indexInRow].UnderlyingMember;
-                stateSolution[index++] = row;
+            for (int index = 0; index < solution.Count; ++index) {
+                var path = solution[index];
+                if (path.Count < shortestPathLength)
+                    shortestPathLength = path.Count;
+                STATE[] row = System.Array.ConvertAll(path.ToArray(), state => state.UnderlyingMember);
+                stateSolution[index] = row;
             } //loop
             if (shortest) {
                 List<STATE[]> shortestList = new();
