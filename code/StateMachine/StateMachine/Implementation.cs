@@ -118,13 +118,13 @@ namespace StateMachines {
             } //RecursiveWalk
             List<List<State>> solution = new();
             RecursiveWalk(FindState(start), FindState(finish), new List<State>(), solution);
-            STATE[][] stateSolution = System.Array.ConvertAll(solution.ToArray(), path => System.Array.ConvertAll(path.ToArray(), state => state.UnderlyingMember));
+            int shortestPathLength = int.MaxValue;
+            STATE[][] stateSolution = System.Array.ConvertAll(solution.ToArray(), path => {
+                if (path.Count < shortestPathLength)
+                    shortestPathLength = path.Count;
+                return System.Array.ConvertAll(path.ToArray(), state => state.UnderlyingMember);
+            });
             if (shortest) {
-                int shortestPathLength = int.MaxValue;
-                foreach (var path in stateSolution) {
-                    if (path.Length < shortestPathLength)
-                        shortestPathLength = path.Length;
-                } //loop
                 List<STATE[]> shortestList = new();
                 foreach (var path in stateSolution) {
                     if (path.Length == shortestPathLength)
@@ -250,15 +250,14 @@ namespace StateMachines {
                 : base(DefinitionSet<STATE>.InvalidStateExceptionMessage(state)) { }
         } //class InvalidStateException
 
-        sealed class State {
+        class State {
             internal State(string name, STATE underlyingMember) {
                 Name = name;
                 UnderlyingMember = underlyingMember;
-                digest.isVisited = false; digest.followingStates = new();
             } //State
             internal string Name { get; init; }
             internal STATE UnderlyingMember { get; init; }
-            internal (bool isVisited, List<State> followingStates) digest;
+            internal (bool isVisited, List<State> followingStates) digest = (false, new());
         } //class State
 
         class StateGraphKey {
