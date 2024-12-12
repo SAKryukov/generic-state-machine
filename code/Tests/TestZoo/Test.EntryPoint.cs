@@ -3,6 +3,8 @@
 
     Zoo state machine
     See chart.StateMachineGraph.txt for the transition graph
+    See also:
+    https://sakryukov.github.io/generic-state-machine/zoo.svg
 
     Copyright (C) 2024 by Sergey A Kryukov
     https://www.SAKryukov.org
