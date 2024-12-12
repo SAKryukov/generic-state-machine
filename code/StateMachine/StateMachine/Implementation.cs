@@ -41,6 +41,7 @@ namespace StateMachines {
             CurrentState = initialState;
 
         public void AddValidStateTransition(STATE startState, STATE finishState, StateTransitionAction<STATE> action, bool undirected = false) {
+            if (startState.Equals(finishState)) return;
             StateGraphKey key = new(FindState(startState), FindState(finishState), undirected);
             if (stateGraph.TryGetValue(key, out StateGraphValue value))
                 throw new StateMachineGraphPopulationException(startState, finishState);
@@ -63,6 +64,7 @@ namespace StateMachines {
         } //AddValidStateTransitionChain
 
         public void AddInvalidStateTransition(STATE startState, STATE finishState, InvalidStateTransitionAction<STATE> action) {
+            if (startState.Equals(finishState)) return;
             StateGraphKey key = new(FindState(startState), FindState(finishState));
             if (stateGraph.TryGetValue(key, out StateGraphValue value))
                 throw new StateMachineGraphPopulationException(startState, finishState);
