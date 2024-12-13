@@ -5,11 +5,14 @@
    viewBox="0 0 1273.8041 640.88201"
    version="1.2"
    xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg">
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  <style>
+      text { font-family: Helvetica; font-size: 13.3px; fill: black; fill-opacity: 1; }      
+  </style>
   <title>Zoo, state diagram</title>
   <rect
      style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:9.99998;stroke-linecap:round;stroke-opacity:1;paint-order:stroke fill markers"
-     id="rect114"
      width="1273.8035"
      height="640.88232"
      x="0"
@@ -25,7 +28,6 @@
      font-size="11px"
      font-weight="400"
      font-style="normal"
-     id="g1"
      style="fill-rule:evenodd"
      transform="translate(46.803336,69.4563)" />
   <g
@@ -39,7 +41,6 @@
      font-size="11px"
      font-weight="400"
      font-style="normal"
-     id="g2"
      style="fill-rule:evenodd"
      transform="translate(46.803336,69.4563)" />
   <g
@@ -54,7 +55,6 @@
      font-size="11px"
      font-weight="400"
      font-style="normal"
-     id="g3"
      style="fill-rule:evenodd" />
   <g
      fill="none"
@@ -68,7 +68,6 @@
      font-size="11px"
      font-weight="400"
      font-style="normal"
-     id="g5"
      style="fill-rule:evenodd" />
   <g
      fill="none"
@@ -82,7 +81,6 @@
      font-size="11px"
      font-weight="400"
      font-style="normal"
-     id="g8"
      style="fill-rule:evenodd" />
   <g
      fill="none"
@@ -96,7 +94,6 @@
      font-size="11px"
      font-weight="400"
      font-style="normal"
-     id="g11"
      style="fill-rule:evenodd" />
   <g
      fill="none"
@@ -110,7 +107,6 @@
      font-size="11px"
      font-weight="400"
      font-style="normal"
-     id="g14"
      style="fill-rule:evenodd" />
   <g
      fill="none"
@@ -124,7 +120,6 @@
      font-size="11px"
      font-weight="400"
      font-style="normal"
-     id="g17"
      style="fill-rule:evenodd" />
   <g
      fill="none"
@@ -138,7 +133,6 @@
      font-size="11px"
      font-weight="400"
      font-style="normal"
-     id="g20"
      style="fill-rule:evenodd" />
   <g
      fill="none"
@@ -152,7 +146,6 @@
      font-size="11px"
      font-weight="400"
      font-style="normal"
-     id="g23"
      style="fill-rule:evenodd" />
   <g
      fill="none"
@@ -166,7 +159,6 @@
      font-size="11px"
      font-weight="400"
      font-style="normal"
-     id="g26"
      style="fill-rule:evenodd" />
   <g
      fill="none"
@@ -180,7 +172,6 @@
      font-size="11px"
      font-weight="400"
      font-style="normal"
-     id="g29"
      style="fill-rule:evenodd" />
   <g
      fill="none"
@@ -194,7 +185,6 @@
      font-size="11px"
      font-weight="400"
      font-style="normal"
-     id="g32"
      style="fill-rule:evenodd" />
   <g
      fill="none"
@@ -208,7 +198,6 @@
      font-size="11px"
      font-weight="400"
      font-style="normal"
-     id="g35"
      style="fill-rule:evenodd" />
   <g
      fill="none"
@@ -222,7 +211,6 @@
      font-size="11px"
      font-weight="400"
      font-style="normal"
-     id="g38"
      style="fill-rule:evenodd" />
   <g
      fill="none"
@@ -236,7 +224,6 @@
      font-size="11px"
      font-weight="400"
      font-style="normal"
-     id="g41"
      style="fill-rule:evenodd" />
   <g
      fill="none"
@@ -250,7 +237,6 @@
      font-size="11px"
      font-weight="400"
      font-style="normal"
-     id="g44"
      style="fill-rule:evenodd" />
   <g
      fill="none"
@@ -264,7 +250,6 @@
      font-size="11px"
      font-weight="400"
      font-style="normal"
-     id="g47"
      style="fill-rule:evenodd" />
   <g
      fill="none"
@@ -278,7 +263,6 @@
      font-size="11px"
      font-weight="400"
      font-style="normal"
-     id="g50"
      style="fill-rule:evenodd" />
   <g
      fill="none"
@@ -292,7 +276,6 @@
      font-size="11px"
      font-weight="400"
      font-style="normal"
-     id="g53"
      style="fill-rule:evenodd" />
   <g
      fill="none"
@@ -306,7 +289,6 @@
      font-size="11px"
      font-weight="400"
      font-style="normal"
-     id="g56"
      style="fill-rule:evenodd" />
   <g
      fill="none"
@@ -320,7 +302,6 @@
      font-size="11px"
      font-weight="400"
      font-style="normal"
-     id="g59"
      style="fill-rule:evenodd" />
   <g
      fill="none"
@@ -334,7 +315,6 @@
      font-size="11px"
      font-weight="400"
      font-style="normal"
-     id="g62"
      style="fill-rule:evenodd" />
   <g
      fill="none"
@@ -348,7 +328,6 @@
      font-size="11px"
      font-weight="400"
      font-style="normal"
-     id="g65"
      style="fill-rule:evenodd" />
   <g
      fill="none"
@@ -362,7 +341,6 @@
      font-size="11px"
      font-weight="400"
      font-style="normal"
-     id="g68"
      style="fill-rule:evenodd" />
   <g
      fill="none"
@@ -376,7 +354,6 @@
      font-size="12px"
      font-weight="400"
      font-style="normal"
-     id="g70"
      style="fill-rule:evenodd" />
   <g
      fill="none"
@@ -390,7 +367,6 @@
      font-size="12px"
      font-weight="400"
      font-style="normal"
-     id="g72"
      style="fill-rule:evenodd" />
   <g
      fill="none"
@@ -403,7 +379,6 @@
      font-size="12px"
      font-weight="400"
      font-style="normal"
-     id="g73"
      style="fill-rule:evenodd"
      transform="translate(46.803336,69.4563)" />
   <g
@@ -418,7 +393,6 @@
      font-size="12px"
      font-weight="400"
      font-style="normal"
-     id="g74"
      style="fill-rule:evenodd" />
   <g
      fill="none"
@@ -432,7 +406,6 @@
      font-size="11px"
      font-weight="400"
      font-style="normal"
-     id="g75"
      style="fill-rule:evenodd" />
   <g
      fill="none"
@@ -446,7 +419,6 @@
      font-size="11px"
      font-weight="400"
      font-style="normal"
-     id="g78"
      style="fill-rule:evenodd" />
   <g
      fill="none"
@@ -460,7 +432,6 @@
      font-size="11px"
      font-weight="400"
      font-style="normal"
-     id="g81"
      style="fill-rule:evenodd" />
   <g
      fill="none"
@@ -474,7 +445,6 @@
      font-size="11px"
      font-weight="400"
      font-style="normal"
-     id="g84"
      style="fill-rule:evenodd" />
   <g
      fill="none"
@@ -488,7 +458,6 @@
      font-size="11px"
      font-weight="400"
      font-style="normal"
-     id="g87"
      style="fill-rule:evenodd" />
   <g
      fill="none"
@@ -501,117 +470,76 @@
      font-size="11px"
      font-weight="400"
      font-style="normal"
-     id="g88"
      style="fill-rule:evenodd"
      transform="translate(46.803336,69.4563)" />
-  <metadata
-     id="metadata114">
-    <rdf:RDF>
-      <cc:Work
-         rdf:about="">
-        <dc:title>Qt Svg Document</dc:title>
-      </cc:Work>
-    </rdf:RDF>
-  </metadata>
   <g
-     id="g142"
      transform="translate(-11.990131)">
     <path
        style="fill:#fc2424;fill-opacity:1;stroke:#000000;stroke-width:0.604725;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
-       d="M 853.80461,442.14624 V 545.03375"
-       id="path142-2-2-6" />
+       d="M 853.80461,442.14624 V 545.03375"/>
     <path
        style="fill:#fc2424;fill-opacity:1;stroke:#000000;stroke-width:0.604725;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
-       d="M 1029.0747,437.99523 V 544.7877"
-       id="path142-2-2-6-3" />
+       d="M 1029.0747,437.99523 V 544.7877"/>
     <path
        style="fill:#fc2424;fill-opacity:1;stroke:#000000;stroke-width:0.604723;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
        d="M 379.16658,218.3066 V 436.95786"
-       id="path142" />
+       />
     <path
        style="fill:#fc2424;fill-opacity:1;stroke:#000000;stroke-width:0.604722;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
        d="M 638.25962,106.45561 V 432.72498"
-       id="path142-2" />
+       />
     <path
        style="fill:#fc2424;fill-opacity:1;stroke:#000000;stroke-width:0.604723;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
        d="M 1200.2122,106.30679 V 324.958"
-       id="path142-2-9" />
+       />
     <path
        style="fill:#fc2424;fill-opacity:1;stroke:#000000;stroke-width:0.604725;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
        d="M 124.97772,106.14671 V 209.03417"
-       id="path142-2-2-9" />
+       />
     <path
        style="fill:#fc2424;fill-opacity:1;stroke:#000000;stroke-width:0.604725;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
        d="M 963.37749,330.14638 V 433.03389"
-       id="path142-2-2-8" />
+       />
     <path
        style="fill:#fc2424;fill-opacity:1;stroke:#000000;stroke-width:0.604725;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
        d="M 1084.9632,330.14638 V 433.03389"
-       id="path142-2-2-8-3" />
+       />
     <path
        style="fill:#fc2424;fill-opacity:1;stroke:#000000;stroke-width:0.604723;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
        d="m 387.29717,437.6136 c 695.11413,0 695.11413,0 695.11413,0"
-       id="path141-2" />
+       />
     <path
        style="fill:#fc2424;fill-opacity:1;stroke:#000000;stroke-width:0.604722;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
        d="m 385.76,325.61372 c 785.2832,0 785.2832,0 785.2832,0"
-       id="path141-2-7" />
+       />
     <path
        style="fill:#fc2424;fill-opacity:1;stroke:#000000;stroke-width:0.604723;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
        d="m 124.97772,97.47371 c 1040.80558,0 1040.80558,0 1040.80558,0"
-       id="path141" />
+       />
     <path
        style="fill:#fc2424;fill-opacity:1;stroke:#000000;stroke-width:0.604724;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
        d="m 124.79136,212.23914 c 399.31208,0 399.31208,0 399.31208,0"
-       id="path141-4" />
+       />
     <g
-       id="g116"
        transform="translate(59.262344,84.574387)">
       <path
          vector-effect="non-scaling-stroke"
          fill-rule="evenodd"
          d="m 280.18885,12.899323 c 0,-6.8701264 2.47254,-12.4394628 5.52258,-12.4394628 h 99.40641 c 3.05002,0 5.52258,5.5693364 5.52258,12.4394628 0,6.870166 -2.47256,12.439462 -5.52258,12.439462 h -99.40641 c -3.05004,0 -5.52258,-5.569296 -5.52258,-12.439462"
-         id="path8"
          style="font-style:normal;font-weight:400;font-size:11px;font-family:'MS Shell Dlg 2';fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.995157;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" />
-      <text
-         fill="#000000"
-         fill-opacity="1"
-         stroke="none"
-         xml:space="preserve"
-         x="293.41687"
-         y="16.193836"
-         font-family="'Sans Serif'"
-         font-size="11.9419px"
-         font-weight="400"
-         font-style="normal"
-         id="text9"
-         style="fill-rule:evenodd;stroke-width:0.995157;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1">Snow Leopard</text>
+      <text x="293.41687" y="17.35129">Snow Leopard</text>
     </g>
     <g
-       id="g117"
+       text-align="right"
        transform="translate(59.262344,84.574387)">
       <path
          vector-effect="non-scaling-stroke"
          fill-rule="evenodd"
          d="m 539.95338,12.899323 c 0,-6.8701264 2.59282,-12.4394628 5.79122,-12.4394628 h 84.93782 c 3.19841,0 5.79122,5.5693364 5.79122,12.4394628 0,6.870166 -2.59281,12.439462 -5.79122,12.439462 H 545.7446 c -3.1984,0 -5.79122,-5.569296 -5.79122,-12.439462"
-         id="path11"
          style="font-style:normal;font-weight:400;font-size:11px;font-family:'MS Shell Dlg 2';fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.995157;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" />
-      <text
-         fill="#000000"
-         fill-opacity="1"
-         stroke="none"
-         xml:space="preserve"
-         x="553.53949"
-         y="17.35129"
-         font-family="'Sans Serif'"
-         font-size="11.9419px"
-         font-weight="400"
-         font-style="normal"
-         id="text12"
-         style="fill-rule:evenodd;stroke-width:0.995157;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1">African Lion</text>
+      <text x="553.53949" y="17.35129">African Lion</text>
     </g>
     <g
-       id="g118"
        transform="translate(59.262344,84.574387)">
       <path
          vector-effect="non-scaling-stroke"
@@ -619,22 +547,9 @@
          d="m 700.45968,12.899323 c 0,-6.8701264 2.67303,-12.4394628 5.97036,-12.4394628 h 87.56535 c 3.29734,0 5.97037,5.5693364 5.97037,12.4394628 0,6.870166 -2.67303,12.439462 -5.97037,12.439462 h -87.56535 c -3.29733,0 -5.97036,-5.569296 -5.97036,-12.439462"
          id="path14"
          style="font-style:normal;font-weight:400;font-size:11px;font-family:'MS Shell Dlg 2';fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.995158;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" />
-      <text
-         fill="#000000"
-         fill-opacity="1"
-         stroke="none"
-         xml:space="preserve"
-         x="712.02551"
-         y="16.193836"
-         font-family="'Sans Serif'"
-         font-size="11.9419px"
-         font-weight="400"
-         font-style="normal"
-         id="text15"
-         style="fill-rule:evenodd;stroke-width:0.995157;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1">Bengal Tiger</text>
+      <text x="712.02551" y="17.35129">Bengal Tiger</text>
     </g>
     <g
-       id="g119"
        transform="translate(59.262344,84.574387)">
       <path
          vector-effect="non-scaling-stroke"
@@ -642,22 +557,9 @@
          d="m 863.93506,12.899323 c 0,-6.8701264 2.33446,-12.4394628 5.21418,-12.4394628 h 119.92617 c 2.87943,0 5.21418,5.5693364 5.21418,12.4394628 0,6.870166 -2.33475,12.439462 -5.21418,12.439462 H 869.14924 c -2.87972,0 -5.21418,-5.569296 -5.21418,-12.439462"
          id="path17"
          style="font-style:normal;font-weight:400;font-size:11px;font-family:'MS Shell Dlg 2';fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.995157;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" />
-      <text
-         fill="#000000"
-         fill-opacity="1"
-         stroke="none"
-         xml:space="preserve"
-         x="874.70911"
-         y="16.193836"
-         font-family="'Sans Serif'"
-         font-size="11.9419px"
-         font-weight="400"
-         font-style="normal"
-         id="text18"
-         style="fill-rule:evenodd;stroke-width:0.995157;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1">Dromedary Camel</text>
+      <text x="874.70911" y="17.35129">Dromedary Camel</text>
     </g>
     <g
-       id="g120"
        transform="translate(83.242605,84.574387)">
       <path
          vector-effect="non-scaling-stroke"
@@ -665,19 +567,7 @@
          d="m 1058.2609,12.899323 c 0,-6.8701264 2.5928,-12.4394628 5.7912,-12.4394628 h 84.9378 c 3.1985,0 5.7913,5.5693364 5.7913,12.4394628 0,6.870166 -2.5928,12.439462 -5.7913,12.439462 h -84.9378 c -3.1984,0 -5.7912,-5.569296 -5.7912,-12.439462"
          id="path20"
          style="font-style:normal;font-weight:400;font-size:11px;font-family:'MS Shell Dlg 2';fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.995157;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" />
-      <text
-         fill="#000000"
-         fill-opacity="1"
-         stroke="none"
-         xml:space="preserve"
-         x="1070.3601"
-         y="17.35129"
-         font-family="'Sans Serif'"
-         font-size="11.9419px"
-         font-weight="400"
-         font-style="normal"
-         id="text21"
-         style="fill-rule:evenodd;stroke-width:0.995157;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1">White Rhino</text>
+      <text x="1070.3601" y="17.35129">White Rhino</text>
     </g>
     <g
        id="g121"
@@ -688,19 +578,7 @@
          d="m 0.52627983,126.29534 c 0,-6.87012 2.39245987,-12.43946 5.34371667,-12.43946 H 173.30645 c 2.95129,0 5.34372,5.56934 5.34372,12.43946 0,6.87017 -2.39243,12.43946 -5.34372,12.43946 H 5.8699965 c -2.9512568,0 -5.34371667,-5.56929 -5.34371667,-12.43946"
          id="path23"
          style="font-style:normal;font-weight:400;font-size:11px;font-family:'MS Shell Dlg 2';fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.995157;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" />
-      <text
-         fill="#000000"
-         fill-opacity="1"
-         stroke="none"
-         xml:space="preserve"
-         x="11.07092"
-         y="129.58986"
-         font-family="'Sans Serif'"
-         font-size="11.9419px"
-         font-weight="400"
-         font-style="normal"
-         id="text24"
-         style="fill-rule:evenodd;stroke-width:0.995157;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1">North American Porcupine</text>
+      <text x="11.07092" y="130.74731">North American Porcupine</text>
     </g>
     <g
        id="g122"
@@ -711,19 +589,7 @@
          d="m 197.59386,124.80261 c 0,-6.04571 2.96693,-10.94673 6.62683,-10.94673 h 60.37781 c 3.65989,0 6.62684,4.90102 6.62684,10.94673 v 2.98547 c 0,6.04568 -2.96695,10.94672 -6.62684,10.94672 h -60.37781 c -3.6599,0 -6.62683,-4.90104 -6.62683,-10.94672 v -2.98547"
          id="path26"
          style="font-style:normal;font-weight:400;font-size:11px;font-family:'MS Shell Dlg 2';fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.995157;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" />
-      <text
-         fill="#000000"
-         fill-opacity="1"
-         stroke="none"
-         xml:space="preserve"
-         x="210.56664"
-         y="130.74731"
-         font-family="'Sans Serif'"
-         font-size="11.9419px"
-         font-weight="400"
-         font-style="normal"
-         id="text27"
-         style="fill-rule:evenodd;stroke-width:0.995157;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1">Mandrill</text>
+      <text x="210.56664" y="130.74731">Mandrill</text>
     </g>
     <g
        id="g123"
@@ -734,19 +600,7 @@
          d="m 290.24272,121.94153 c 0,-4.46558 3.18718,-8.08565 7.11876,-8.08565 h 45.08551 c 3.93153,0 7.11877,3.62007 7.11877,8.08565 v 8.70762 c 0,4.46557 -3.18724,8.08565 -7.11877,8.08565 h -45.08551 c -3.93158,0 -7.11876,-3.62008 -7.11876,-8.08565 v -8.70762"
          id="path29"
          style="font-style:normal;font-weight:400;font-size:11px;font-family:'MS Shell Dlg 2';fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.995156;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" />
-      <text
-         fill="#000000"
-         fill-opacity="1"
-         stroke="none"
-         xml:space="preserve"
-         x="304.79028"
-         y="130.74731"
-         font-family="'Sans Serif'"
-         font-size="11.9419px"
-         font-weight="400"
-         font-style="normal"
-         id="text30"
-         style="fill-rule:evenodd;stroke-width:0.995157;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1">Sloth</text>
+      <text x="304.79028" y="130.74731">Sloth</text>
     </g>
     <g
        id="g124"
@@ -757,19 +611,7 @@
          d="m 368.6079,121.94153 c 0,-4.46558 3.20744,-8.08565 7.16402,-8.08565 h 45.37213 c 3.95651,0 7.16402,3.62007 7.16402,8.08565 v 8.70762 c 0,4.46557 -3.20751,8.08565 -7.16402,8.08565 h -45.37213 c -3.95658,0 -7.16402,-3.62008 -7.16402,-8.08565 v -8.70762"
          id="path32"
          style="font-style:normal;font-weight:400;font-size:11px;font-family:'MS Shell Dlg 2';fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.995157;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" />
-      <text
-         fill="#000000"
-         fill-opacity="1"
-         stroke="none"
-         xml:space="preserve"
-         x="383.20117"
-         y="130.74731"
-         font-family="'Sans Serif'"
-         font-size="11.9419px"
-         font-weight="400"
-         font-style="normal"
-         id="text33"
-         style="fill-rule:evenodd;stroke-width:0.995157;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1">Coati</text>
+      <text x="383.20117" y="130.74731">Coati</text>
     </g>
     <g
        id="g125"
@@ -780,19 +622,7 @@
          d="m 447.35212,121.94153 c 0,-4.46558 3.20744,-8.08565 7.16402,-8.08565 h 45.37213 c 3.95651,0 7.16402,3.62007 7.16402,8.08565 v 8.70762 c 0,4.46557 -3.20751,8.08565 -7.16402,8.08565 h -45.37213 c -3.95658,0 -7.16402,-3.62008 -7.16402,-8.08565 v -8.70762"
          id="path35"
          style="font-style:normal;font-weight:400;font-size:11px;font-family:'MS Shell Dlg 2';fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.995157;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" />
-      <text
-         fill="#000000"
-         fill-opacity="1"
-         stroke="none"
-         xml:space="preserve"
-         x="463.78506"
-         y="130.56363"
-         font-family="'Sans Serif'"
-         font-size="11.9419px"
-         font-weight="400"
-         font-style="normal"
-         id="text36"
-         style="fill-rule:evenodd;stroke-width:0.995157;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1">Emu</text>
+      <text x="463.78506" y="130.74731">Emu</text>
     </g>
     <g
        id="g126"
@@ -803,19 +633,7 @@
          d="m 803.61812,126.29534 c 0,-6.87012 2.74774,-12.43946 6.13727,-12.43946 h 90.01326 c 3.38956,0 6.13727,5.56934 6.13727,12.43946 0,6.87017 -2.74771,12.43946 -6.13727,12.43946 h -90.01326 c -3.38953,0 -6.13727,-5.56929 -6.13727,-12.43946"
          id="path38"
          style="font-style:normal;font-weight:400;font-size:11px;font-family:'MS Shell Dlg 2';fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.995157;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" />
-      <text
-         fill="#000000"
-         fill-opacity="1"
-         stroke="none"
-         xml:space="preserve"
-         x="817.60107"
-         y="129.58986"
-         font-family="'Sans Serif'"
-         font-size="11.9419px"
-         font-weight="400"
-         font-style="normal"
-         id="text39"
-         style="fill-rule:evenodd;stroke-width:0.995157;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1">Chimpanzee</text>
+      <text x="817.60107" y="130.74731">Chimpanzee</text>
     </g>
     <g
        id="g127"
@@ -826,19 +644,7 @@
          d="m 358.29093,236.30695 c 0,-5.0152 3.04033,-9.08081 6.79077,-9.08081 h 51.09247 c 3.75039,0 6.79077,4.06561 6.79077,9.08081 v 6.71731 c 0,5.01519 -3.04038,9.0808 -6.79077,9.0808 H 365.0817 c -3.75044,0 -6.79077,-4.06561 -6.79077,-9.0808 v -6.71731"
          id="path41"
          style="font-style:normal;font-weight:400;font-size:11px;font-family:'MS Shell Dlg 2';fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.995157;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" />
-      <text
-         fill="#000000"
-         fill-opacity="1"
-         stroke="none"
-         xml:space="preserve"
-         x="372.02414"
-         y="244.11757"
-         font-family="'Sans Serif'"
-         font-size="11.9419px"
-         font-weight="400"
-         font-style="normal"
-         id="text42"
-         style="fill-rule:evenodd;stroke-width:0.995157;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1">Serval</text>
+      <text x="372.02414" y="244.11757">Serval</text>
     </g>
     <g
        id="g128"
@@ -849,19 +655,7 @@
          d="m 447.15467,235.31179 c 0,-4.46558 3.20744,-8.08565 7.16402,-8.08565 h 45.37213 c 3.95651,0 7.16402,3.62007 7.16402,8.08565 v 8.70762 c 0,4.46557 -3.20751,8.08565 -7.16402,8.08565 h -45.37213 c -3.95658,0 -7.16402,-3.62008 -7.16402,-8.08565 v -8.70762"
          id="path44"
          style="font-style:normal;font-weight:400;font-size:11px;font-family:'MS Shell Dlg 2';fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.995157;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" />
-      <text
-         fill="#000000"
-         fill-opacity="1"
-         stroke="none"
-         xml:space="preserve"
-         x="467.09207"
-         y="244.11757"
-         font-family="'Sans Serif'"
-         font-size="11.9419px"
-         font-weight="400"
-         font-style="normal"
-         id="text45"
-         style="fill-rule:evenodd;stroke-width:0.995157;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1">Yak</text>
+      <text x="467.09207" y="244.11757">Yak</text>
     </g>
     <g
        id="g130"
@@ -872,19 +666,7 @@
          d="m 774.54394,239.6656 c 0,-6.87012 2.96697,-12.43946 6.62691,-12.43946 h 134.01094 c 3.6602,0 6.62692,5.56934 6.62692,12.43946 0,6.87017 -2.96672,12.43946 -6.62692,12.43946 H 781.17085 c -3.65994,0 -6.62691,-5.56929 -6.62691,-12.43946"
          id="path50"
          style="font-style:normal;font-weight:400;font-size:11px;font-family:'MS Shell Dlg 2';fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.995156;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" />
-      <text
-         fill="#000000"
-         fill-opacity="1"
-         stroke="none"
-         xml:space="preserve"
-         x="795.16675"
-         y="242.96011"
-         font-family="'Sans Serif'"
-         font-size="11.9419px"
-         font-weight="400"
-         font-style="normal"
-         id="text51"
-         style="fill-rule:evenodd;stroke-width:0.995157;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1">Capuchin Monkey</text>
+      <text x="795.16675" y="244.11757">Capuchin Monkey</text>
     </g>
     <g
        id="g131"
@@ -895,19 +677,7 @@
          d="m 953.93779,239.6656 c 0,-6.87012 2.56611,-12.43946 5.73157,-12.43946 h 84.06314 c 3.1655,0 5.7315,5.56934 5.7315,12.43946 0,6.87017 -2.566,12.43946 -5.7315,12.43946 h -84.06314 c -3.16546,0 -5.73157,-5.56929 -5.73157,-12.43946"
          id="path53"
          style="font-style:normal;font-weight:400;font-size:11px;font-family:'MS Shell Dlg 2';fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.995157;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" />
-      <text
-         fill="#000000"
-         fill-opacity="1"
-         stroke="none"
-         xml:space="preserve"
-         x="967.68286"
-         y="244.11757"
-         font-family="'Sans Serif'"
-         font-size="11.9419px"
-         font-weight="400"
-         font-style="normal"
-         id="text54"
-         style="fill-rule:evenodd;stroke-width:0.995157;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1">Kookaburra</text>
+      <text x="967.68286" y="244.11757">Kookaburra</text>
     </g>
     <g
        id="g132"
@@ -918,19 +688,7 @@
          d="m 1079.1382,238.54605 c 0,-6.25181 2.8779,-11.31991 6.428,-11.31991 h 62.7673 c 3.5501,0 6.428,5.0681 6.428,11.31991 v 2.2391 c 0,6.25178 -2.8779,11.31991 -6.428,11.31991 h -62.7673 c -3.5501,0 -6.428,-5.06813 -6.428,-11.31991 v -2.2391"
          id="path56"
          style="font-style:normal;font-weight:400;font-size:11px;font-family:'MS Shell Dlg 2';fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.995157;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" />
-      <text
-         fill="#000000"
-         fill-opacity="1"
-         stroke="none"
-         xml:space="preserve"
-         x="1094.1069"
-         y="244.11757"
-         font-family="'Sans Serif'"
-         font-size="11.9419px"
-         font-weight="400"
-         font-style="normal"
-         id="text57"
-         style="fill-rule:evenodd;stroke-width:0.995157;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1">Tortoise</text>
+      <text x="1094.1069" y="244.11757">Tortoise</text>
     </g>
     <g
        id="g133"
@@ -941,19 +699,7 @@
          d="m 356.30093,351.91964 c 0,-6.25181 2.8779,-11.31991 6.42798,-11.31991 h 62.76733 c 3.55004,0 6.42798,5.0681 6.42798,11.31991 v 2.2391 c 0,6.25178 -2.87794,11.31991 -6.42798,11.31991 h -62.76733 c -3.55008,0 -6.42798,-5.06813 -6.42798,-11.31991 v -2.2391"
          id="path59"
          style="font-style:normal;font-weight:400;font-size:11px;font-family:'MS Shell Dlg 2';fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.995157;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" />
-      <text
-         fill="#000000"
-         fill-opacity="1"
-         stroke="none"
-         xml:space="preserve"
-         x="369.19965"
-         y="357.49115"
-         font-family="'Sans Serif'"
-         font-size="11.9419px"
-         font-weight="400"
-         font-style="normal"
-         id="text60"
-         style="fill-rule:evenodd;stroke-width:0.995157;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1">Cheetah</text>
+      <text x="369.19965" y="357.49115">Cheetah</text>
     </g>
     <g
        id="g134"
@@ -964,19 +710,7 @@
          d="m 523.79685,351.29767 c 0,-5.90831 2.92689,-10.69794 6.53737,-10.69794 h 59.56272 c 3.61049,0 6.53737,4.78963 6.53737,10.69794 v 3.48305 c 0,5.90834 -2.92688,10.69793 -6.53737,10.69793 h -59.56272 c -3.61048,0 -6.53737,-4.78959 -6.53737,-10.69793 v -3.48305"
          id="path62"
          style="font-style:normal;font-weight:400;font-size:11px;font-family:'MS Shell Dlg 2';fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.995157;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" />
-      <text
-         fill="#000000"
-         fill-opacity="1"
-         stroke="none"
-         xml:space="preserve"
-         x="538.25806"
-         y="357.30746"
-         font-family="'Sans Serif'"
-         font-size="11.9419px"
-         font-weight="400"
-         font-style="normal"
-         id="text63"
-         style="fill-rule:evenodd;stroke-width:0.995157;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1">Watusu</text>
+      <text x="538.25806" y="357.49115">Watusu</text>
     </g>
     <g
        id="g135"
@@ -987,19 +721,7 @@
          d="m 639.17297,352.04404 c 0,-6.32052 2.7719,-11.44431 6.19121,-11.44431 h 60.45536 c 3.41936,0 6.19121,5.12379 6.19121,11.44431 v 1.99031 c 0,6.32054 -2.77185,11.4443 -6.19121,11.4443 h -60.45536 c -3.41931,0 -6.19121,-5.12376 -6.19121,-11.4443 v -1.99031"
          id="path65"
          style="font-style:normal;font-weight:400;font-size:11px;font-family:'MS Shell Dlg 2';fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.995157;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" />
-      <text
-         fill="#000000"
-         fill-opacity="1"
-         stroke="none"
-         xml:space="preserve"
-         x="650.58563"
-         y="356.33371"
-         font-family="'Sans Serif'"
-         font-size="11.9419px"
-         font-weight="400"
-         font-style="normal"
-         id="text66"
-         style="fill-rule:evenodd;stroke-width:0.995157;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1">Alligator</text>
+      <text x="650.58563" y="357.49115">Alligator</text>
     </g>
     <g
        id="g136"
@@ -1010,19 +732,7 @@
          d="m 754.74071,352.66601 c 0,-6.66402 2.85116,-12.06628 6.36825,-12.06628 h 66.86662 c 3.51702,0 6.36825,5.40226 6.36825,12.06628 v 0.74637 c 0,6.66407 -2.85123,12.06627 -6.36825,12.06627 h -66.86662 c -3.51709,0 -6.36825,-5.4022 -6.36825,-12.06627 v -0.74637"
          id="path68"
          style="font-style:normal;font-weight:400;font-size:11px;font-family:'MS Shell Dlg 2';fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.995157;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" />
-      <text
-         fill="#000000"
-         fill-opacity="1"
-         stroke="none"
-         xml:space="preserve"
-         x="766.82751"
-         y="356.33371"
-         font-family="'Sans Serif'"
-         font-size="11.9419px"
-         font-weight="400"
-         font-style="normal"
-         id="text70"
-         style="fill-rule:evenodd;stroke-width:0.995157;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1">Flamingo</text>
+      <text x="766.82751" y="357.49115">Flamingo</text>
     </g>
     <g
        id="g138"
@@ -1033,19 +743,7 @@
          d="m 983.55985,351.54646 c 0,-6.04571 2.96693,-10.94673 6.62683,-10.94673 h 60.37782 c 3.6599,0 6.6268,4.90102 6.6268,10.94673 v 2.98547 c 0,6.04568 -2.9669,10.94672 -6.6268,10.94672 h -60.37782 c -3.6599,0 -6.62683,-4.90104 -6.62683,-10.94672 v -2.98547"
          id="path78"
          style="font-style:normal;font-weight:400;font-size:11px;font-family:'MS Shell Dlg 2';fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.995157;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" />
-      <text
-         fill="#000000"
-         fill-opacity="1"
-         stroke="none"
-         xml:space="preserve"
-         x="996.87378"
-         y="356.33371"
-         font-family="'Sans Serif'"
-         font-size="11.9419px"
-         font-weight="400"
-         font-style="normal"
-         id="text79"
-         style="fill-rule:evenodd;stroke-width:0.995157;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1">Wallaby</text>
+      <text x="996.87378" y="357.49115">Wallaby</text>
     </g>
     <g
        id="g137"
@@ -1056,19 +754,7 @@
          d="m 877.10818,349.55614 c 0,-4.94648 3.13616,-8.95641 7.0048,-8.95641 h 49.6704 c 3.86863,0 7.0048,4.00993 7.0048,8.95641 v 6.9661 c 0,4.94653 -3.13617,8.95641 -7.0048,8.95641 h -49.6704 c -3.86864,0 -7.0048,-4.00988 -7.0048,-8.95641 v -6.9661"
          id="path75"
          style="font-style:normal;font-weight:400;font-size:11px;font-family:'MS Shell Dlg 2';fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.995157;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" />
-      <text
-         fill="#000000"
-         fill-opacity="1"
-         stroke="none"
-         xml:space="preserve"
-         x="890.78461"
-         y="357.49115"
-         font-family="'Sans Serif'"
-         font-size="11.9419px"
-         font-weight="400"
-         font-style="normal"
-         id="text76"
-         style="fill-rule:evenodd;stroke-width:0.995157;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1">Llama</text>
+      <text x="890.78461" y="357.49115">Llama</text>
     </g>
     <g
        id="g140"
@@ -1079,22 +765,9 @@
          d="m 932.33203,454.48042 c 0,-4.46558 3.20744,-8.08565 7.16402,-8.08565 h 45.37215 c 3.95652,0 7.16402,3.62007 7.16402,8.08565 v 8.70762 c 0,4.46557 -3.2075,8.08565 -7.16402,8.08565 h -45.37215 c -3.95658,0 -7.16402,-3.62008 -7.16402,-8.08565 v -8.70762"
          id="path81"
          style="font-style:normal;font-weight:400;font-size:11px;font-family:'MS Shell Dlg 2';fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.995157;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" />
-      <text
-         fill="#000000"
-         fill-opacity="1"
-         stroke="none"
-         xml:space="preserve"
-         x="945.88727"
-         y="461.94516"
-         font-family="'Sans Serif'"
-         font-size="11.9419px"
-         font-weight="400"
-         font-style="normal"
-         id="text82"
-         style="fill-rule:evenodd;stroke-width:0.995157;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1">Entry</text>
+      <text x="945.88727" y="463.37085">Entry</text>
     </g>
     <g
-       id="g139"
        transform="translate(59.262344,84.574387)">
       <path
          vector-effect="non-scaling-stroke"
@@ -1102,22 +775,9 @@
          d="m 764.69218,454.48042 c 0,-4.46558 3.20744,-8.08565 7.16402,-8.08565 h 45.37215 c 3.95652,0 7.16402,3.62007 7.16402,8.08565 v 8.70762 c 0,4.46557 -3.2075,8.08565 -7.16402,8.08565 H 771.8562 c -3.95658,0 -7.16402,-3.62008 -7.16402,-8.08565 v -8.70762"
          id="path84"
          style="font-style:normal;font-weight:400;font-size:11px;font-family:'MS Shell Dlg 2';fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.995157;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" />
-      <text
-         fill="#000000"
-         fill-opacity="1"
-         stroke="none"
-         xml:space="preserve"
-         x="782.79266"
-         y="463.37085"
-         font-family="'Sans Serif'"
-         font-size="11.9419px"
-         font-weight="400"
-         font-style="normal"
-         id="text85"
-         style="fill-rule:evenodd;stroke-width:0.995157;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1">Exit</text>
+      <text x="782.79266" y="463.37085">Exit</text>
     </g>
     <g
-       id="g115"
        transform="translate(59.262344,84.574387)">
       <g
          fill="none"
@@ -1154,23 +814,10 @@
          font-style="normal"
          id="g7"
          style="fill:#000000;fill-opacity:1;fill-rule:evenodd">
-        <text
-           fill="#000000"
-           fill-opacity="1"
-           stroke="none"
-           xml:space="preserve"
-           x="8"
-           y="17"
-           font-family="'Sans Serif'"
-           font-size="12px"
-           font-weight="400"
-           font-style="normal"
-           id="text6"
-           style="fill:#000000;fill-opacity:1">African Porcupine</text>
       </g>
+        <text x="12.4" y="17.35129">African Porcupine</text>
     </g>
     <g
-       id="g129"
        transform="translate(59.262344,84.574387)">
       <path
          vector-effect="non-scaling-stroke"
@@ -1178,19 +825,7 @@
          d="m 530.99724,239.6656 c 0,-6.87012 2.58397,-12.43946 5.77146,-12.43946 h 103.88628 c 3.18751,0 5.77145,5.56934 5.77145,12.43946 0,6.87017 -2.58394,12.43946 -5.77145,12.43946 H 536.7687 c -3.18749,0 -5.77146,-5.56929 -5.77146,-12.43946"
          id="path47"
          style="font-style:normal;font-weight:400;font-size:11px;font-family:'MS Shell Dlg 2';fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.995157;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" />
-      <text
-         fill="#000000"
-         fill-opacity="1"
-         stroke="none"
-         xml:space="preserve"
-         x="542.87439"
-         y="244.11757"
-         font-family="'Sans Serif'"
-         font-size="11.9419px"
-         font-weight="400"
-         font-style="normal"
-         id="text48"
-         style="fill-rule:evenodd;stroke-width:0.995157;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1">Bactrian Camel</text>
+      <text x="542.87439" y="244.11757">Bactrian Camel</text>
     </g>
   </g>
 </svg>
