@@ -5,7 +5,7 @@
             "name": "Debug TestDoor",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "dotnet: build",
+            "preLaunchTask": "build",
             "windows": {
                 "program": "${workspaceFolder}/output.Debug.AnyCPU/TestDoor.exe",    
             },
@@ -17,7 +17,7 @@
             "name": "Debug Test.Non-Emumeration",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "dotnet: build",
+            "preLaunchTask": "build",
             "windows": {
                 "program": "${workspaceFolder}/output.Debug.AnyCPU/Test.Non-Emumeration.exe",
             },
@@ -29,7 +29,7 @@
             "name": "Debug TestGrid",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "dotnet: build",
+            "preLaunchTask": "build",
             "windows": {
                 "program": "${workspaceFolder}/output.Debug.AnyCPU/TestGrid.exe",
             },
@@ -41,7 +41,7 @@
             "name": "Debug TestZoo",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "dotnet: build",
+            "preLaunchTask": "build",
             "windows": {
                 "program": "${workspaceFolder}/output.Debug.AnyCPU/TestZoo.exe",
             },
