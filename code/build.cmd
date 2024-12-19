@@ -1,4 +1,4 @@
 @echo off
 
-dotnet build StateMachines.sln -c Debug
-dotnet build StateMachines.sln -c Release
+dotnet build -c Debug
+dotnet build -c Release
