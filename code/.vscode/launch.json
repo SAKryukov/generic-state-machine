@@ -6,7 +6,10 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "dotnet: build",
-            "program": "${workspaceFolder}/output.Debug.AnyCPU/TestDoor.exe",
+            "windows": {
+                "program": "${workspaceFolder}/output.Debug.AnyCPU/TestDoor.exe",    
+            },
+            "program": "${workspaceFolder}/output.Debug.AnyCPU/TestDoor",
             "stopAtEntry": true,
             "console": "internalConsole"
         },
@@ -15,7 +18,10 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "dotnet: build",
-            "program": "${workspaceFolder}/output.Debug.AnyCPU/Test.Non-Emumeration.exe",
+            "windows": {
+                "program": "${workspaceFolder}/output.Debug.AnyCPU/Test.Non-Emumeration.exe",
+            },
+            "program": "${workspaceFolder}/output.Debug.AnyCPU/Test.Non-Emumeration",
             "stopAtEntry": true,
             "console": "internalConsole"
         },
@@ -24,7 +30,10 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "dotnet: build",
-            "program": "${workspaceFolder}/output.Debug.AnyCPU/TestGrid.exe",
+            "windows": {
+                "program": "${workspaceFolder}/output.Debug.AnyCPU/TestGrid.exe",
+            },
+            "program": "${workspaceFolder}/output.Debug.AnyCPU/TestGrid",
             "stopAtEntry": true,
             "console": "internalConsole"
         },
@@ -33,7 +42,10 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "dotnet: build",
-            "program": "${workspaceFolder}/output.Debug.AnyCPU/TestZoo.exe",
+            "windows": {
+                "program": "${workspaceFolder}/output.Debug.AnyCPU/TestZoo.exe",
+            },
+            "program": "${workspaceFolder}/output.Debug.AnyCPU/TestZoo",
             "stopAtEntry": true,
             "console": "internalConsole"
         },
