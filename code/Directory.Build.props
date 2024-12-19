@@ -14,7 +14,7 @@
   </PropertyGroup>
 
   <PropertyGroup> <!-- change value, don't change property name: -->
-    <_intermediateOutputPathRoot>.intermediateOutput</_intermediateOutputPathRoot>
+    <_intermediateOutputPathRoot>$(SolutionDir).intermediateOutput</_intermediateOutputPathRoot>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
