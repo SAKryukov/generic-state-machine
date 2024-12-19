@@ -11,7 +11,7 @@
     </marker>
   </defs>
   <style>
-      text { font-family: Helvetica, sans-serif; font-size: 13.4px; fill: black; fill-opacity: 1; baseline-shift: -4% }
+      text { font-family: sans-serif; font-size: 13.4px; fill: black; fill-opacity: 1; baseline-shift: -4% }
       path { fill: snow; stroke: black; stroke-width: 1; stroke-linecap: square; stroke-linejoin: bevel; stroke-opacity: 1 }
   </style>
   <title>Zoo, state diagram</title>
