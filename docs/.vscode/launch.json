@@ -1,0 +1,12 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "File",
+            "request": "launch",
+            "type": "chrome",
+            "file": "${workspaceFolder}/index.html"
+            //"file": "${workspaceFolder}/highlight-utility/index.html"
+        }
+    ]
+}

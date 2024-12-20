@@ -1,0 +1,11 @@
+        @import url(https://SAKryukov.github.io/publications/code/source-code-decorator.css);
+        @import url(https://SAKryukov.github.io/publications/code/highlighter.css);
+        * { font-family: sans-serif; }
+        pre, pre span { font-family: monospace; letter-spacing: 0; }
+        summary:has(+ pre) > span:last-child { font-size: 90%; }
+        summary + pre { margin-top: 0; }
+        pre, pre b { font-family: monospace; font-weight: normal; }
+        pre b.keyword { color: blue; }
+        pre b.comment { color: green; }
+        pre b.string { color: darkMagenta; }
+        main:has(p) { color: red; }
