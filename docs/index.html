@@ -4,27 +4,71 @@
     <title>Generic State Machine</title>
     <meta charset="utf-8"/>
     <style type="text/css">
-        @import url(https://SAKryukov.github.io/publications/code/source-code-decorator.css);
-        @import url(https://SAKryukov.github.io/publications/code/highlighter.css);
-        * { font-family: sans-serif; }
-        pre, pre span { font-family: monospace; letter-spacing: 0; }
-        summary:has(+ pre) > span:last-child { font-size: 90%; }
-        summary + pre { margin-top: 0; }
-        pre, pre b { font-family: monospace; font-weight: normal; }
-        pre b.keyword { color: blue; }
-        pre b.comment { color: green; }
-        pre b.string { color: darkMagenta; }
-        main:has(p) { color: red; }
-
+        @import url(https://SAKryukov.github.io/publications/code/documentation.css);
     </style>
 </head>
 <body>
 
-<p class="title">Generic State Machine</p><h2 id="heading-zoo-test">Zoo Test</h2>
-<h4 id="heading-state-diagram">State Diagram</h4>
-<div  data-line="5" class="code-line" dir="auto" ></div>
-<!--![Zoo](zoo.svg)-->  
-<pre lang="C#"><span class="comment block highlighter">/*
+<p class="title">Generic State Machine</p><p class="toc">
+<a style="margin-left: 0em;" href="#heading-statemachines-namespace">StateMachines Namespace</a><br/>
+<a style="margin-left: 3em;" href="#heading-delegate-validstatetransitionaction">Delegate ValidStateTransitionAction</a><br/>
+<a style="margin-left: 3em;" href="#heading-delegate-invalidstatetransitionaction">Delegate InvalidStateTransitionAction</a><br/>
+<a style="margin-left: 3em;" href="#heading-notastate-attribute">NotAState Attribute</a><br/>
+<a style="margin-left: 3em;" href="#heading-class-state-machine">Class State Machine</a><br/>
+<a style="margin-left: 6em;" href="#heading-generic-parameter-state">Generic Parameter STATE</a><br/>
+<a style="margin-left: 6em;" href="#heading-public-constructor">Public Constructor</a><br/>
+<a style="margin-left: 6em;" href="#heading-public-methods">Public Methods</a><br/>
+<a style="margin-left: 9em;" href="#heading-resetstate">ResetState</a><br/>
+<a style="margin-left: 9em;" href="#heading-addvalidstatetransition">AddValidStateTransition</a><br/>
+<a style="margin-left: 9em;" href="#heading-addvalidstatetransitionchain">AddValidStateTransitionChain</a><br/>
+<a style="margin-left: 9em;" href="#heading-addinvalidstatetransition">AddInvalidStateTransition</a><br/>
+<a style="margin-left: 9em;" href="#heading-istransitionvalid">IsTransitionValid</a><br/>
+<a style="margin-left: 9em;" href="#heading-trytransitionto">TryTransitionTo</a><br/>
+<a style="margin-left: 6em;" href="#heading-public-properties">Public Properties</a><br/>
+</p><h1 id="heading-statemachines-namespace">StateMachines Namespace</h1>
+<h2 id="heading-delegate-validstatetransitionaction">Delegate ValidStateTransitionAction</h2>
+<pre lang="C#"><span class="keyword highlighter">public</span> delegate <span class="keyword highlighter">void</span> <span class="_custom-word_ highlighter">StateTransitionAction</span>&lt;<span class="_custom-word_ highlighter">STATE</span>&gt;(<span class="_custom-word_ highlighter">STATE</span> startState, <span class="_custom-word_ highlighter">STATE</span> finishState);
+</pre><h2 id="heading-delegate-invalidstatetransitionaction">Delegate InvalidStateTransitionAction</h2>
+<pre lang="C#"><span class="keyword highlighter">public</span> delegate string <span class="_custom-word_ highlighter">InvalidStateTransitionAction</span>&lt;<span class="_custom-word_ highlighter">STATE</span>&gt;(<span class="_custom-word_ highlighter">STATE</span> startState, <span class="_custom-word_ highlighter">STATE</span> finishState);
+</pre><h2 id="heading-notastate-attribute">NotAState Attribute</h2>
+<p>This attribute can be used to mark some enumeration type members to exclude them from the set of states of a state machine. It can be useful to create members irrelevant for the state machine behavior but use for some calculations. For example, such a member can be a bitwize <code>OR</code> combination of several states.</p><pre lang="C#">[System.AttributeUsage(System.AttributeTargets.Field, AllowMultiple = <span class="keyword highlighter">false</span>, Inherited = <span class="keyword highlighter">false</span>)]
+<span class="keyword highlighter">public</span> <span class="keyword highlighter">class</span> <span class="_custom-word_ highlighter">NotAStateAttribute</span> : System.Attribute {}
+</pre><p>Example:</p><pre lang="C#"><span class="keyword highlighter">enum</span> <span class="_custom-word_ highlighter">NotAStateAttribute</span> {
+    Locked = 1, Closed = 2, Opened = 4,
+    OpenedInside = 8, ClosedInside = 16, LockedInside = 32,
+    [<span class="_custom-word_ highlighter">NotAState</span>] Inside = OpenedInside | ClosedInside | LockedInside };
+</pre><p>An attempt to perform a state transition to a <code>NotAState</code> enumeration value using <a href="#try-transition-to"><code>TryTransitionTo</code></a> will throw an exception.</p><h2 id="heading-class-state-machine">Class State Machine</h2>
+<h3 id="heading-generic-parameter-state">Generic Parameter STATE</h3>
+<p>The SA???</p><h3 id="heading-public-constructor">Public Constructor</h3>
+<p>Creates and instance of <code>StateMachine</code>.</p><p>Parameter: <code>STATE initialState = default</code>. Defines initial state of the state machine. See also <a href="#reset-state"><code>ResetState</code></a>.</p><pre lang="C#"><span class="keyword highlighter">public</span> <span class="_custom-word_ highlighter">StateMachine</span>(<span class="_custom-word_ highlighter">STATE</span> initialState = <span class="keyword highlighter">default</span>);
+</pre><h3 id="heading-public-methods">Public Methods</h3>
+<h4 id="heading-resetstate">ResetState</h4>
+<pre lang="C#" id="reset-state"><span class="keyword highlighter">public</span> <span class="_custom-word_ highlighter">STATE</span> ResetState();
+</pre><h4 id="heading-addvalidstatetransition">AddValidStateTransition</h4>
+<pre lang="C#"><span class="keyword highlighter">public</span> <span class="keyword highlighter">void</span> AddValidStateTransition(<span class="_custom-word_ highlighter">STATE</span> startState, <span class="_custom-word_ highlighter">STATE</span> finishState, <span class="_custom-word_ highlighter">StateTransitionAction</span>&lt;<span class="_custom-word_ highlighter">STATE</span>&gt; action, bool undirected = <span class="keyword highlighter">false</span>);
+</pre><h4 id="heading-addvalidstatetransitionchain">AddValidStateTransitionChain</h4>
+<pre lang="C#"><span class="keyword highlighter">public</span> int AddValidStateTransitionChain(<span class="_custom-word_ highlighter">StateTransitionAction</span>&lt;<span class="_custom-word_ highlighter">STATE</span>&gt; action, bool undirected = <span class="keyword highlighter">false</span>, params <span class="_custom-word_ highlighter">STATE</span>[] chain)
+</pre><h4 id="heading-addinvalidstatetransition">AddInvalidStateTransition</h4>
+<pre lang="C#"><span class="keyword highlighter">public</span> <span class="keyword highlighter">void</span> AddInvalidStateTransition(<span class="_custom-word_ highlighter">STATE</span> startState, <span class="_custom-word_ highlighter">STATE</span> finishState, <span class="_custom-word_ highlighter">InvalidStateTransitionAction</span>&lt;<span class="_custom-word_ highlighter">STATE</span>&gt; action)
+</pre><h4 id="heading-istransitionvalid">IsTransitionValid</h4>
+<pre lang="C#"><span class="keyword highlighter">public</span> (bool isValid, string validityComment) IsTransitionValid(<span class="_custom-word_ highlighter">STATE</span> startState, <span class="_custom-word_ highlighter">STATE</span> finishState);
+</pre><h4 id="heading-trytransitionto">TryTransitionTo</h4>
+<pre lang="C#" id="try-transition-to"><span class="keyword highlighter">public</span> (bool success, string validityComment) TryTransitionTo(<span class="_custom-word_ highlighter">STATE</span> state);
+</pre><pre lang="C#"><span class="keyword highlighter">public</span> <span class="_custom-word_ highlighter">STATE</span>[][] Labyrinth(<span class="_custom-word_ highlighter">STATE</span> start, <span class="_custom-word_ highlighter">STATE</span> finish, bool shortest = <span class="keyword highlighter">false</span>);
+</pre><pre lang="C#"><span class="comment text highlighter">// Find all states not visited along any of the paths between start and finish states</span>
+<span class="comment text highlighter">// It is assumed that the object paths is returned by Labyrinth, and the finish state is</span>
+<span class="comment text highlighter">// the last state of each path</span>
+<span class="keyword highlighter">public</span> <span class="_custom-word_ highlighter">STATE</span>[] FindDeadEnds(<span class="_custom-word_ highlighter">STATE</span> start, <span class="_custom-word_ highlighter">STATE</span>[][] allPaths);
+</pre><pre lang="C#"><span class="comment text highlighter">// Find all states not visited along any of the paths between start and finish states</span>
+<span class="keyword highlighter">public</span> (<span class="_custom-word_ highlighter">STATE</span>[][] allPaths, <span class="_custom-word_ highlighter">STATE</span>[] deadEnds) FindDeadEnds(<span class="_custom-word_ highlighter">STATE</span> start, <span class="_custom-word_ highlighter">STATE</span> finish);
+</pre><h3 id="heading-public-properties">Public Properties</h3>
+<pre lang="C#"><span class="keyword highlighter">public</span> <span class="_custom-word_ highlighter">STATE</span> CurrentState;
+</pre><pre lang="C#"><span class="keyword highlighter">public</span> (int numberOfPaths, int longestPathLength, <span class="_custom-word_ highlighter">STATE</span>[][] longestPaths) LongestPaths; <span class="comment text highlighter">//NP-hard</span>
+</pre><pre lang="C#"><span class="keyword highlighter">public</span> (int maximumNumberOfPaths, (<span class="_custom-word_ highlighter">STATE</span> start, <span class="_custom-word_ highlighter">STATE</span> finish)[] pairsAtMax) MaximumPaths; <span class="comment text highlighter">//NP-hard</span>
+</pre><div  data-line="122" class="code-line" dir="auto" ></div>
+<!--
+~~~ {lang=C#}
+<span class="comment block highlighter">/*
     Generic State Machine
 
     Copyright (C) 2024 by Sergey A Kryukov
@@ -328,7 +372,9 @@ namespace StateMachines {
     } <span class="comment text highlighter">//class StateMachine</span>
 
 }
-</pre><div  data-line="314" class="code-line" dir="auto" ></div>
+~~~
+-->
+<div  data-line="430" class="code-line" dir="auto" ></div>
 <script src="https://SAKryukov.github.io/publications/code/source-code-decorator.js"></script>
 
 </body>
