@@ -2,6 +2,14 @@
     "version": "0.2.0",
     "configurations": [        
         {
+            "name": "Build All", // just builds
+            "type": "node", //node.js with an arg to do nothing
+            "args": ["none"],
+            "request": "launch",
+            "postDebugTask": "Build All",
+            "console": "internalConsole"
+        },
+        {
             "name": "Debug TestDoor",
             "type": "coreclr",
             "request": "launch",
@@ -11,7 +19,8 @@
             },
             "program": "${workspaceFolder}/output.Debug.AnyCPU/TestDoor",
             "stopAtEntry": true,
-            "console": "internalConsole"
+            "logging": { "moduleLoad": false },
+            "console": "internalConsole",
         },
         {
             "name": "Debug Test.Non-Emumeration",
@@ -23,6 +32,7 @@
             },
             "program": "${workspaceFolder}/output.Debug.AnyCPU/Test.Non-Emumeration",
             "stopAtEntry": true,
+            "logging": { "moduleLoad": false },
             "console": "internalConsole"
         },
         {
@@ -35,6 +45,7 @@
             },
             "program": "${workspaceFolder}/output.Debug.AnyCPU/TestGrid",
             "stopAtEntry": true,
+            "logging": { "moduleLoad": false },
             "console": "internalConsole"
         },
         {
@@ -47,6 +58,8 @@
             },
             "program": "${workspaceFolder}/output.Debug.AnyCPU/TestZoo",
             "stopAtEntry": true,
-            "console": "internalConsole"
+            "logging": { "moduleLoad": false },
+            "console": "internalConsole",
         },
     ]
+}

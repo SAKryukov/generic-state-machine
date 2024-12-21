@@ -9,7 +9,7 @@
     <Import Project="$(SolutionDir)/Metadata.props"/>
  
   <PropertyGroup> <!-- customize:  -->
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <RootNamespace>SA</RootNamespace>
   </PropertyGroup>
 
