@@ -5,6 +5,7 @@
     <meta charset="utf-8"/>
     <style type="text/css">
         @import url(https://SAKryukov.github.io/publications/code/documentation.css);
+        code { color: darkGreen; }
 
     </style>
 </head>
@@ -31,6 +32,11 @@
 <a style="margin-left: 9em;" href="#heading-currentstate">CurrentState</a><br/>
 <a style="margin-left: 9em;" href="#heading-longestpaths">LongestPaths</a><br/>
 <a style="margin-left: 9em;" href="#heading-maximumpaths">MaximumPaths</a><br/>
+<a style="margin-left: 0em;" href="#heading-examples">Examples</a><br/>
+<a style="margin-left: 3em;" href="#heading-room-door-example">Room Door Example</a><br/>
+<a style="margin-left: 3em;" href="#heading-non-enumeration-example">Non-Enumeration Example</a><br/>
+<a style="margin-left: 3em;" href="#heading-grid-example">Grid Example</a><br/>
+<a style="margin-left: 3em;" href="#heading-zoo-example">Zoo Example</a><br/>
 </p><h1 id="heading-statemachines-namespace">StateMachines Namespace</h1>
 <h2 id="heading-delegate-validstatetransitionaction">Delegate ValidStateTransitionAction</h2>
 <pre lang="C#"><span class="keyword highlighter">public</span> delegate <span class="keyword highlighter">void</span> <span class="_custom-word_ highlighter">StateTransitionAction</span>&lt;<span class="_custom-word_ highlighter">STATE</span>&gt;(<span class="_custom-word_ highlighter">STATE</span> startState, <span class="_custom-word_ highlighter">STATE</span> finishState);
@@ -385,7 +391,15 @@ namespace StateMachines {
 }
 ~~~
 -->
-<div  data-line="440" class="code-line" dir="auto" ></div>
+<h1 id="heading-examples">Examples</h1>
+<h2 id="heading-room-door-example">Room Door Example</h2>
+<p><a href="https://github.com/SAKryukov/generic-state-machine/tree/main/code/Tests/TestDoor">Source code</a></p><h2 id="heading-non-enumeration-example">Non-Enumeration Example</h2>
+<p><a href="https://github.com/SAKryukov/generic-state-machine/tree/main/code/Tests/Test.Non-Emumeration">Source code</a></p><h2 id="heading-grid-example">Grid Example</h2>
+<p>This example demostrates that NP-hard problems can be pretty hard even for the 24 states. The states in this
+example form a 6x4 grid with permitted undirected transition between every neighboring cells.
+The example demonstrates the calculation of the longest path between two states and maximum number of possible paths.</p><p>Maximum number of paths between a pair of states is 5493
+Total number of paths: 1603536, longest path length: 23.</p><p><a href="https://github.com/SAKryukov/generic-state-machine/tree/main/code/Tests/TestGrid">Source code</a></p><h2 id="heading-zoo-example">Zoo Example</h2>
+<p><a href="https://github.com/SAKryukov/generic-state-machine/tree/main/code/Tests/TestZoo">Source code</a></p><div  data-line="467" class="code-line" dir="auto" ></div>
 <script src="https://SAKryukov.github.io/publications/code/source-code-decorator.js"></script>
 
 </body>

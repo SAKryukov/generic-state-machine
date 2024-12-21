@@ -438,4 +438,31 @@ namespace StateMachines {
 }
 ~~~
 -->
+
+
+# Examples
+
+## Room Door Example
+
+[Source code](https://github.com/SAKryukov/generic-state-machine/tree/main/code/Tests/TestDoor)
+
+## Non-Enumeration Example
+
+[Source code](https://github.com/SAKryukov/generic-state-machine/tree/main/code/Tests/Test.Non-Emumeration)
+
+## Grid Example
+
+This example demostrates that NP-hard problems can be pretty hard even for the 24 states. The states in this
+example form a 6x4 grid with permitted undirected transition between every neighboring cells.
+The example demonstrates the calculation of the longest path between two states and maximum number of possible paths.
+
+Maximum number of paths between a pair of states is 5493
+Total number of paths: 1603536, longest path length: 23.
+
+[Source code](https://github.com/SAKryukov/generic-state-machine/tree/main/code/Tests/TestGrid)
+
+## Zoo Example
+
+[Source code](https://github.com/SAKryukov/generic-state-machine/tree/main/code/Tests/TestZoo)
+
 <script src="https://SAKryukov.github.io/publications/code/source-code-decorator.js"></script>
