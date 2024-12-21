@@ -1,26 +1,36 @@
 Generic State Machine{title}
 
+The class [`StateMachine`](#heading-class-statemachine) provides a way to create a [finite-state machine](https://en.wikipedia.org/wiki/Finite-state_machine) based on any enumeration type representing a set of state. For the instance of the class, a state transition graph can be created. The instance can walk between states using permitted transitions, and the optional delegate representing the side effect of a transition can be called. An attempt to perform an invalid transition can provide optional information, explaining why the transition is invalid. The class also implements several graph algorithms, including [NP-hard](https://en.wikipedia.org/wiki/NP-hardness) ones, such as [finding longest possible paths](#heading-longestpaths).
+
 @toc
 
 # StateMachines Namespace
 
 ## Delegate ValidStateTransitionAction
 
-~~~{lang=C#}
-<span class="keyword highlighter">public</span> delegate <span class="keyword highlighter">void</span> <span class="_custom-word_ highlighter">StateTransitionAction</span>&lt;<span class="_custom-word_ highlighter">STATE</span>&gt;(<span class="_custom-word_ highlighter">STATE</span> startState, <span class="_custom-word_ highlighter">STATE</span> finishState);
+An instance of the delegate provides a way to define a side effect of a valid transition between two states, `startState` and `finishState`. For example, in the hardware automation applications, it can operate the hardware.
+
+~~~{lang=C#}{id=api-valid-state-transition-action}
+<span class="keyword highlighter">public</span> delegate <span class="keyword highlighter">void</span> <span class="_custom-word_ highlighter">ValidStateTransitionAction</span>&lt;<span class="_custom-word_ highlighter">STATE</span>&gt;(<span class="_custom-word_ highlighter">STATE</span> startState, <span class="_custom-word_ highlighter">STATE</span> finishState);
 ~~~
+
+The delegate instanse is used in the [StateMachine.AddValidStateTransition](#heading-addvalidstatetransition) and [StateMachine.AddValidStateTransitionChain](#heading-addinvalidstatetransition) call.
 
 ## Delegate InvalidStateTransitionAction
 
-~~~{lang=C#}
+An instance of the delegate provides the optional information on an ivalid transition between two states, `startState` and `finishState`. Its return `string` value can be used to provide the explanation on why an attempted transition between the states is considered invalid.
+
+~~~{lang=C#}{id=api-invalid-state-transition-action}
 <span class="keyword highlighter">public</span> delegate string <span class="_custom-word_ highlighter">InvalidStateTransitionAction</span>&lt;<span class="_custom-word_ highlighter">STATE</span>&gt;(<span class="_custom-word_ highlighter">STATE</span> startState, <span class="_custom-word_ highlighter">STATE</span> finishState);
 ~~~
 
+The delegate instanse is used in the [StateMachine.AddInvalidStateTransition](#heading-addinvalidstatetransition) call.
+
 ## NotAState Attribute
 
-This attribute can be used to mark some enumeration type members to exclude them from the set of states of a state machine. It can be useful to create members irrelevant for the state machine behavior but use for some calculations. For example, such a member can be a bitwize `OR` combination of several states.
+This attribute can be used to mark some enumeration type members to exclude them from the set of states of a state machine. It can be useful to create members irrelevant for the state machine behavior but used for some calculations. For example, such a member can be a bitwize `OR` combination of several states.
 
-~~~{lang=C#}
+~~~{lang=C#}{id=api-not-a-state}
 [System.AttributeUsage(System.AttributeTargets.Field, AllowMultiple = <span class="keyword highlighter">false</span>, Inherited = <span class="keyword highlighter">false</span>)]
 <span class="keyword highlighter">public</span> <span class="keyword highlighter">class</span> <span class="_custom-word_ highlighter">NotAStateAttribute</span> : System.Attribute {}
 ~~~
@@ -34,21 +44,25 @@ Example:
     [<span class="_custom-word_ highlighter">NotAState</span>] Inside = OpenedInside | ClosedInside | LockedInside };
 ~~~
 
-An attempt to perform a state transition to a `NotAState` enumeration value using [`TryTransitionTo`](#try-transition-to) will throw an exception.
+An attempt to perform a state transition to a `NotAState` enumeration value using [`TryTransitionTo`](#heading-trytransitionto) will throw an exception.
 
 ## Class StateMachine
 
-### Generic Parameter STATE
+~~~{lang=C#}{id=api-state-machine}
+<span class="keyword highlighter">public</span> <span class="keyword highlighter">class</span> <span class="_custom-word_ highlighter">StateMachine</span>&lt;<span class="_custom-word_ highlighter">STATE</span>&gt; {/* &hellip; */}
+~~~
 
-The SA???
+The class can be instantiated with the generic type parameter `STATE`. Typically, it should be any enumeration type with its enumeration members represenging states. However, it is not a strict rule. In principle, any types with public static fields can be used for the `STATE` type. In this case, the public static fields will represent the state machine states. Please see [the example](#heading-non-enumeration-example) illustrating the use of a non-enumeration type `STATE`.
 
 ### Public Constructor
 
-Creates and instance of `StateMachine`.
+Creates an instance of `StateMachine`.
 
-Parameter: `STATE initialState = default`. Defines initial state of the state machine. See also [`ResetState`](#reset-state).
+Parameter: `STATE initialState = default`. Defines initial state of the state machine. See also [`ResetState`](#heading-resetstate).
 
-~~~{lang=C#}
+Note that using a non-default initial state can be critically important when a default value for the type `STATE` if not a state. I can happen if this default value is excluded using the [[`NotAState`](#heading-notastate-attribute)] attribute. Another case of a non-state value is demonstrated by the [non-enumeration example](#heading-non-enumeration-example).
+
+~~~{lang=C#}{id=api-constructor}
 <span class="keyword highlighter">public</span> <span class="_custom-word_ highlighter">StateMachine</span>(<span class="_custom-word_ highlighter">STATE</span> initialState = <span class="keyword highlighter">default</span>);
 ~~~
 
@@ -56,79 +70,104 @@ Parameter: `STATE initialState = default`. Defines initial state of the state ma
 
 #### ResetState
 
-~~~{lang=C#}{id=reset-state}
+Unconditionally jumps to the *initial state* defined by the [constructor](#heading-public-constructor). No [delegate instances](#heading-delegate-validstatetransitionaction) are called even if there is a valid transition between the [current state](#heading-currentstate) and the initial state.
+
+~~~{lang=C#}{id=api-reset-state}
 <span class="keyword highlighter">public</span> <span class="_custom-word_ highlighter">STATE</span> ResetState();
 ~~~
 
 #### AddValidStateTransition
 
-~~~{lang=C#}
+Adds an edge to the state machine's *transition graph* between the states `startState` and `finishState`. If the parameter `undirected` is `true`, it makes both transitions valid, from `startState` to `finishState`, and from `finishState` to `startState`.
+
+Optionally, a delegate instance of the type [`StateTransitionAction`](#heading-delegate-validstatetransitionaction) is speficied. In this case (when the delegate instance is not `null`), the delegate's method will be called on each call to [`TryTransitionTo`](#heading-trytransitionto) between corresponding states.
+
+~~~{lang=C#}{id=api-add-valid-state-transition}
 <span class="keyword highlighter">public</span> <span class="keyword highlighter">void</span> AddValidStateTransition(<span class="_custom-word_ highlighter">STATE</span> startState, <span class="_custom-word_ highlighter">STATE</span> finishState, <span class="_custom-word_ highlighter">StateTransitionAction</span>&lt;<span class="_custom-word_ highlighter">STATE</span>&gt; action, bool undirected = <span class="keyword highlighter">false</span>);
 ~~~
 
 #### AddValidStateTransitionChain
 
-~~~{lang=C#}
+Adds a transition chain to the state machine's *transition graph*. Note that if the parameter `undirected` is `true`, it makes all the graph edges between the adjacent pairs of states undirected, that is, the transitions in both directions become valid.
+
+Optionally, a delegate instance of the type [`StateTransitionAction`](#heading-delegate-validstatetransitionaction) is speficied. In this case (when the delegate instance is not `null`), the same delegate's method will be called on each call to [`TryTransitionTo`](#heading-trytransitionto) between corresponding states in the chain.
+
+~~~{lang=C#}{id=api-add-valid-state-transition-chain}
 <span class="keyword highlighter">public</span> int AddValidStateTransitionChain(<span class="_custom-word_ highlighter">StateTransitionAction</span>&lt;<span class="_custom-word_ highlighter">STATE</span>&gt; action, bool undirected = <span class="keyword highlighter">false</span>, params <span class="_custom-word_ highlighter">STATE</span>[] chain)
 ~~~
 
 #### AddInvalidStateTransition
 
-~~~{lang=C#}
+Defines the information in an invalid state transition between the states `startState` and `finishState`. This information is used in the return of the call to [IsTransitionValid](#heading-istransitionvalid) and [TryTransitionTo](#heading-trytransitionto). See also [InvalidStateTransitionAction](#heading-delegate-invalidstatetransitionaction).
+
+~~~{lang=C#}{id=api-add-invalid-state-transition}
 <span class="keyword highlighter">public</span> <span class="keyword highlighter">void</span> AddInvalidStateTransition(<span class="_custom-word_ highlighter">STATE</span> startState, <span class="_custom-word_ highlighter">STATE</span> finishState, <span class="_custom-word_ highlighter">InvalidStateTransitionAction</span>&lt;<span class="_custom-word_ highlighter">STATE</span>&gt; action)
 ~~~
 
 #### IsTransitionValid
 
-~~~{lang=C#}
+Checks is a transition between the state `startState` and `finishState` is valid. In addition to the status `isValid`, returns the `validityComment` that it can explan the reason of why the transition is invalid. This information is optional, defined using [AddInvalidStateTransition](#heading-addinvalidstatetransition).
+
+~~~{lang=C#}{id=api-is-transition-valid}
 <span class="keyword highlighter">public</span> (bool isValid, string validityComment) IsTransitionValid(<span class="_custom-word_ highlighter">STATE</span> startState, <span class="_custom-word_ highlighter">STATE</span> finishState);
 ~~~
 
 #### TryTransitionTo
 
-~~~{lang=C#}{id=try-transition-to}
+~~~{lang=C#}{id=api-try-transition-to}
 <span class="keyword highlighter">public</span> (bool success, string validityComment) TryTransitionTo(<span class="_custom-word_ highlighter">STATE</span> state);
 ~~~
 
 #### Labyrinth
 
-~~~{lang=C#}
+~~~{lang=C#}{id=api-labyrinth}
 <span class="keyword highlighter">public</span> <span class="_custom-word_ highlighter">STATE</span>[][] Labyrinth(<span class="_custom-word_ highlighter">STATE</span> start, <span class="_custom-word_ highlighter">STATE</span> finish, bool shortest = <span class="keyword highlighter">false</span>);
 ~~~
 
 #### FindDeadEnds
 
-~~~{lang=C#}
+Find all "dead ends", the states not visited along any of the paths between the states `start` and `finish`. Returns `allPaths`, all permitted paths between `start` and `finish` and `deadEnds`.
+
+~~~{lang=C#}{id=api-find-dead-ends-2}
+<span class="comment text highlighter">// Find all states not visited along any of the paths between start and finish states</span>
+<span class="keyword highlighter">public</span> (<span class="_custom-word_ highlighter">STATE</span>[][] allPaths, <span class="_custom-word_ highlighter">STATE</span>[] deadEnds) FindDeadEnds(<span class="_custom-word_ highlighter">STATE</span> start, <span class="_custom-word_ highlighter">STATE</span> finish);
+~~~
+
+Another form of `FindDeadEnds` assumes that the parameter `allPaths` is the array obtained through the call to [Labyrinth](#heading-labyrinth) between the state `start`. SA???
+
+~~~{lang=C#}{id=api-find-dead-ends}
 <span class="comment text highlighter">// Find all states not visited along any of the paths between start and finish states</span>
 <span class="comment text highlighter">// It is assumed that the object paths is returned by Labyrinth, and the finish state is</span>
 <span class="comment text highlighter">// the last state of each path</span>
 <span class="keyword highlighter">public</span> <span class="_custom-word_ highlighter">STATE</span>[] FindDeadEnds(<span class="_custom-word_ highlighter">STATE</span> start, <span class="_custom-word_ highlighter">STATE</span>[][] allPaths);
 ~~~
 
-~~~{lang=C#}
-<span class="comment text highlighter">// Find all states not visited along any of the paths between start and finish states</span>
-<span class="keyword highlighter">public</span> (<span class="_custom-word_ highlighter">STATE</span>[][] allPaths, <span class="_custom-word_ highlighter">STATE</span>[] deadEnds) FindDeadEnds(<span class="_custom-word_ highlighter">STATE</span> start, <span class="_custom-word_ highlighter">STATE</span> finish);
-~~~
 
 ### Public Properties
 
 #### CurrentState
 
-~~~{lang=C#}
+Returns the *current state* of the state machine. Before the very first transition of the instance, the current state is the one defined by the [constructor](#heading-public-constructor).
+
+~~~{lang=C#}{id=api-current-state}
 <span class="keyword highlighter">public</span> <span class="_custom-word_ highlighter">STATE</span> CurrentState;
 ~~~
 
 #### LongestPaths
 
-~~~{lang=C#}
+~~~{lang=C#}{id=api-longest-paths}
 <span class="keyword highlighter">public</span> (int numberOfPaths, int longestPathLength, <span class="_custom-word_ highlighter">STATE</span>[][] longestPaths) LongestPaths; <span class="comment text highlighter">//NP-hard</span>
 ~~~
 
 #### MaximumPaths
 
-~~~{lang=C#}
+~~~{lang=C#}{id=api-maximum-paths}
 <span class="keyword highlighter">public</span> (int maximumNumberOfPaths, (<span class="_custom-word_ highlighter">STATE</span> start, <span class="_custom-word_ highlighter">STATE</span> finish)[] pairsAtMax) MaximumPaths; <span class="comment text highlighter">//NP-hard</span>
 ~~~
+
+## Notes
+
+All paths returned by [`Labyrinth`](#heading-labyrinth), [`FindDeadEnds`](#heading-finddeadends), and [`LongestPaths`](#heading-longestpaths) are represented as arrays `STATE[]` or arrays of paths `STATE[][]`, each path represented as an array of `STATE`. In the array of states, the starting state of the path is not included, and the final state of the path is included. In other words, given a permitted path SA???
 
 <!--
 ~~~ {lang=C#}
@@ -439,16 +478,19 @@ namespace StateMachines {
 ~~~
 -->
 
-
 # Examples
 
 ## Room Door Example
 
+Basic state machine example with 6 states forming a linear transition graph. Demonstrates valid transitions and the attempts to perform an invalid transition.
+
 [Source code](https://github.com/SAKryukov/generic-state-machine/tree/main/code/Tests/TestDoor)
+<br/>[Description](Example.Door.html)
 
 ## Non-Enumeration Example
 
 [Source code](https://github.com/SAKryukov/generic-state-machine/tree/main/code/Tests/Test.Non-Emumeration)
+<br/>[Description](Example.Non-Emumeration.html)
 
 ## Grid Example
 
@@ -460,9 +502,15 @@ Maximum number of paths between a pair of states is 5493
 Total number of paths: 1603536, longest path length: 23.
 
 [Source code](https://github.com/SAKryukov/generic-state-machine/tree/main/code/Tests/TestGrid)
+<br/>[Description](Example.Grid.html)
 
 ## Zoo Example
 
 [Source code](https://github.com/SAKryukov/generic-state-machine/tree/main/code/Tests/TestZoo)
+<br/>[Description](Example.Zoo.html)
+
+This documentaton is generated from the extended Markdown documentation using [Extensible Markdown](https://marketplace.visualstudio.com/items?itemName=sakryukov.extensible-markdown)
+for Visual Studio Code.{.extensible-markdown}
+
 
 <script src="https://SAKryukov.github.io/publications/code/source-code-decorator.js"></script>
