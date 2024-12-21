@@ -36,7 +36,7 @@ Example:
 
 An attempt to perform a state transition to a `NotAState` enumeration value using [`TryTransitionTo`](#try-transition-to) will throw an exception.
 
-## Class State Machine
+## Class StateMachine
 
 ### Generic Parameter STATE
 
@@ -90,9 +90,13 @@ Parameter: `STATE initialState = default`. Defines initial state of the state ma
 <span class="keyword highlighter">public</span> (bool success, string validityComment) TryTransitionTo(<span class="_custom-word_ highlighter">STATE</span> state);
 ~~~
 
+#### Labyrinth
+
 ~~~{lang=C#}
 <span class="keyword highlighter">public</span> <span class="_custom-word_ highlighter">STATE</span>[][] Labyrinth(<span class="_custom-word_ highlighter">STATE</span> start, <span class="_custom-word_ highlighter">STATE</span> finish, bool shortest = <span class="keyword highlighter">false</span>);
 ~~~
+
+#### FindDeadEnds
 
 ~~~{lang=C#}
 <span class="comment text highlighter">// Find all states not visited along any of the paths between start and finish states</span>
@@ -108,13 +112,19 @@ Parameter: `STATE initialState = default`. Defines initial state of the state ma
 
 ### Public Properties
 
+#### CurrentState
+
 ~~~{lang=C#}
 <span class="keyword highlighter">public</span> <span class="_custom-word_ highlighter">STATE</span> CurrentState;
 ~~~
 
+#### LongestPaths
+
 ~~~{lang=C#}
 <span class="keyword highlighter">public</span> (int numberOfPaths, int longestPathLength, <span class="_custom-word_ highlighter">STATE</span>[][] longestPaths) LongestPaths; <span class="comment text highlighter">//NP-hard</span>
 ~~~
+
+#### MaximumPaths
 
 ~~~{lang=C#}
 <span class="keyword highlighter">public</span> (int maximumNumberOfPaths, (<span class="_custom-word_ highlighter">STATE</span> start, <span class="_custom-word_ highlighter">STATE</span> finish)[] pairsAtMax) MaximumPaths; <span class="comment text highlighter">//NP-hard</span>
