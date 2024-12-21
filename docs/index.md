@@ -234,7 +234,6 @@ dotnet build -c Release
 
 With Visual Studio or Visual Studio Code, the code can be built in the usual ways. Besides, for Visual Studio Code, a [launch configuration "Build All"](https://github.com/SAKryukov/generic-state-machine/blob/main/code/.vscode/launch.json) and a [task "Build All"](https://github.com/SAKryukov/generic-state-machine/blob/main/code/.vscode/tasks.json) are provided.
 
-This documentation is generated from the extended Markdown documentation using [Extensible Markdown](https://marketplace.visualstudio.com/items?itemName=sakryukov.extensible-markdown)
-for Visual Studio Code.{.extensible-markdown}
+@include(extensible-markdown.md)
 
 <script src="https://SAKryukov.github.io/publications/code/source-code-decorator.js"></script>

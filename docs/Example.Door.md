@@ -10,6 +10,5 @@ The state machine can be represented as
 Locked &#x21D4; Closed &#x21D4; Opened &#x21D4; Opened Inside &#x21D4; Closed Inside &#x21D4; Locked Inside
 ~~~
 
-This documentation is generated from the extended Markdown documentation using [Extensible Markdown](https://marketplace.visualstudio.com/items?itemName=sakryukov.extensible-markdown)
-for Visual Studio Code.{.extensible-markdown}
+@include(extensible-markdown.md)
 

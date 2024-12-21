@@ -12,5 +12,4 @@ The example demonstrates valid transitions and the attempt to perform some inval
 
 The example also demonstrates [StateMachine.Labyrinth](index.html#heading-labyrinth), [StateMachine.LongestPaths](index.html#heading-longestpaths) ([NP-hard](https://en.wikipedia.org/wiki/NP-hardness)), [StateMachine.MaximumPaths](index.html#heading-maximumpaths) ([NP-hard](https://en.wikipedia.org/wiki/NP-hardness)), and [StateMachine.FindDeadEnds](index.html#heading-finddeadends).
 
-This documentation is generated from the extended Markdown documentation using [Extensible Markdown](https://marketplace.visualstudio.com/items?itemName=sakryukov.extensible-markdown)
-for Visual Studio Code.{.extensible-markdown}
+@include(extensible-markdown.md)

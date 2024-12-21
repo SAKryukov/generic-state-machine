@@ -17,6 +17,4 @@ The example demonstrates the calculation of the longest path between two states 
 Maximum number of paths between a pair of states is 5493.
 Total number of paths: 1603536, longest path length: 23.
 
-This documentation is generated from the extended Markdown documentation using [Extensible Markdown](https://marketplace.visualstudio.com/items?itemName=sakryukov.extensible-markdown)
-for Visual Studio Code.{.extensible-markdown}
-
+@include(extensible-markdown.md)

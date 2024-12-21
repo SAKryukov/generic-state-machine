@@ -20,7 +20,6 @@ MinValue &#x21D4; MaxValue
 NaN &#x21D2; to any other state, but all the transitions to NaN are invalid
 ~~~
 
-This documentation is generated from the extended Markdown documentation using [Extensible Markdown](https://marketplace.visualstudio.com/items?itemName=sakryukov.extensible-markdown)
-for Visual Studio Code.{.extensible-markdown}
+@include(extensible-markdown.md)
 
 <script src="https://SAKryukov.github.io/publications/code/source-code-decorator.js"></script>
