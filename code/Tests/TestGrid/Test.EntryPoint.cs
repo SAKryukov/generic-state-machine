@@ -1,5 +1,5 @@
 /*
-    Generic State Machine, test
+    Generic Transition System, test
 
     Test NP-hard problems on interconnected rectangular grid
 
@@ -20,31 +20,31 @@ namespace StateMachines {
             n20, n21, n22, n23, n24, n25,
             n30, n31, n32, n33, n34, n35,
         };
-        static StateMachine<Node> PopulateGrid() {
-            StateMachine<Node> stateMachine = new();
+        static TransitionSystem<Node> PopulateGrid() {
+            TransitionSystem<Node> transitionSystem = new();
             static void handler(Node start, Node finish) {
                 Console.WriteLine($"Moving from {start} to {finish}");
             };
-            stateMachine.AddValidStateTransitionChain(handler, undirected: true, Node.n00, Node.n01, Node.n02, Node.n03, Node.n04, Node.n05);
-            stateMachine.AddValidStateTransitionChain(handler, undirected: true, Node.n10, Node.n11, Node.n12, Node.n13, Node.n14, Node.n15);
-            stateMachine.AddValidStateTransitionChain(handler, undirected: true, Node.n20, Node.n21, Node.n22, Node.n23, Node.n24, Node.n25);
-            stateMachine.AddValidStateTransitionChain(handler, undirected: true, Node.n30, Node.n31, Node.n32, Node.n33, Node.n34, Node.n35);
+            transitionSystem.AddValidStateTransitionChain(handler, undirected: true, Node.n00, Node.n01, Node.n02, Node.n03, Node.n04, Node.n05);
+            transitionSystem.AddValidStateTransitionChain(handler, undirected: true, Node.n10, Node.n11, Node.n12, Node.n13, Node.n14, Node.n15);
+            transitionSystem.AddValidStateTransitionChain(handler, undirected: true, Node.n20, Node.n21, Node.n22, Node.n23, Node.n24, Node.n25);
+            transitionSystem.AddValidStateTransitionChain(handler, undirected: true, Node.n30, Node.n31, Node.n32, Node.n33, Node.n34, Node.n35);
             //
-            stateMachine.AddValidStateTransitionChain(handler, undirected: true, Node.n00, Node.n10, Node.n20, Node.n30);
-            stateMachine.AddValidStateTransitionChain(handler, undirected: true, Node.n01, Node.n11, Node.n21, Node.n31);
-            stateMachine.AddValidStateTransitionChain(handler, undirected: true, Node.n02, Node.n12, Node.n22, Node.n32);
-            stateMachine.AddValidStateTransitionChain(handler, undirected: true, Node.n03, Node.n13, Node.n23, Node.n33);
-            stateMachine.AddValidStateTransitionChain(handler, undirected: true, Node.n04, Node.n14, Node.n24, Node.n34);
-            stateMachine.AddValidStateTransitionChain(handler, undirected: true, Node.n05, Node.n15, Node.n25, Node.n35);
-            return stateMachine;
+            transitionSystem.AddValidStateTransitionChain(handler, undirected: true, Node.n00, Node.n10, Node.n20, Node.n30);
+            transitionSystem.AddValidStateTransitionChain(handler, undirected: true, Node.n01, Node.n11, Node.n21, Node.n31);
+            transitionSystem.AddValidStateTransitionChain(handler, undirected: true, Node.n02, Node.n12, Node.n22, Node.n32);
+            transitionSystem.AddValidStateTransitionChain(handler, undirected: true, Node.n03, Node.n13, Node.n23, Node.n33);
+            transitionSystem.AddValidStateTransitionChain(handler, undirected: true, Node.n04, Node.n14, Node.n24, Node.n34);
+            transitionSystem.AddValidStateTransitionChain(handler, undirected: true, Node.n05, Node.n15, Node.n25, Node.n35);
+            return transitionSystem;
         } //PopulateBox
 
-        static void Present(StateMachine<Node> stateMachine) {
-            var (maximumNumberOfPaths, pairsAtMax) = stateMachine.MaximumPaths;
+        static void Present(TransitionSystem<Node> transitionSystem) {
+            var (maximumNumberOfPaths, pairsAtMax) = transitionSystem.MaximumPaths;
             Console.WriteLine($"Maximum number of paths: {maximumNumberOfPaths}, those paths are between states:");
             foreach (var (start, finish) in pairsAtMax)
                 Console.WriteLine($"      {start} to {finish}");
-            var (numberOfPaths, longestPathLength, longestPaths) = stateMachine.LongestPaths;
+            var (numberOfPaths, longestPathLength, longestPaths) = transitionSystem.LongestPaths;
             Console.Write($"Total number of paths: {numberOfPaths}, longest path length: {longestPathLength}");
             Console.WriteLine(", for example:");
             if (longestPaths.Length < 1) return;
@@ -56,8 +56,8 @@ namespace StateMachines {
         } //Present
 
         static void Main() {
-            var stateMachine = PopulateGrid();
-            Present(stateMachine);
+            var transitionSystem = PopulateGrid();
+            Present(transitionSystem);
         } //Main
 
     } //class Test

@@ -10,7 +10,7 @@ namespace StateMachines {
 
     static class DefinitionSet<STATE> {
 
-        internal static string StateMachineGraphPopulationExceptionMessage(STATE startState, STATE finishState) =>
+        internal static string GraphPopulationExceptionMessage(STATE startState, STATE finishState) =>
             $"The transition between {startState} and {finishState} is already added to the State Machine transition graph";
 
         internal static string InvalidStateExceptionMessage(STATE state) =>

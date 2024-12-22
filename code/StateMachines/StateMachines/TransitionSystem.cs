@@ -17,11 +17,11 @@ namespace StateMachines {
     [System.AttributeUsage(System.AttributeTargets.Field, AllowMultiple = false, Inherited = false)]
     public class NotAStateAttribute : System.Attribute {}
 
-    public class StateMachine<STATE> {
+    public class TransitionSystem<STATE> {
 
         #region API
 
-        public StateMachine(STATE initialState = default) {
+        public TransitionSystem(STATE initialState = default) {
             FieldInfo[] fields = typeof(STATE).GetFields(BindingFlags.Static | BindingFlags.Public);
             foreach (var field in fields) {
                 if (field.GetCustomAttributes(typeof(NotAStateAttribute), inherit: false).Length > 0) continue;
@@ -33,7 +33,7 @@ namespace StateMachines {
             } //loop
             this.initialState = CurrentState;
             digest = new(this);
-        } //StateMachine
+        } //TransitionSystem
 
         public STATE CurrentState { get; private set; }
 
@@ -44,7 +44,7 @@ namespace StateMachines {
             if (startState.Equals(finishState)) return;
             StateGraphKey key = new(FindState(startState), FindState(finishState), undirected);
             if (stateGraph.TryGetValue(key, out StateGraphValue value))
-                throw new StateMachineGraphPopulationException(startState, finishState);
+                throw new GraphPopulationException(startState, finishState);
             stateGraph.Add(key, new StateGraphValue(true, action, null));
             digest.Update(key);
         } //AddValidStateTransition
@@ -67,7 +67,7 @@ namespace StateMachines {
             if (startState.Equals(finishState)) return;
             StateGraphKey key = new(FindState(startState), FindState(finishState));
             if (stateGraph.TryGetValue(key, out StateGraphValue value))
-                throw new StateMachineGraphPopulationException(startState, finishState);
+                throw new GraphPopulationException(startState, finishState);
             stateGraph.Add(key, new StateGraphValue(false, null, action));
         } //AddInvalidStateTransition       
 
@@ -216,8 +216,8 @@ namespace StateMachines {
                 if (key.IsUndirected)
                     key.FinishState.digest.followingStates.Add(key.StartState);
             } //Update
-            internal Digest(StateMachine<STATE> owner) { this.owner = owner; }
-            readonly StateMachine<STATE> owner;
+            internal Digest(TransitionSystem<STATE> owner) { this.owner = owner; }
+            readonly TransitionSystem<STATE> owner;
             bool populated;
         } //class Digest
 
@@ -242,10 +242,10 @@ namespace StateMachines {
         readonly Digest digest;
         readonly STATE initialState;
 
-        class StateMachineGraphPopulationException : System.ApplicationException {
-            internal StateMachineGraphPopulationException(STATE startState, STATE finishState)
-                : base(DefinitionSet<STATE>.StateMachineGraphPopulationExceptionMessage(startState, finishState)) { }
-        } //class StateMachineGraphPopulationException
+        class GraphPopulationException : System.ApplicationException {
+            internal GraphPopulationException(STATE startState, STATE finishState)
+                : base(DefinitionSet<STATE>.GraphPopulationExceptionMessage(startState, finishState)) { }
+        } //class GraphPopulationException
 
         class InvalidStateException : System.ApplicationException {
             internal InvalidStateException(STATE state)
@@ -299,6 +299,6 @@ namespace StateMachines {
 
         #endregion implementation
 
-    } //class StateMachine
+    } //class TransitionSystem
 
 }

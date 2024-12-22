@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30309.148
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StateMachine", "StateMachine\StateMachine.csproj", "{18C89971-08CA-4F31-9DAB-609D7D03A455}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StateMachines", "StateMachines\StateMachines.csproj", "{18C89971-08CA-4F31-9DAB-609D7D03A455}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestDoor", "Tests\TestDoor\TestDoor.csproj", "{A01D2C66-A048-4CA7-B378-4676BF3655A1}"
 EndProject
