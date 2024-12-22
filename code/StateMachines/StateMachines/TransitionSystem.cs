@@ -14,31 +14,13 @@ namespace StateMachines {
     public delegate void StateTransitionAction<STATE>(STATE startState, STATE finishState);
     public delegate string InvalidStateTransitionAction<STATE>(STATE startState, STATE finishState);
 
-    [System.AttributeUsage(System.AttributeTargets.Field, AllowMultiple = false, Inherited = false)]
-    public class NotAStateAttribute : System.Attribute {}
-
-    public class TransitionSystem<STATE> {
+    public class TransitionSystem<STATE> :  TransitionSystemBase<STATE> {
 
         #region API
 
-        public TransitionSystem(STATE initialState = default) {
-            FieldInfo[] fields = typeof(STATE).GetFields(BindingFlags.Static | BindingFlags.Public);
-            foreach (var field in fields) {
-                if (field.GetCustomAttributes(typeof(NotAStateAttribute), inherit: false).Length > 0) continue;
-                STATE value = (STATE)field.GetValue(null);
-                State state = new(field.Name, value);
-                stateDictionary.Add(value, state);
-                if (value.Equals(initialState))
-                    CurrentState = value;
-            } //loop
-            this.initialState = CurrentState;
+        public TransitionSystem(STATE initialState = default) : base(initialState) {
             digest = new(this);
         } //TransitionSystem
-
-        public STATE CurrentState { get; private set; }
-
-        public STATE ResetState() => // unconditional jump to initial state, ignoring the transition graph
-            CurrentState = initialState;
 
         public void AddValidStateTransition(STATE startState, STATE finishState, StateTransitionAction<STATE> action, bool undirected = false) {
             if (startState.Equals(finishState)) return;
@@ -237,10 +219,8 @@ namespace StateMachines {
             return (true, DefinitionSet<STATE>.TransitionIsValid(startState, finishState));
         } //IsTransitionValid
 
-        readonly Dictionary<STATE, State> stateDictionary = new();
         readonly Dictionary<StateGraphKey, StateGraphValue> stateGraph = new();
         readonly Digest digest;
-        readonly STATE initialState;
 
         class GraphPopulationException : System.ApplicationException {
             internal GraphPopulationException(STATE startState, STATE finishState)
@@ -251,16 +231,6 @@ namespace StateMachines {
             internal InvalidStateException(STATE state)
                 : base(DefinitionSet<STATE>.InvalidStateExceptionMessage(state)) { }
         } //class InvalidStateException
-
-        class State {
-            internal State(string name, STATE underlyingMember) {
-                Name = name;
-                UnderlyingMember = underlyingMember;
-            } //State
-            internal string Name { get; init; }
-            internal STATE UnderlyingMember { get; init; }
-            internal (bool isVisited, List<State> followingStates) digest = (false, new());
-        } //class State
 
         class StateGraphKey {
             internal StateGraphKey(State start, State finish, bool undirected = false) {
