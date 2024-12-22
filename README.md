@@ -1,22 +1,22 @@
 # Generic state machine
 
-Generic State Machine can be instantiated with any enumeration type representing the set of states.
+Transition System can be instantiated with any enumeration type representing the set of states.
 
 ~~~
 enum RoomDoorState { Locked, Closed, Opened,
                      OpenedInside, ClosedInside, LockedInside };
-StateMachine<RoomDoorState> stateMachine = new();
+TransitionSystem<RoomDoorState> transitionSystem = new();
 ~~~
 
 Then the transition graph can be populated:
 
 ~~~
-stateMachine.AddValidStateTransition(RoomDoorState.ClosedInside, RoomDoorState.LockedInside,
+transitionSystem.AddValidStateTransition(RoomDoorState.ClosedInside, RoomDoorState.LockedInside,
     (start, finish) => {
         // command hardware actuator to lock the door
 });
 //...
-stateMachine.AddInvalidStateTransition(RoomDoorState.Locked, RoomDoorState.LockedInside,
+transitionSystem.AddInvalidStateTransition(RoomDoorState.Locked, RoomDoorState.LockedInside,
     (start, finish) =>
         $"You cannot get in through the locked door"));
 ~~~
