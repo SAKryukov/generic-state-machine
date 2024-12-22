@@ -92,8 +92,8 @@
 <p>All paths returned by <a href="#heading-labyrinth"><code>Labyrinth</code></a>, <a href="#heading-finddeadends"><code>FindDeadEnds</code></a>, and <a href="#heading-longestpaths"><code>LongestPaths</code></a> are represented as arrays <code>STATE[]</code> or arrays of paths <code>STATE[][]</code>, each path represented as an array of <code>STATE</code>. In the array of states, the starting state of the path is not included, and the final state of the path is included.</p><p>In other words, given a permitted path between the <a href="#heading-currentstate">current state</a> of a state machine and the other states in the array, we can perform the chain of transitions,
 sequentially to all the states in the array, and all the transitions will be valid.</p><p>Example:</p><pre lang="C#"><span class="keyword highlighter">var</span> solution = stateMachine.Labyrinth(<span class="_custom-word_ highlighter">VisitorState</span>.Entry, <span class="_custom-word_ highlighter">VisitorState</span>.Exit);
 <span class="keyword highlighter">if</span> (solution.Length &gt; <span class="literal numeric highlighter">0</span>)
-    <span class="keyword highlighter">foreach</span> (<span class="keyword highlighter">var</span> state <span class="keyword highlighter">in</span> solution[<span class="literal numeric highlighter">0</span>]) <span class="comment highlighter">// or any other solution path</span>
-        stateMachine.TryTransitionTo(state); <span class="comment highlighter">// always valid</span>
+    <span class="keyword highlighter">foreach</span> (<span class="keyword highlighter">var</span> state <span class="keyword highlighter">in</span> solution[<span class="literal numeric highlighter">0</span>]) <span class="comment text highlighter">// or any other solution path</span>
+        stateMachine.TryTransitionTo(state); <span class="comment text highlighter">// always valid</span>
 </pre><h1 id="heading-examples">Examples</h1>
 <h2 id="heading-room-door-example">Room Door Example</h2>
 <p>Basic state machine example with 6 states forming a linear transition graph. Demonstrates valid transitions and attempts to perform an invalid transition.</p><p><a href="https://github.com/SAKryukov/generic-state-machine/tree/main/code/Tests/TestDoor">Source code</a>
@@ -111,7 +111,8 @@ Total number of paths: 1603536, longest path length: 23.</p><p><a href="https://
 Also, the code can be used for some <a href="https://en.wikipedia.org/wiki/.NET_Framework">.NET Framework</a> versions. However, it will require re-creation of project files, which is not hard to do.</p><p>The build does not require Visual Studio, Visual Studio Code, or any other IDE. It can be done using the commands</p><pre>dotnet build -c Debug
 dotnet build -c Release
 </pre><p>With Visual Studio or Visual Studio Code, the code can be built in the usual ways. Besides, for Visual Studio Code, a <a href="https://github.com/SAKryukov/generic-state-machine/blob/main/code/.vscode/launch.json">launch configuration “Build All”</a> and a <a href="https://github.com/SAKryukov/generic-state-machine/blob/main/code/.vscode/tasks.json">task “Build All”</a> are provided.</p><p class="extensible-markdown">This documentation is generated from the extended Markdown documentation using <a href="https://marketplace.visualstudio.com/items?itemName=sakryukov.extensible-markdown">Extensible Markdown</a>
-for Visual Studio Code.</p><script src="https://SAKryukov.github.io/publications/code/source-code-decorator.js"></script>
+for Visual Studio Code.</p><div  data-line="240" class="code-line" dir="auto" ></div>
+<script src="https://SAKryukov.github.io/publications/code/source-code-decorator.js"></script>
 
 
 </body>

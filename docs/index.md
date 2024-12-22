@@ -179,8 +179,8 @@ Example:
 ~~~ {lang=C#}
 <span class="keyword highlighter">var</span> solution = stateMachine.Labyrinth(<span class="_custom-word_ highlighter">VisitorState</span>.Entry, <span class="_custom-word_ highlighter">VisitorState</span>.Exit);
 <span class="keyword highlighter">if</span> (solution.Length &gt; <span class="literal numeric highlighter">0</span>)
-    <span class="keyword highlighter">foreach</span> (<span class="keyword highlighter">var</span> state <span class="keyword highlighter">in</span> solution[<span class="literal numeric highlighter">0</span>]) <span class="comment highlighter">// or any other solution path</span>
-        stateMachine.TryTransitionTo(state); <span class="comment highlighter">// always valid</span>
+    <span class="keyword highlighter">foreach</span> (<span class="keyword highlighter">var</span> state <span class="keyword highlighter">in</span> solution[<span class="literal numeric highlighter">0</span>]) <span class="comment text highlighter">// or any other solution path</span>
+        stateMachine.TryTransitionTo(state); <span class="comment text highlighter">// always valid</span>
 ~~~
 
 # Examples
