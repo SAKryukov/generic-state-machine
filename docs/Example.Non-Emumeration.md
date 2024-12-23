@@ -2,7 +2,7 @@ Non-Enumeration Example{title}
 
 [Source code](https://github.com/SAKryukov/generic-state-machine/tree/main/code/Tests/Test.Non-Emumeration)
 
-This example shows the use of a non-enumerable type for the generic `STATE` type of a state machine.
+This example shows the use of a non-enumerable type for the generic `STATE` type of a transition system.
 
 ~~~{lang=C#}
 <span class="_custom-word_ highlighter">StateMachine</span>&lt;<span class="type keyword highlighter">double</span>&gt; stateMachine = <span class="keyword highlighter">new</span>(<span class="type keyword highlighter">double</span>.<span class="literal keyword highlighter">NaN</span>);

@@ -2,7 +2,7 @@ Room Door{title}
 
 [Source code](https://github.com/SAKryukov/generic-state-machine/tree/main/code/Tests/TestDoor)
 
-Basic state machine example with 6 states forming a linear transition graph. Demonstrates valid transitions and attempts to perform an invalid transition.
+Basic transition system example with 6 states forming a linear transition graph. Demonstrates valid transitions and attempts to perform an invalid transition.
 
 The state machine can be represented as
 

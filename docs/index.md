@@ -1,6 +1,4 @@
-Generic State Machine{title}
-
-The class [`StateMachine`](#heading-class-statemachine) provides a way to create a [finite-state machine](https://en.wikipedia.org/wiki/Finite-state_machine) based on any enumeration type representing a set of states. For the class instance, a state transition graph can be created. The instance can walk between states using permitted transitions, and the optional delegate representing the side effect of a transition can be called. An attempt to perform an invalid transition can provide optional information, explaining why the transition is invalid. The class also implements several graph algorithms, including [NP-hard](https://en.wikipedia.org/wiki/NP-hardness) ones, such as [finding the longest possible paths](#heading-longestpaths).
+Generic State Machines{title}
 
 @toc
 
@@ -14,7 +12,7 @@ An instance of the delegate provides a way to define a side effect of a valid tr
 <span class="keyword highlighter">public</span> delegate <span class="keyword highlighter">void</span> <span class="_custom-word_ highlighter">ValidStateTransitionAction</span>&lt;<span class="_custom-word_ highlighter">STATE</span>&gt;(<span class="_custom-word_ highlighter">STATE</span> startState, <span class="_custom-word_ highlighter">STATE</span> finishState);
 ~~~
 
-The delegate instance is used in the [StateMachine.AddValidStateTransition](#heading-addvalidstatetransition) and [StateMachine.AddValidStateTransitionChain](#heading-addinvalidstatetransition) call.
+The delegate instance is used in the [TransitionSystem.AddValidStateTransition](#heading-addvalidstatetransition) and [TransitionSystem.AddValidStateTransitionChain](#heading-addinvalidstatetransition) call.
 
 ## Delegate InvalidStateTransitionAction
 
@@ -24,11 +22,11 @@ An instance of the delegate provides the optional information on an invalid tran
 <span class="keyword highlighter">public</span> delegate string <span class="_custom-word_ highlighter">InvalidStateTransitionAction</span>&lt;<span class="_custom-word_ highlighter">STATE</span>&gt;(<span class="_custom-word_ highlighter">STATE</span> startState, <span class="_custom-word_ highlighter">STATE</span> finishState);
 ~~~
 
-The delegate instance is used in the [StateMachine.AddInvalidStateTransition](#heading-addinvalidstatetransition) call.
+The delegate instance is used in the [TransitionSystem.AddInvalidStateTransition](#heading-addinvalidstatetransition) call.
 
 ## NotAState Attribute
 
-This attribute can be used to mark some enumeration-type members to exclude them from the set of states of a state machine. It can be useful to create members irrelevant to the state machine behavior but used for some calculations. For example, such a member can be a bitwise `OR` combination of several states.
+This attribute can be used to mark some enumeration-type members to exclude them from the set of states of a transition system. It can be useful to create members irrelevant to the transition system behavior but used for some calculations. For example, such a member can be a bitwise `OR` combination of several states.
 
 ~~~{lang=C#}{id=api-not-a-state}
 [System.AttributeUsage(System.AttributeTargets.Field, AllowMultiple = <span class="keyword highlighter">false</span>, Inherited = <span class="keyword highlighter">false</span>)]
@@ -46,24 +44,35 @@ Example:
 
 An attempt to perform a state transition to a `NotAState` enumeration value using [`TryTransitionTo`](#heading-trytransitionto) will throw an exception.
 
-## Class StateMachine
+## Class TransitionSystem
 
-~~~{lang=C#}{id=api-state-machine}
-<span class="keyword highlighter">public</span> <span class="keyword highlighter">class</span> <span class="_custom-word_ highlighter">StateMachine</span>&lt;<span class="_custom-word_ highlighter">STATE</span>&gt; {/* &hellip; */}
+The class [`TransitionSystem`](#heading-class-transitionsystem) provides a way to create
+a [transition system](https://en.wikipedia.org/wiki/Transition_system) based on any enumeration type
+representing a set of states. For the class instance, a state transition graph can be created.
+The instance can walk between states using permitted transitions,
+and the optional delegate representing the side effect of a transition can be called.
+An attempt to perform an invalid transition can provide optional information,
+explaining why the transition is invalid.
+The class also implements several graph algorithms,
+including [NP-hard](https://en.wikipedia.org/wiki/NP-hardness) ones,
+such as [finding the longest possible paths](#heading-longestpaths).
+
+~~~{lang=C#}{id=api-transition-system}
+<span class="keyword highlighter">public</span> <span class="keyword highlighter">class</span> <span class="_custom-word_ highlighter">TransitionSystem</span>&lt;<span class="_custom-word_ highlighter">STATE</span>&gt; {/* &hellip; */}
 ~~~
 
-The class can be instantiated with the generic type parameter `STATE`. Typically, it should be any enumeration type with its enumeration members representing states. However, it is not a strict rule. In principle, any type with public static fields can be used for the `STATE` type. In this case, the public static fields will represent the state machine states. Please see [the example](#heading-non-enumeration-example) illustrating the use of a non-enumeration type `STATE`.
+The class can be instantiated with the generic type parameter `STATE`. Typically, it should be any enumeration type with its enumeration members representing states. However, it is not a strict rule. In principle, any type with public static fields can be used for the `STATE` type. In this case, the public static fields will represent the transition system states. Please see [the example](#heading-non-enumeration-example) illustrating the use of a non-enumeration type `STATE`.
 
 ### Public Constructor
 
-Creates an instance of `StateMachine`.
+Creates an instance of `TransitionSystem`.
 
-Parameter: `STATE initialState = default`. Defines the initial state of the state machine. See also [`ResetState`](#heading-resetstate).
+Parameter: `STATE initialState = default`. Defines the initial state of the transition system. See also [`ResetState`](#heading-resetstate).
 
 Note that the use of a non-default initial state can be critically important when a default value for the `STATE` type is not a state. It can happen if this default value is excluded using the [[`NotAState`](#heading-notastate-attribute)] attribute. Another case of a non-state value is demonstrated by the [non-enumeration example](#heading-non-enumeration-example).
 
 ~~~{lang=C#}{id=api-constructor}
-<span class="keyword highlighter">public</span> <span class="_custom-word_ highlighter">StateMachine</span>(<span class="_custom-word_ highlighter">STATE</span> initialState = <span class="keyword highlighter">default</span>);
+<span class="keyword highlighter">public</span> <span class="_custom-word_ highlighter">TransitionSystem</span>(<span class="_custom-word_ highlighter">STATE</span> initialState = <span class="keyword highlighter">default</span>);
 ~~~
 
 ### Public Methods
@@ -78,7 +87,7 @@ Unconditionally jumps to the *initial state* defined by the [constructor](#headi
 
 #### AddValidStateTransition
 
-Adds an edge to the state machine's *transition graph* between the states `startState` and `finishState`. If the parameter `undirected` is `true`, it makes both transitions valid, from `startState` to `finishState`, and from `finishState` to `startState`.
+Adds an edge to the transition system's *transition graph* between the states `startState` and `finishState`. If the parameter `undirected` is `true`, it makes both transitions valid, from `startState` to `finishState`, and from `finishState` to `startState`.
 
 Optionally, a delegate instance of the type [`StateTransitionAction`](#heading-delegate-validstatetransitionaction) is specified. In this case (when the delegate instance is not `null`), the delegate's method will be called on each call to [`TryTransitionTo`](#heading-trytransitionto) between corresponding states.
 
@@ -88,7 +97,7 @@ Optionally, a delegate instance of the type [`StateTransitionAction`](#heading-d
 
 #### AddValidStateTransitionChain
 
-Adds a transition chain to the state machine's *transition graph*. Note that if the parameter `undirected` is `true`, it makes all the graph edges between the adjacent pairs of states *undirected*, that is, the transitions in both directions become valid.
+Adds a transition chain to the transition system's *transition graph*. Note that if the parameter `undirected` is `true`, it makes all the graph edges between the adjacent pairs of states *undirected*, that is, the transitions in both directions become valid.
 
 Optionally, a delegate instance of the type [`StateTransitionAction`](#heading-delegate-validstatetransitionaction) is specified. In this case (when the delegate instance is not `null`), the same delegate's method will be called on each call to [`TryTransitionTo`](#heading-trytransitionto) between corresponding states in the chain.
 
@@ -150,7 +159,7 @@ Another form of `FindDeadEnds` assumes that the parameter `allPaths` is the arra
 
 #### CurrentState
 
-Returns the *current state* of the state machine. Before the very first transition of the instance, the current state is the one defined by the [constructor](#heading-public-constructor).
+Returns the *current state* of the transition system. Before the very first transition of the instance, the current state is the one defined by the [constructor](#heading-public-constructor).
 
 ~~~{lang=C#}{id=api-current-state}
 <span class="keyword highlighter">public</span> <span class="_custom-word_ highlighter">STATE</span> CurrentState;
@@ -172,29 +181,29 @@ Returns the *current state* of the state machine. Before the very first transiti
 
 All paths returned by [`Labyrinth`](#heading-labyrinth), [`FindDeadEnds`](#heading-finddeadends), and [`LongestPaths`](#heading-longestpaths) are represented as arrays `STATE[]` or arrays of paths `STATE[][]`, each path represented as an array of `STATE`. In the array of states, the starting state of the path is not included, and the final state of the path is included.
 
-In other words, given a permitted path between the [current state](#heading-currentstate) of a state machine and the other states in the array, we can perform the chain of transitions,
+In other words, given a permitted path between the [current state](#heading-currentstate) of a transition system and the other states in the array, we can perform the chain of transitions,
 sequentially to all the states in the array, and all the transitions will be valid.
 
 Example:
 ~~~ {lang=C#}
-<span class="keyword highlighter">var</span> solution = stateMachine.Labyrinth(<span class="_custom-word_ highlighter">VisitorState</span>.Entry, <span class="_custom-word_ highlighter">VisitorState</span>.Exit);
+<span class="keyword highlighter">var</span> solution = TransitionSystem.Labyrinth(<span class="_custom-word_ highlighter">VisitorState</span>.Entry, <span class="_custom-word_ highlighter">VisitorState</span>.Exit);
 <span class="keyword highlighter">if</span> (solution.Length &gt; <span class="literal numeric highlighter">0</span>)
     <span class="keyword highlighter">foreach</span> (<span class="keyword highlighter">var</span> state <span class="keyword highlighter">in</span> solution[<span class="literal numeric highlighter">0</span>]) <span class="comment text highlighter">// or any other solution path</span>
-        stateMachine.TryTransitionTo(state); <span class="comment text highlighter">// always valid</span>
+        TransitionSystem.TryTransitionTo(state); <span class="comment text highlighter">// always valid</span>
 ~~~
 
 # Examples
 
 ## Room Door Example
 
-Basic state machine example with 6 states forming a linear transition graph. Demonstrates valid transitions and attempts to perform an invalid transition.
+Basic transition system example with 6 states forming a linear transition graph. Demonstrates valid transitions and attempts to perform an invalid transition.
 
 [Source code](https://github.com/SAKryukov/generic-state-machine/tree/main/code/Tests/TestDoor)
 <br/>[Description](Example.Door.html)
 
 ## Non-Enumeration Example
 
-This example shows the use of a non-enumerable type as a `StateMachine` generic parameter. The type `double` is used as a source of the state set.
+This example shows the use of a non-enumerable type as a `TransitionSystem` generic parameter. The type `double` is used as a source of the state set.
 
 [Source code](https://github.com/SAKryukov/generic-state-machine/tree/main/code/Tests/Test.Non-Emumeration)
 <br/>[Description](Example.Non-Emumeration.html)
@@ -213,7 +222,7 @@ Total number of paths: 1603536, longest path length: 23.
 
 ## Zoo Example
 
-The Zoo example represents the state machine representing the visitor location at the zoo. This example demonstrates all the `StateMachine` features.
+The Zoo example represents the transition system representing the visitor location at the zoo. This example demonstrates all the `TransitionSystem` features.
 
 [Source code](https://github.com/SAKryukov/generic-state-machine/tree/main/code/Tests/TestZoo)
 <br/>[Description](Example.Zoo.html)

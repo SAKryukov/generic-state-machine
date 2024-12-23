@@ -1,0 +1,9 @@
+Mealy and Moore Machines in TOC:
+https://www.geeksforgeeks.org/mealy-and-moore-machines-in-toc
+https://www.geeksforgeeks.org/finite-state-transducer-fsts-in-nlp
+
+Finite-State Machines with Output
+https://ics.uci.edu/~ssirani/f13-6B/FiniteAutomataRosen.pdf
+
+State-Transition Machine
+https://citeseerx.ist.psu.edu/document?repid=rep1&type=pdf&doi=f14c206ab65c1b452d9a47dbcfa3bd38610936a6

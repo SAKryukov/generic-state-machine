@@ -2,7 +2,7 @@ Zoo{title}
 
 [Source code](https://github.com/SAKryukov/generic-state-machine/tree/main/code/Tests/TestZoo)
 
-The Zoo example represents the state machine representing the visitor location at the zoo. This is the transition graph:
+The Zoo example represents the transition system representing the visitor location at the zoo. This is the transition graph:
 
 ![Zoo](zoo.svg)
 
