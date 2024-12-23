@@ -11,7 +11,6 @@ namespace StateMachines {
 
     public delegate OUTPUT MooreMachineOutputAction<STATE, INPUT, OUTPUT> (STATE state);
     public delegate OUTPUT MealyMachineOutputAction<STATE, INPUT, OUTPUT> (STATE state, INPUT input);
-    public delegate OUTPUT OutputAction<STATE, INPUT, OUTPUT> (STATE state, INPUT input, OUTPUT output);
 
     public class Transducer<STATE, INPUT, OUTPUT>  : Acceptor<STATE, INPUT> {
 
@@ -41,16 +40,8 @@ namespace StateMachines {
                     MealyMachineOutputAction = handler,
                     MachineType = MachineType.Mealy });
         } //AddOutputFunctionPart
-        public void AddOutputFunctionPart(
-            INPUT input, STATE state,
-            OutputAction<STATE, INPUT, OUTPUT> handler)
-        {
-            outputFunction.Add(
-                GetStateMachineFunctionKey(input, state),
-                new OutputFunctionValue() {
-                    OutputAction = handler,
-                    MachineType = MachineType.Comprehensive });
-        } //AddOutputFunctionPart
+
+        private protected override bool IgnoreTransitionValidity => true;
 
         StateMachineFunctionKey GetStateMachineFunctionKey(INPUT input, STATE state) {
             StateMachineFunctionKey key = new (FindInput(input), FindState(state));
@@ -59,17 +50,49 @@ namespace StateMachines {
             return key;
         } //GetStateMachineFunctionKey
 
-        enum MachineType { Moore, Mealy, Comprehensive }
+        enum MachineType { Moore, Mealy, }
         class OutputFunctionValue {
             internal MooreMachineOutputAction<STATE, INPUT, OUTPUT> MooreMachineOutputAction { get; init;}
             internal MealyMachineOutputAction<STATE, INPUT, OUTPUT> MealyMachineOutputAction { get; init; }
-            internal OutputAction<STATE, INPUT, OUTPUT> OutputAction { get; init; }
             internal MachineType MachineType { get; init; }
         } //OutputFunctionValue
 
-        public override (bool success, string transitionComment) Signal(INPUT input) {
-            (bool baseSuccess, string baseTransitionComment) = base.Signal(input);
-            return (baseSuccess, baseTransitionComment);
+        public
+            (OUTPUT output,
+            bool transitionSuccess, string transitionComment,
+            bool outputSuccess, string outputComment)
+                Signal(INPUT input)
+        {
+            (bool baseTransitionSuccess, string baseTransitionComment) =
+                TransitionSignal(input);
+            StateMachineFunctionKey key = new(FindInput(input), FindState(CurrentState));
+            if (outputFunction.TryGetValue(key, out OutputFunctionValue outputFunctionValue)) {
+                OUTPUT output = default;
+                bool handlerFound = false;
+                switch (outputFunctionValue.MachineType) {
+                    case MachineType.Moore:
+                        if (outputFunctionValue.MooreMachineOutputAction != null)
+                            output = outputFunctionValue.MooreMachineOutputAction(CurrentState);
+                        handlerFound = true;
+                        break;
+                    case MachineType.Mealy:
+                        if (outputFunctionValue.MealyMachineOutputAction != null)
+                            output = outputFunctionValue.MealyMachineOutputAction(CurrentState, input);
+                        handlerFound = true;
+                        break;
+                } //switch
+                if (handlerFound)
+                    return (output, baseTransitionSuccess, baseTransitionComment, true, null);
+                else
+                    return (
+                        output,
+                        baseTransitionSuccess, baseTransitionComment,
+                        false, DefinitionSet<STATE, INPUT, bool>.UndefinedOutputFunction(CurrentState, input));
+            } //if
+            return (
+                default,
+                baseTransitionSuccess, baseTransitionComment,
+                false, DefinitionSet<STATE, INPUT, bool>.UndefinedOutputFunction(CurrentState, input));
         } //Signal
 
         class StateTransitionFunctionPopulationException : System.ApplicationException {

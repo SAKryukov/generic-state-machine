@@ -22,6 +22,9 @@ namespace StateMachines {
         internal static string InvalidStateExceptionMessage(STATE state) =>
             $"The value {state} is not a part of the State Machine state set";
 
+        internal static string ValidStateExceptionMessage(string className) =>
+            $"For the class {className}, the transition graph is ignored";
+
         internal static string InvalidInputExceptionMessage(INPUT input) =>
             $"The value {input} is not a part of the State Machine input alphabet";
 
@@ -36,6 +39,12 @@ namespace StateMachines {
 
         internal static string TransitionSuccess(STATE state) =>
             $"{state}";
+
+        internal static string UndefinedStateTransitionFunction(STATE state, INPUT input) =>
+            $"State transition function is not defined for the inpit {input} and current state {state}";
+
+        internal static string UndefinedOutputFunction(STATE state, INPUT input) =>
+            $"Output function is not defined for the inpit {input} and current state {state}";
 
     } //DefinitionSet
 
