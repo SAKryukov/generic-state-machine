@@ -15,7 +15,7 @@ namespace StateMachines {
 
         public Acceptor(STATE initialState = default) : base(initialState = default) {
             Traverse<INPUT>((name, input) => {
-                inputDictionary.Add(input, new Input(name, input));
+                inputDictionary.Add(input, new Input(name, input));                
             });
         } //Acceptor
 
