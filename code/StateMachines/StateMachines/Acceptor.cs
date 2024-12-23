@@ -7,6 +7,7 @@
 */
 
 namespace StateMachines {
+    using System;
     using System.Collections.Generic;
 
     public delegate STATE AcceptorTransitionAction<STATE, INPUT> (STATE state, INPUT input);
@@ -29,13 +30,14 @@ namespace StateMachines {
             stateTransitionFunction.Add(key, new StateTransitionFunctionValue(handler));
         } //AddStateTransitionFunctionPart
 
-        public string TransitionSignal(INPUT input) {
+        public (STATE result, string comment) TransitionSignal(INPUT input) {
             StateMachineFunctionKey key = new(FindInput(input), FindState(CurrentState));
             if (stateTransitionFunction.TryGetValue(key, out StateTransitionFunctionValue part))
                 if (part.Handler != null)
-                    return TransitionTo(part.Handler(CurrentState, input));
+                    return (CurrentState, TransitionTo(part.Handler(CurrentState, input)));
             return
-                DefinitionSet<STATE, INPUT, bool>.UndefinedStateTransitionFunction(CurrentState, input);
+                (CurrentState,
+                DefinitionSet<STATE, INPUT, bool>.UndefinedStateTransitionFunction(CurrentState, input));
         } //TransitionSignal
 
         class StateTransitionFunctionPopulationException : System.ApplicationException {

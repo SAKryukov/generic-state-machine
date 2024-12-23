@@ -56,12 +56,11 @@ namespace StateMachines {
         } //OutputFunctionValue
 
         public
-            (OUTPUT output,
-            string transitionComment,
-            bool outputSuccess, string outputComment)
+            (OUTPUT output, bool outputSuccess, string outputComment,
+            STATE transitionResult, string transitionComment)
                 Signal(INPUT input)
         {
-            string baseTransitionComment =
+            (STATE baseTransitionResult, string baseTransitionComment) =
                 TransitionSignal(input);
             StateMachineFunctionKey key = new(FindInput(input), FindState(CurrentState));
             if (outputFunction.TryGetValue(key, out OutputFunctionValue outputFunctionValue)) {
@@ -80,24 +79,21 @@ namespace StateMachines {
                         break;
                 } //switch
                 if (handlerFound)
-                    return (output, baseTransitionComment, true, null);
+                    return (output, true, null, baseTransitionResult, baseTransitionComment);
                 else
                     return (
-                        output,
-                        baseTransitionComment,
-                        false, DefinitionSet<STATE, INPUT, bool>.UndefinedOutputFunction(CurrentState, input));
+                        output, false, DefinitionSet<STATE, INPUT, bool>.UndefinedOutputFunction(CurrentState, input),
+                        baseTransitionResult, baseTransitionComment);
             } //if
             return (
-                default,
-                baseTransitionComment,
-                false, DefinitionSet<STATE, INPUT, bool>.UndefinedOutputFunction(CurrentState, input));
+                default, false, DefinitionSet<STATE, INPUT, bool>.UndefinedOutputFunction(CurrentState, input),
+                baseTransitionResult, baseTransitionComment);
         } //Signal
 
         class StateTransitionFunctionPopulationException : System.ApplicationException {
             internal StateTransitionFunctionPopulationException(INPUT input, STATE state)
                 : base(DefinitionSet<STATE, INPUT, bool>.OutputFunctionPopulationExceptionMessage(input, state)) { }
         } //class StateTransitionFunctionPopulationException
-
 
         readonly Dictionary<OUTPUT, Output> outputDictionary = new();
         readonly Dictionary<StateMachineFunctionKey, OutputFunctionValue> outputFunction = new();
