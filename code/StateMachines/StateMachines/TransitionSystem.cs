@@ -196,9 +196,9 @@ namespace StateMachines {
         private protected string TransitionTo(STATE state) {
             if (CurrentState.Equals(state))
                 return DefinitionSet<STATE, bool, bool>.TransitionToTheSameState(CurrentState);
-            CurrentState = state;
             State start = FindState(CurrentState);
             State finish = FindState(state);
+            CurrentState = state;
             StateGraphKey key = new(start, finish);
             bool found = stateGraph.TryGetValue(key, out StateGraphValue value);
             if (found && value.ValidAction != null)

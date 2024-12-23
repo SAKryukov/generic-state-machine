@@ -37,12 +37,16 @@ namespace StateMachines {
                     (state, input) => output);
             } //Add
 
-        static Transducer<CarState, CarSignal, CarOutput> Populate() {
+        static Transducer<CarState, CarSignal, CarOutput> Populate() {            
             Transducer<CarState, CarSignal, CarOutput> transducer = new();
             Add(transducer, CarSignal.BrakePedalPress, CarState.Off,
                 CarState.Breaks, CarOutput.Fine);            
             Add(transducer, CarSignal.StartEngine, CarState.Breaks,
                 CarState.Idle, CarOutput.Fine);
+            transducer.AddValidStateTransition(
+                CarState.Breaks, CarState.Idle,
+                (start, finish) => Console.WriteLine("Starting engine")); 
+
             Add(transducer, CarSignal.ShiftToDrive, CarState.Idle,
                 CarState.Drive, CarOutput.Fine);
             Add(transducer, CarSignal.ShiftToReverse, CarState.Idle,
