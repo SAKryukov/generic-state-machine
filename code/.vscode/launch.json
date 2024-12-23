@@ -61,5 +61,18 @@
             "logging": { "moduleLoad": false },
             "console": "internalConsole",
         },
+        {
+            "name": "Debug Test.Acceptor.Car",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "windows": {
+                "program": "${workspaceFolder}/output.Debug.AnyCPU/Test.Acceptor.Car.exe",
+            },
+            "program": "${workspaceFolder}/output.Debug.AnyCPU/Test.Acceptor.Car",
+            "stopAtEntry": true,
+            "logging": { "moduleLoad": false },
+            "console": "internalConsole",
+        },
     ]
 }

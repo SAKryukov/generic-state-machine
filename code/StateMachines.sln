@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test.Non-Emumeration", "Tes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestGrid", "Tests\TestGrid\TestGrid.csproj", "{64DF79CE-3D58-4F6D-978B-C346DD8571FD}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test.Acceptor.Car", "Tests\Test.Acceptor.Car\Test.Acceptor.Car.csproj", "{B4F1A743-E7AD-4525-AAF3-6F13D3C97EF5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{64DF79CE-3D58-4F6D-978B-C346DD8571FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{64DF79CE-3D58-4F6D-978B-C346DD8571FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{64DF79CE-3D58-4F6D-978B-C346DD8571FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4F1A743-E7AD-4525-AAF3-6F13D3C97EF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4F1A743-E7AD-4525-AAF3-6F13D3C97EF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4F1A743-E7AD-4525-AAF3-6F13D3C97EF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4F1A743-E7AD-4525-AAF3-6F13D3C97EF5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

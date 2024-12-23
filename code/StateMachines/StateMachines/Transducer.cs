@@ -41,8 +41,6 @@ namespace StateMachines {
                     MachineType = MachineType.Mealy });
         } //AddOutputFunctionPart
 
-        private protected override bool IgnoreTransitionValidity => true;
-
         StateMachineFunctionKey GetStateMachineFunctionKey(INPUT input, STATE state) {
             StateMachineFunctionKey key = new (FindInput(input), FindState(state));
             if (outputFunction.ContainsKey(key))
@@ -59,11 +57,11 @@ namespace StateMachines {
 
         public
             (OUTPUT output,
-            bool transitionSuccess, string transitionComment,
+            string transitionComment,
             bool outputSuccess, string outputComment)
                 Signal(INPUT input)
         {
-            (bool baseTransitionSuccess, string baseTransitionComment) =
+            string baseTransitionComment =
                 TransitionSignal(input);
             StateMachineFunctionKey key = new(FindInput(input), FindState(CurrentState));
             if (outputFunction.TryGetValue(key, out OutputFunctionValue outputFunctionValue)) {
@@ -82,16 +80,16 @@ namespace StateMachines {
                         break;
                 } //switch
                 if (handlerFound)
-                    return (output, baseTransitionSuccess, baseTransitionComment, true, null);
+                    return (output, baseTransitionComment, true, null);
                 else
                     return (
                         output,
-                        baseTransitionSuccess, baseTransitionComment,
+                        baseTransitionComment,
                         false, DefinitionSet<STATE, INPUT, bool>.UndefinedOutputFunction(CurrentState, input));
             } //if
             return (
                 default,
-                baseTransitionSuccess, baseTransitionComment,
+                baseTransitionComment,
                 false, DefinitionSet<STATE, INPUT, bool>.UndefinedOutputFunction(CurrentState, input));
         } //Signal
 

@@ -63,8 +63,6 @@ namespace StateMachines {
             CurrentState = initialState;
 
         public (bool isValid, string validityComment) IsTransitionValid(STATE startState, STATE finishState) {
-            if (IgnoreTransitionValidity)
-                return (true, DefinitionSet<bool, bool, bool>.ValidStateExceptionMessage(GetType().Name));
             State start = FindState(startState);
             State finish = FindState(finishState);
             StateGraphKey key = new(start, finish);
@@ -83,9 +81,9 @@ namespace StateMachines {
             var transition = stateGraph.TryGetValue(key, out StateGraphValue value) ? value : null;
             bool found = transition != null;
             string validityComment = DefinitionSet<STATE, bool, bool>.TransitionSuccess(state);
-            if (found || IgnoreTransitionValidity) {
+            if (found) {
                 var validity = IsTransitionValid(value, CurrentState, state);
-                if (!validity.IsValid && !IgnoreTransitionValidity)
+                if (!validity.IsValid)
                     return (false, validity.ValidityComment);
                 transition.ValidAction?.Invoke(CurrentState, state);
                 CurrentState = state;
@@ -195,7 +193,12 @@ namespace StateMachines {
 
         #region implementation
 
-        private protected virtual bool IgnoreTransitionValidity => false;
+        private protected string TransitionTo(STATE state) {
+            if (CurrentState.Equals(state))
+                return DefinitionSet<STATE, bool, bool>.TransitionToTheSameState(CurrentState);
+             CurrentState = state;
+             return DefinitionSet<STATE, bool, bool>.TransitionSuccess(state);
+        } //TransitionTo
 
         class Digest {
             internal void BuildFollowingStates() {

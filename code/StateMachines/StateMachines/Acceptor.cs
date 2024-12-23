@@ -13,7 +13,7 @@ namespace StateMachines {
 
     public class Acceptor<STATE, INPUT> : TransitionSystem<STATE> {
 
-        public Acceptor(STATE initialState) : base(initialState = default) {
+        public Acceptor(STATE initialState = default) : base(initialState = default) {
             Traverse<INPUT>((name, input) => {
                 inputDictionary.Add(input, new Input(name, input));
             });
@@ -29,16 +29,13 @@ namespace StateMachines {
             stateTransitionFunction.Add(key, new StateTransitionFunctionValue(handler));
         } //AddStateTransitionFunctionPart
 
-        public (bool transitionSuccess, string transitionComment) TransitionSignal(INPUT input) {
+        public string TransitionSignal(INPUT input) {
             StateMachineFunctionKey key = new(FindInput(input), FindState(CurrentState));
             if (stateTransitionFunction.TryGetValue(key, out StateTransitionFunctionValue part))
-                if (part.Handler != null) {
-                    (bool success, string comment) = TryTransitionTo(part.Handler(CurrentState, input));
-                    return (success, comment);
-                } //if
-            return (
-                false,
-                DefinitionSet<STATE, INPUT, bool>.UndefinedStateTransitionFunction(CurrentState, input));
+                if (part.Handler != null)
+                    return TransitionTo(part.Handler(CurrentState, input));
+            return
+                DefinitionSet<STATE, INPUT, bool>.UndefinedStateTransitionFunction(CurrentState, input);
         } //TransitionSignal
 
         class StateTransitionFunctionPopulationException : System.ApplicationException {
@@ -50,6 +47,13 @@ namespace StateMachines {
             internal StateMachineFunctionKey(Input input, State state) { State = state; Input = input;}
             internal Input Input { get; init; }
             internal State State { get; init; }
+            public override bool Equals(object obj) {
+                StateMachineFunctionKey keyObject = (StateMachineFunctionKey)obj;
+                return Input.UnderlyingMember.Equals(keyObject.Input.UnderlyingMember)
+                    && State.UnderlyingMember.Equals(keyObject.State.UnderlyingMember);   
+            } //Equals
+            public override int GetHashCode() =>
+                Input.Name.GetHashCode() ^ State.Name.GetHashCode();
         } //StateMachineFunctionKey
 
         class StateTransitionFunctionValue {
