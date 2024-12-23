@@ -196,8 +196,14 @@ namespace StateMachines {
         private protected string TransitionTo(STATE state) {
             if (CurrentState.Equals(state))
                 return DefinitionSet<STATE, bool, bool>.TransitionToTheSameState(CurrentState);
-             CurrentState = state;
-             return DefinitionSet<STATE, bool, bool>.TransitionSuccess(state);
+            CurrentState = state;
+            State start = FindState(CurrentState);
+            State finish = FindState(state);
+            StateGraphKey key = new(start, finish);
+            bool found = stateGraph.TryGetValue(key, out StateGraphValue value);
+            if (found && value.ValidAction != null)
+                value.ValidAction(start.UnderlyingMember, finish.UnderlyingMember);
+            return DefinitionSet<STATE, bool, bool>.TransitionSuccess(state);
         } //TransitionTo
 
         class Digest {
