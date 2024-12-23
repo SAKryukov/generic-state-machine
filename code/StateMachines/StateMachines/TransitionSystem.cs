@@ -1,5 +1,5 @@
 /*
-    Generic State Machine
+    Generic State Machines
 
     Copyright (C) 2024 by Sergey A Kryukov
     https://www.SAKryukov.org
@@ -7,25 +7,29 @@
 */
 
 namespace StateMachines {
-    using BindingFlags = System.Reflection.BindingFlags;
-    using FieldInfo = System.Reflection.FieldInfo;
     using System.Collections.Generic;
 
     public delegate void StateTransitionAction<STATE>(STATE startState, STATE finishState);
     public delegate string InvalidStateTransitionAction<STATE>(STATE startState, STATE finishState);
 
-    public class TransitionSystem<STATE> :  TransitionSystemBase<STATE> {
+    public class TransitionSystem<STATE> : TransitionSystemBase<STATE> {
 
         #region API
 
-        public TransitionSystem(STATE initialState = default) : base(initialState) {
+        public TransitionSystem(STATE initialState = default) {
+            Traverse<STATE>((name, state) => {
+                stateDictionary.Add(state, new State(name, state));
+                if (state.Equals(initialState))
+                    CurrentState = state;
+            });
+            this.initialState = CurrentState;
             digest = new(this);
         } //TransitionSystem
 
         public void AddValidStateTransition(STATE startState, STATE finishState, StateTransitionAction<STATE> action, bool undirected = false) {
             if (startState.Equals(finishState)) return;
             StateGraphKey key = new(FindState(startState), FindState(finishState), undirected);
-            if (stateGraph.TryGetValue(key, out StateGraphValue value))
+            if (stateGraph.ContainsKey(key))
                 throw new GraphPopulationException(startState, finishState);
             stateGraph.Add(key, new StateGraphValue(true, action, null));
             digest.Update(key);
@@ -51,7 +55,12 @@ namespace StateMachines {
             if (stateGraph.TryGetValue(key, out StateGraphValue value))
                 throw new GraphPopulationException(startState, finishState);
             stateGraph.Add(key, new StateGraphValue(false, null, action));
-        } //AddInvalidStateTransition       
+        } //AddInvalidStateTransition
+
+        public STATE CurrentState { get; private protected set; }
+
+        public STATE ResetState() => // unconditional jump to initial state, ignoring the transition graph
+            CurrentState = initialState;
 
         public (bool isValid, string validityComment) IsTransitionValid(STATE startState, STATE finishState) {
             State start = FindState(startState);
@@ -59,19 +68,19 @@ namespace StateMachines {
             StateGraphKey key = new(start, finish);
             var transition = stateGraph.TryGetValue(key, out StateGraphValue value) ? value : null;
             if (transition == null)
-                return (false, DefinitionSet<STATE>.TransitionNotDefined(startState, finishState));
+                return (false, DefinitionSet<STATE, bool, bool>.TransitionNotDefined(startState, finishState));
             return IsTransitionValid(transition, startState, finishState);
         } //IsTransitionValid
   
         public (bool success, string validityComment) TryTransitionTo(STATE state) {
             if (CurrentState.Equals(state))
-                return (true, DefinitionSet<STATE>.TransitionToTheSameState(CurrentState));
+                return (true, DefinitionSet<STATE, bool, bool>.TransitionToTheSameState(CurrentState));
             State start = FindState(CurrentState);
             State finish = FindState(state);
             StateGraphKey key = new(start, finish);
             var transition = stateGraph.TryGetValue(key, out StateGraphValue value) ? value : null;
             bool found = transition != null;
-            string validityComment = DefinitionSet<STATE>.TransitionSuccess(state);
+            string validityComment = DefinitionSet<STATE, bool, bool>.TransitionSuccess(state);
             if (found) {
                 var validity = IsTransitionValid(value, CurrentState, state);
                 if (!validity.IsValid)
@@ -79,7 +88,7 @@ namespace StateMachines {
                 transition.ValidAction?.Invoke(CurrentState, state);
                 CurrentState = state;
             } else
-                return (false, DefinitionSet<STATE>.TransitionNotDefined(CurrentState, state));
+                return (false, DefinitionSet<STATE, bool, bool>.TransitionNotDefined(CurrentState, state));
             return (found, validityComment);
         } //TryTransitionTo
 
@@ -203,34 +212,17 @@ namespace StateMachines {
             bool populated;
         } //class Digest
 
-        State FindState(STATE value) {
-            if (stateDictionary.TryGetValue(value, out State state))
-                return state;
-            else
-                throw new InvalidStateException(value);
-        } //FindState
-
         static bool IsValid(StateGraphValue value) => value.ValidAction != null;
 
         static (bool IsValid, string ValidityComment) IsTransitionValid(StateGraphValue value, STATE startState, STATE finishState) {
             if (!IsValid(value) && value.InvalidAction != null) {
                 return (false, value.InvalidAction(startState, finishState));
             } //if
-            return (true, DefinitionSet<STATE>.TransitionIsValid(startState, finishState));
+            return (true, DefinitionSet<STATE, bool, bool>.TransitionIsValid(startState, finishState));
         } //IsTransitionValid
 
         readonly Dictionary<StateGraphKey, StateGraphValue> stateGraph = new();
         readonly Digest digest;
-
-        class GraphPopulationException : System.ApplicationException {
-            internal GraphPopulationException(STATE startState, STATE finishState)
-                : base(DefinitionSet<STATE>.GraphPopulationExceptionMessage(startState, finishState)) { }
-        } //class GraphPopulationException
-
-        class InvalidStateException : System.ApplicationException {
-            internal InvalidStateException(STATE state)
-                : base(DefinitionSet<STATE>.InvalidStateExceptionMessage(state)) { }
-        } //class InvalidStateException
 
         class StateGraphKey {
             internal StateGraphKey(State start, State finish, bool undirected = false) {
@@ -266,6 +258,31 @@ namespace StateMachines {
             internal StateTransitionAction<STATE> ValidAction { get; init; }
             internal InvalidStateTransitionAction<STATE> InvalidAction { get; init; }
         } //class StateGraphValue
+
+        class GraphPopulationException : System.ApplicationException {
+            internal GraphPopulationException(STATE startState, STATE finishState)
+                : base(DefinitionSet<STATE, bool, bool>.GraphPopulationExceptionMessage(startState, finishState)) { }
+        } //class GraphPopulationException
+
+        internal State FindState(STATE key) {
+            if (stateDictionary.TryGetValue(key, out State state))
+                return state;
+            else
+                throw new InvalidStateException(key);
+        } //FindState
+
+        internal class State : Element<STATE> {
+            internal State(string name, STATE underlyingMember) : base(name, underlyingMember) {}
+            internal (bool isVisited, List<State> followingStates) digest = (false, new());
+        } //class State
+
+        class InvalidStateException : System.ApplicationException {
+            internal InvalidStateException(STATE state)
+                : base(DefinitionSet<STATE, bool, bool>.InvalidStateExceptionMessage(state)) { }
+        } //class InvalidStateException
+
+        readonly STATE initialState;
+        readonly Dictionary<STATE, State> stateDictionary = new();
 
         #endregion implementation
 
