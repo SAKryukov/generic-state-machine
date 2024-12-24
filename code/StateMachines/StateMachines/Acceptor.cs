@@ -14,6 +14,8 @@ namespace StateMachines {
 
     public class Acceptor<STATE, INPUT> : TransitionSystem<STATE> {
 
+        #region API
+
         public Acceptor(STATE initialState = default) : base(initialState = default) {
             Traverse<INPUT>((name, input) => {
                 inputDictionary.Add(input, new Input(name, input));                
@@ -39,6 +41,10 @@ namespace StateMachines {
                 (CurrentState,
                 DefinitionSet<STATE, INPUT, bool>.UndefinedStateTransitionFunction(CurrentState, input));
         } //TransitionSignal
+
+        #endregion API
+
+        #region implementation
 
         class StateTransitionFunctionPopulationException : System.ApplicationException {
             internal StateTransitionFunctionPopulationException(INPUT input, STATE state)
@@ -82,6 +88,9 @@ namespace StateMachines {
         private protected readonly Dictionary<INPUT, Input> inputDictionary = new();
         readonly Dictionary<StateMachineFunctionKey, StateTransitionFunctionValue> stateTransitionFunction = new();
 
+        #endregion implementation
+
     } //class Acceptor
 
 }
+

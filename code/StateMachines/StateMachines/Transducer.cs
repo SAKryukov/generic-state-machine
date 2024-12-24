@@ -12,7 +12,9 @@ namespace StateMachines {
     public delegate OUTPUT MooreMachineOutputAction<STATE, INPUT, OUTPUT> (STATE state);
     public delegate OUTPUT MealyMachineOutputAction<STATE, INPUT, OUTPUT> (STATE state, INPUT input);
 
-    public class Transducer<STATE, INPUT, OUTPUT>  : Acceptor<STATE, INPUT> {
+    public class Transducer<STATE, INPUT, OUTPUT> : Acceptor<STATE, INPUT> {
+
+        #region API
 
         public Transducer(STATE initialState = default) : base(initialState) {
             Traverse<OUTPUT>((name, output) => {
@@ -40,20 +42,6 @@ namespace StateMachines {
                     MealyMachineOutputAction = handler,
                     MachineType = MachineType.Mealy });
         } //AddOutputFunctionPart
-
-        StateMachineFunctionKey GetStateMachineFunctionKey(INPUT input, STATE state) {
-            StateMachineFunctionKey key = new (FindInput(input), FindState(state));
-            if (outputFunction.ContainsKey(key))
-                throw new StateTransitionFunctionPopulationException(input, state);
-            return key;
-        } //GetStateMachineFunctionKey
-
-        enum MachineType { Moore, Mealy, }
-        class OutputFunctionValue {
-            internal MooreMachineOutputAction<STATE, INPUT, OUTPUT> MooreMachineOutputAction { get; init;}
-            internal MealyMachineOutputAction<STATE, INPUT, OUTPUT> MealyMachineOutputAction { get; init; }
-            internal MachineType MachineType { get; init; }
-        } //OutputFunctionValue
 
         public
             (OUTPUT output, bool outputSuccess, string outputComment,
@@ -90,6 +78,24 @@ namespace StateMachines {
                 baseTransitionResult, baseTransitionComment);
         } //Signal
 
+        #endregion API
+
+        #region implementation
+
+        StateMachineFunctionKey GetStateMachineFunctionKey(INPUT input, STATE state) {
+            StateMachineFunctionKey key = new (FindInput(input), FindState(state));
+            if (outputFunction.ContainsKey(key))
+                throw new StateTransitionFunctionPopulationException(input, state);
+            return key;
+        } //GetStateMachineFunctionKey
+
+        enum MachineType { Moore, Mealy, }
+        class OutputFunctionValue {
+            internal MooreMachineOutputAction<STATE, INPUT, OUTPUT> MooreMachineOutputAction { get; init;}
+            internal MealyMachineOutputAction<STATE, INPUT, OUTPUT> MealyMachineOutputAction { get; init; }
+            internal MachineType MachineType { get; init; }
+        } //OutputFunctionValue
+
         class StateTransitionFunctionPopulationException : System.ApplicationException {
             internal StateTransitionFunctionPopulationException(INPUT input, STATE state)
                 : base(DefinitionSet<STATE, INPUT, bool>.OutputFunctionPopulationExceptionMessage(input, state)) { }
@@ -101,6 +107,8 @@ namespace StateMachines {
         internal class Output : Element<OUTPUT> {
             internal Output(string name, OUTPUT output) : base(name, output) {}
         } //class Input
+
+        #endregion implementation
 
     } //class Transducer
 
