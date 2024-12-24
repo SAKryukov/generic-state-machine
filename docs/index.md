@@ -4,6 +4,12 @@ Generic State Machines{title}
 
 # StateMachines Namespace
 
+Inheritance diagram:
+
+~~~
+<span style = "border: thin solid black; padding-left: 1em; padding-right: 1em">System.Object</span><big>&#x21FD;</big><span style = "border: thin solid black; padding-left: 1em; padding-right: 1em">TransitionSystem</span><big>&#x21FD;</big><span style = "border: thin solid black; padding-left: 1em; padding-right: 1em">Acceptor</span><big>&#x21FD;</big><span style = "border: thin solid black; padding-left: 1em; padding-right: 1em">Transducer</span>
+~~~
+
 ## Delegate ValidStateTransitionAction
 
 An instance of the delegate provides a way to define a side effect of a valid transition between two states, `startState`, and `finishState`. For example, in the hardware automation applications, it can operate the hardware.
