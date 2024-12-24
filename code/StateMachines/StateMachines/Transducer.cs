@@ -8,7 +8,6 @@
 
 namespace StateMachines {
     using System.Collections.Generic;
-    using System.Runtime.InteropServices;
 
     public delegate OUTPUT MooreMachineOutputAction<STATE, INPUT, OUTPUT> (STATE state);
     public delegate OUTPUT MealyMachineOutputAction<STATE, INPUT, OUTPUT> (STATE state, INPUT input);

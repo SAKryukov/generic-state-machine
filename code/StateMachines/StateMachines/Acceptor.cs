@@ -7,10 +7,10 @@
 */
 
 namespace StateMachines {
-    using System;
     using System.Collections.Generic;
 
     public delegate STATE AcceptorTransitionAction<STATE, INPUT> (STATE state, INPUT input);
+    public delegate string InvalidAcceptorInputHandler<STATE, INPUT> (STATE state, INPUT input);
 
     public class Acceptor<STATE, INPUT> : TransitionSystem<STATE> {
 
@@ -32,6 +32,13 @@ namespace StateMachines {
             stateTransitionFunction.Add(key, new StateTransitionFunctionValue(handler));
         } //AddStateTransitionFunctionPart
 
+        public void AddInvalidInput(INPUT input, STATE state, InvalidAcceptorInputHandler<STATE, INPUT> handler) {
+            var key = new StateMachineFunctionKey(FindInput(input), FindState(state));
+            if (invalidAcceptorInputRegistry.ContainsKey(key))
+                throw new InvalidInputRegistryPopulationException(input, state);
+            invalidAcceptorInputRegistry.Add(key, handler);
+        } //AddInvalidInput
+
         public record TransitionSignalResult(STATE State, bool Success, string Comment);
         public TransitionSignalResult TransitionSignal(INPUT input) {
             StateMachineFunctionKey key = new(FindInput(input), FindState(CurrentState));
@@ -40,9 +47,12 @@ namespace StateMachines {
                     string comment = TransitionTo(part.Handler(CurrentState, input));
                     return new TransitionSignalResult(CurrentState, true, comment);
                 } //if
+            string invalidReason = DefinitionSet<STATE, INPUT, bool>.UndefinedStateTransitionFunction(CurrentState, input);
+            if (invalidAcceptorInputRegistry.TryGetValue(key, out var handler))
+                if (handler != null)
+                    invalidReason = handler(CurrentState, input);
             return
-                new TransitionSignalResult(CurrentState, false,
-                    DefinitionSet<STATE, INPUT, bool>.UndefinedStateTransitionFunction(CurrentState, input));
+                new TransitionSignalResult(CurrentState, false, invalidReason);
         } //TransitionSignal
 
         #endregion API
@@ -53,6 +63,11 @@ namespace StateMachines {
             internal StateTransitionFunctionPopulationException(INPUT input, STATE state)
                 : base(DefinitionSet<STATE, INPUT, bool>.StateTransitionFunctionPopulationExceptionMessage(input, state)) { }
         } //class StateTransitionFunctionPopulationException
+
+        class InvalidInputRegistryPopulationException : System.ApplicationException {
+            internal InvalidInputRegistryPopulationException(INPUT input, STATE state)
+                : base(DefinitionSet<STATE, INPUT, bool>.InputRegistryPopulationExceptionMessage(input, state)) { }
+        } //class InvalidInputRegistryPopulationException
 
         internal class StateMachineFunctionKey {
             internal StateMachineFunctionKey(Input input, State state) { State = state; Input = input;}
@@ -90,6 +105,7 @@ namespace StateMachines {
 
         private protected readonly Dictionary<INPUT, Input> inputDictionary = new();
         readonly Dictionary<StateMachineFunctionKey, StateTransitionFunctionValue> stateTransitionFunction = new();
+        readonly Dictionary<StateMachineFunctionKey, InvalidAcceptorInputHandler<STATE, INPUT>> invalidAcceptorInputRegistry = new();
 
         #endregion implementation
 

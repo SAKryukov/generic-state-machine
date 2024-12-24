@@ -13,14 +13,14 @@ namespace StateMachines {
         Off = 0,
         Breaks = 1 << 6, // Drive gear position, engine is off
         ParkBreaks, DriveBreaks, ReverveBreaks, // engine is on
-        Park = 1, Drive = 2, Reverve = 3,
+        Park = 1, Drive = 2, Reverse = 3,
         //
         Lights = 1 << 7, // Drive gear position, engine is off
         BreaksLights = Breaks|Lights,
         ParkBreaksLights = Park|Breaks|Lights,
         DriveBreaksLights = Drive|Breaks|Lights,
-        ReverveBreaksLights = Reverve|Breaks|Lights,
-        ParkLights = Park|Lights, DriveLights = Drive|Lights, ReverveLights = Reverve|Lights,
+        ReverveBreaksLights = Reverse|Breaks|Lights,
+        ParkLights = Park|Lights, DriveLights = Drive|Lights, ReverseLights = Reverse|Lights,
     }
 
     enum CarSignal {
@@ -93,10 +93,16 @@ namespace StateMachines {
                 "Moving forward",
                 "Stopping forward motion"
             );
-            Add(CarSignal.BrakePedalRelease, CarSignal.BrakePedalPress, CarState.ReverveBreaks, CarState.Reverve,
+            Add(CarSignal.BrakePedalRelease, CarSignal.BrakePedalPress, CarState.ReverveBreaks, CarState.Reverse,
                 "Moving in reverse",
                 "Stopping in reverse motion"
             );
+            foreach (CarState state in new CarState[] { CarState.Drive, CarState.Reverse, CarState.ReverseLights, CarState.DriveLights }) {
+                transducer.AddInvalidInput(CarSignal.ShiftToDrive, state, (input, state) =>
+                "Please don't shifts gears to the opposite direction while driving");
+                transducer.AddInvalidInput(CarSignal.ShiftToReverse, state, (input, state) =>
+                "Please don't shifts gears to the opposite direction while driving");
+            } //loop
         } //Populate
 
         void Work() {
@@ -107,6 +113,9 @@ namespace StateMachines {
             Report(transducer.Signal(CarSignal.StartEngine));
             Report(transducer.Signal(CarSignal.ShiftToDrive));
             Report(transducer.Signal(CarSignal.BrakePedalRelease));
+
+            Report(transducer.Signal(CarSignal.ShiftToReverse));
+
             Report(transducer.Signal(CarSignal.BrakePedalPress));
             Report(transducer.Signal(CarSignal.ShiftToPark));
             Report(transducer.Signal(CarSignal.ShiftToReverse));

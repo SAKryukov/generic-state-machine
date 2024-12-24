@@ -16,6 +16,9 @@ namespace StateMachines {
         internal static string StateTransitionFunctionPopulationExceptionMessage(INPUT input, STATE state) =>
             $"The state handler for the input {input} and the state {state} is already added to the State Machine's transition function";
 
+        internal static string InputRegistryPopulationExceptionMessage(INPUT input, STATE state) =>
+            $"The invalid input handler for the input {input} and the state {state} is already added to the State Machine's invalid input registry";
+
         internal static string OutputFunctionPopulationExceptionMessage(INPUT input, STATE state) =>
             $"The state handler for the input {input} and the state {state} is already added to the State Machine's ouput function";
 
