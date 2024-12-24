@@ -32,14 +32,17 @@ namespace StateMachines {
             stateTransitionFunction.Add(key, new StateTransitionFunctionValue(handler));
         } //AddStateTransitionFunctionPart
 
-        public (STATE result, string comment) TransitionSignal(INPUT input) {
+        public record TransitionSignalResult(STATE State, bool Success, string Comment);
+        public TransitionSignalResult TransitionSignal(INPUT input) {
             StateMachineFunctionKey key = new(FindInput(input), FindState(CurrentState));
             if (stateTransitionFunction.TryGetValue(key, out StateTransitionFunctionValue part))
-                if (part.Handler != null)
-                    return (CurrentState, TransitionTo(part.Handler(CurrentState, input)));
+                if (part.Handler != null) {
+                    string comment = TransitionTo(part.Handler(CurrentState, input));
+                    return new TransitionSignalResult(CurrentState, true, comment);
+                } //if
             return
-                (CurrentState,
-                DefinitionSet<STATE, INPUT, bool>.UndefinedStateTransitionFunction(CurrentState, input));
+                new TransitionSignalResult(CurrentState, false,
+                    DefinitionSet<STATE, INPUT, bool>.UndefinedStateTransitionFunction(CurrentState, input));
         } //TransitionSignal
 
         #endregion API

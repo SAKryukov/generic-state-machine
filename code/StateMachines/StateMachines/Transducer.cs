@@ -8,6 +8,7 @@
 
 namespace StateMachines {
     using System.Collections.Generic;
+    using System.Runtime.InteropServices;
 
     public delegate OUTPUT MooreMachineOutputAction<STATE, INPUT, OUTPUT> (STATE state);
     public delegate OUTPUT MealyMachineOutputAction<STATE, INPUT, OUTPUT> (STATE state, INPUT input);
@@ -33,6 +34,7 @@ namespace StateMachines {
                     MachineType = MachineType.Moore });
         } //AddOutputFunctionPart
         public void AddOutputFunctionPart(
+
             INPUT input, STATE state,
             MealyMachineOutputAction<STATE, INPUT, OUTPUT> handler)
         {
@@ -43,13 +45,13 @@ namespace StateMachines {
                     MachineType = MachineType.Mealy });
         } //AddOutputFunctionPart
 
-        public
-            (OUTPUT output, bool outputSuccess, string outputComment,
-            STATE transitionResult, string transitionComment)
-                Signal(INPUT input)
+        public record SignalResult(
+            TransitionSignalResult TransitionResult,
+            OUTPUT Output, bool OutputSuccess = true, string OutputComment = null);
+
+        public SignalResult Signal(INPUT input)
         {
-            (STATE baseTransitionResult, string baseTransitionComment) =
-                TransitionSignal(input);
+            TransitionSignalResult transitionResult = TransitionSignal(input);
             StateMachineFunctionKey key = new(FindInput(input), FindState(CurrentState));
             if (outputFunction.TryGetValue(key, out OutputFunctionValue outputFunctionValue)) {
                 OUTPUT output = default;
@@ -67,15 +69,13 @@ namespace StateMachines {
                         break;
                 } //switch
                 if (handlerFound)
-                    return (output, true, null, baseTransitionResult, baseTransitionComment);
+                    return new SignalResult(transitionResult, output);
                 else
-                    return (
-                        output, false, DefinitionSet<STATE, INPUT, bool>.UndefinedOutputFunction(CurrentState, input),
-                        baseTransitionResult, baseTransitionComment);
+                    return new SignalResult(transitionResult, output, false,
+                        DefinitionSet<STATE, INPUT, bool>.UndefinedOutputFunction(CurrentState, input));
             } //if
-            return (
-                default, false, DefinitionSet<STATE, INPUT, bool>.UndefinedOutputFunction(CurrentState, input),
-                baseTransitionResult, baseTransitionComment);
+            return new SignalResult(transitionResult, default, false,
+                DefinitionSet<STATE, INPUT, bool>.UndefinedOutputFunction(CurrentState, input));
         } //Signal
 
         #endregion API

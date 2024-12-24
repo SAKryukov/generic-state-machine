@@ -78,11 +78,11 @@ namespace StateMachines {
             State start = FindState(CurrentState);
             State finish = FindState(state);
             StateGraphKey key = new(start, finish);
-            var transition = stateGraph.TryGetValue(key, out StateGraphValue value) ? value : null;
+            var transition = stateGraph.TryGetValue(key, out StateGraphValue stateGraphValue) ? stateGraphValue : null;
             bool found = transition != null;
             string validityComment = DefinitionSet<STATE, bool, bool>.TransitionSuccess(state);
             if (found) {
-                var validity = IsTransitionValid(value, CurrentState, state);
+                var validity = IsTransitionValid(stateGraphValue, CurrentState, state);
                 if (!validity.IsValid)
                     return (false, validity.ValidityComment);
                 transition.ValidAction?.Invoke(CurrentState, state);
@@ -200,9 +200,9 @@ namespace StateMachines {
             State finish = FindState(state);
             CurrentState = state;
             StateGraphKey key = new(start, finish);
-            bool found = stateGraph.TryGetValue(key, out StateGraphValue value);
-            if (found && value.ValidAction != null)
-                value.ValidAction(start.UnderlyingMember, finish.UnderlyingMember);
+            bool found = stateGraph.TryGetValue(key, out StateGraphValue stateGraphValue);
+            if (found && stateGraphValue.ValidAction != null)
+                stateGraphValue.ValidAction(start.UnderlyingMember, finish.UnderlyingMember);
             return DefinitionSet<STATE, bool, bool>.TransitionSuccess(state);
         } //TransitionTo
 
