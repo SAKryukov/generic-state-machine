@@ -9,11 +9,18 @@
 namespace StateMachines {
     using Console = System.Console;
 
-    enum CarState : byte {
-        Off,  Breaks, Idle, 
-        Drive, Reverse,
-        Light = 0xF0, BreaksLight = Light | Breaks, IdleLight = Light | Idle,
-        DriveLight = Light | Drive, ReverseLight = Light | Reverse,
+    enum CarState : long {
+        Off = 0,
+        Breaks = 1 << 6, // Drive gear position, engine is off
+        ParkBreaks, DriveBreaks, ReverveBreaks, // engine is on
+        Park = 1, Drive = 2, Reverve = 3,
+        //
+        Lights = 1 << 7, // Drive gear position, engine is off
+        BreaksLights = Breaks|Lights,
+        ParkBreaksLights = Park|Breaks|Lights,
+        DriveBreaksLights = Drive|Breaks|Lights,
+        ReverveBreaksLights = Reverve|Breaks|Lights,
+        ParkLights = Park|Lights, DriveLights = Drive|Lights, ReverveLights = Reverve|Lights,
     }
 
     enum CarSignal {
@@ -32,75 +39,81 @@ namespace StateMachines {
         readonly Transducer<CarState, CarSignal, CarOutput> transducer = new();
 
         void Add(
-            CarSignal signal, CarState startState, CarState finishState,
-            CarOutput output = CarOutput.None, string transitionText = null)
+            CarSignal signal, CarSignal reverseSignal, CarState startState, CarState finishState,
+            string transitionText = null, string reverseTransitionText = null,
+            CarOutput output = CarOutput.None)
         {
-            transducer.AddStateTransitionFunctionPart(signal, startState,
-                (state, input) => finishState);
-            transducer.AddOutputFunctionPart(signal, finishState,
-                (state, input) => output);
-            if (!string.IsNullOrEmpty(transitionText))
-                transducer.AddValidStateTransition(
-                    startState, finishState,
-                    (start, finish) => Console.WriteLine(transitionText)); 
-                
+            void AddFunction(CarSignal signal, CarState startState, CarState finishState) {
+                transducer.AddStateTransitionFunctionPart(signal, startState,
+                    (state, input) => finishState);
+                transducer.AddOutputFunctionPart(signal, startState,
+                    (state, input) => output);
+            } //AddFunction
+            void AddText(CarState startState, CarState finishState, string text) {
+                if (!string.IsNullOrEmpty(text))
+                    transducer.AddValidStateTransition(
+                        startState, finishState,
+                        (start, finish) => Console.WriteLine($"      ({text}...)")); 
+            }
+            AddFunction(signal, startState, finishState);
+            AddFunction(reverseSignal, finishState, startState);
+            AddText(startState, finishState, transitionText);
+            AddText(finishState, startState, reverseTransitionText);                
         } //Add
 
-        void Populate() {            
-            Add(CarSignal.BrakePedalPress, CarState.Off,
-                CarState.Breaks);            
-            Add(CarSignal.StartEngine, CarState.Breaks,
-                CarState.Idle, CarOutput.None, "Starting Engine...");
+        void Report(Transducer<CarState, CarSignal, CarOutput>.SignalResult result) {
+            if (result.OutputSuccess && result.TransitionResult.Success)
+                Console.WriteLine($"State: {result.TransitionResult.State}, Output: {result.Output}");
+            else if (!result.TransitionResult.Success && result.OutputSuccess)
+                Console.WriteLine($"State: {result.TransitionResult.State},\n{result.TransitionResult.Comment}");
+            else if (result.TransitionResult.Success && !result.OutputSuccess)
+                Console.WriteLine($"State: {result.TransitionResult.State},\n{result.OutputComment}");
+            else
+                Console.WriteLine($"State: {result.TransitionResult.State},\nTransition issue: {result.TransitionResult.Comment},\nOutput function issue: {result.OutputComment}");
+        } //Report
 
-            Add(CarSignal.ShiftToDrive, CarState.Idle, CarState.Drive);
-            Add(CarSignal.ShiftToReverse, CarState.Idle, CarState.Reverse);
-            //
-            Add(CarSignal.ShiftToDrive, CarState.IdleLight, CarState.DriveLight,
-                CarOutput.GearIndicatorDrive, "Shifting to drive...");
-            //Add(CarSignal.ShiftToReverse, CarState.IdleLight, CarState.ReverseLight,
-            //    CarOutput.GearIndicatorReverse);
-
-
-            transducer.AddStateTransitionFunctionPart(CarSignal.ShiftToDrive, CarState.Reverse,
-                (state, input) => CarState.Drive);
-            transducer.AddStateTransitionFunctionPart(CarSignal.ShiftToReverse, CarState.Drive,
-                (state, input) => CarState.Reverse);
-            transducer.AddStateTransitionFunctionPart(CarSignal.ShiftToDrive, CarState.ReverseLight,
-                (state, input) => CarState.DriveLight);
-            transducer.AddStateTransitionFunctionPart(CarSignal.ShiftToReverse, CarState.DriveLight,
-                (state, input) => CarState.ReverseLight);
-            transducer.AddStateTransitionFunctionPart(CarSignal.ShiftToPark, CarState.Breaks,
-                (state, input) => CarState.Idle);
-            transducer.AddStateTransitionFunctionPart(CarSignal.ShiftToPark, CarState.BreaksLight,
-                (state, input) => CarState.IdleLight);
-            transducer.AddStateTransitionFunctionPart(CarSignal.BrakePedalPress, CarState.Drive,
-                (state, input) => CarState.Breaks);
-            transducer.AddStateTransitionFunctionPart(CarSignal.BrakePedalPress, CarState.Reverse,
-                (state, input) => CarState.Breaks);
-            transducer.AddStateTransitionFunctionPart(CarSignal.BrakePedalPress, CarState.DriveLight,
-                (state, input) => CarState.BreaksLight);
-            transducer.AddStateTransitionFunctionPart(CarSignal.BrakePedalPress, CarState.ReverseLight,
-                (state, input) => CarState.BreaksLight);
-            transducer.AddStateTransitionFunctionPart(CarSignal.StopEngine, CarState.Breaks,
-                (state, input) => CarState.Off);
-            transducer.AddStateTransitionFunctionPart(CarSignal.StopEngine, CarState.BreaksLight,
-                (state, input) => CarState.Light);
-            //
-            foreach (var startState in new CarState[] { CarState.Off,  CarState.Breaks, CarState.Idle, CarState.Drive, CarState.Reverse }) {
-                Add(CarSignal.LighsOn, startState,
-                    CarState.Light | startState, CarOutput.LightsIndicatorOn);
-                Add(CarSignal.LightsOff, startState | CarState.Light,
-                    startState, CarOutput.LightsIndicatorOff);
-            } //loop
+        void Populate() {
+            Add(CarSignal.BrakePedalPress, CarSignal.BrakePedalRelease, CarState.Off, CarState.Breaks,
+                "Engaging breaks and allowing the engine to start",
+                "Disengaging breaks and blocking the engine from starting"
+            );
+            Add(CarSignal.StartEngine, CarSignal.StopEngine, CarState.Breaks, CarState.ParkBreaks,
+                "Starting Engine",
+                "Stopping Engine"
+            );
+            Add(CarSignal.ShiftToDrive, CarSignal.ShiftToPark, CarState.ParkBreaks, CarState.DriveBreaks,
+                "Shifting gearbox to drive",
+                "Shifting gearbox to park"
+            );
+            Add(CarSignal.ShiftToReverse, CarSignal.ShiftToPark, CarState.ParkBreaks, CarState.ReverveBreaks,
+                "Shifting gearbox to reverse",
+                "Shifting gearbox to park"
+            );
+            Add(CarSignal.BrakePedalRelease, CarSignal.BrakePedalPress, CarState.DriveBreaks, CarState.Drive,
+                "Moving forward",
+                "Stopping forward motion"
+            );
+            Add(CarSignal.BrakePedalRelease, CarSignal.BrakePedalPress, CarState.ReverveBreaks, CarState.Reverve,
+                "Moving in reverse",
+                "Stopping in reverse motion"
+            );
         } //Populate
 
         void Work() {
             Populate();
-            Console.WriteLine(transducer.Signal(CarSignal.BrakePedalPress));
-            Console.WriteLine(transducer.Signal(CarSignal.StartEngine));
-            Console.WriteLine(transducer.Signal(CarSignal.LighsOn));
-            Console.WriteLine(transducer.Signal(CarSignal.ShiftToDrive));
-            Console.WriteLine(transducer.Signal(CarSignal.LightsOff));
+            Report(transducer.Signal(CarSignal.BrakePedalPress));
+            Report(transducer.Signal(CarSignal.BrakePedalRelease));
+            Report(transducer.Signal(CarSignal.BrakePedalPress));
+            Report(transducer.Signal(CarSignal.StartEngine));
+            Report(transducer.Signal(CarSignal.ShiftToDrive));
+            Report(transducer.Signal(CarSignal.BrakePedalRelease));
+            Report(transducer.Signal(CarSignal.BrakePedalPress));
+            Report(transducer.Signal(CarSignal.ShiftToPark));
+            Report(transducer.Signal(CarSignal.ShiftToReverse));
+            Report(transducer.Signal(CarSignal.BrakePedalRelease));
+            Report(transducer.Signal(CarSignal.BrakePedalPress));
+            Report(transducer.Signal(CarSignal.ShiftToPark));
+            Report(transducer.Signal(CarSignal.StopEngine));
         } //Work
 
         static void Main() {

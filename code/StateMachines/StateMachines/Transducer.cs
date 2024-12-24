@@ -34,7 +34,6 @@ namespace StateMachines {
                     MachineType = MachineType.Moore });
         } //AddOutputFunctionPart
         public void AddOutputFunctionPart(
-
             INPUT input, STATE state,
             MealyMachineOutputAction<STATE, INPUT, OUTPUT> handler)
         {
@@ -51,8 +50,8 @@ namespace StateMachines {
 
         public SignalResult Signal(INPUT input)
         {
-            TransitionSignalResult transitionResult = TransitionSignal(input);
             StateMachineFunctionKey key = new(FindInput(input), FindState(CurrentState));
+            TransitionSignalResult transitionResult = TransitionSignal(input);
             if (outputFunction.TryGetValue(key, out OutputFunctionValue outputFunctionValue)) {
                 OUTPUT output = default;
                 bool handlerFound = false;
