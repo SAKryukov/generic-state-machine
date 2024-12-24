@@ -24,7 +24,7 @@
 <a style="margin-left: 0em;" href="#heading-statemachines-namespace">StateMachines Namespace</a><br/>
 <a style="margin-left: 3em;" href="#heading-delegate-validstatetransitionaction">Delegate ValidStateTransitionAction</a><br/>
 <a style="margin-left: 3em;" href="#heading-delegate-invalidstatetransitionaction">Delegate InvalidStateTransitionAction</a><br/>
-<a style="margin-left: 3em;" href="#heading-notastate-attribute">NotAState Attribute</a><br/>
+<a style="margin-left: 3em;" href="#heading-notastate-and-notanalphabetelement-attributes">NotAState and NotAnAlphabetElement Attributes</a><br/>
 <a style="margin-left: 3em;" href="#heading-class-transitionsystem">Class TransitionSystem</a><br/>
 <a style="margin-left: 6em;" href="#heading-public-constructor">Public Constructor</a><br/>
 <a style="margin-left: 6em;" href="#heading-public-methods">Public Methods</a><br/>
@@ -40,7 +40,22 @@
 <a style="margin-left: 9em;" href="#heading-currentstate">CurrentState</a><br/>
 <a style="margin-left: 9em;" href="#heading-longestpaths">LongestPaths</a><br/>
 <a style="margin-left: 9em;" href="#heading-maximumpaths">MaximumPaths</a><br/>
-<a style="margin-left: 3em;" href="#heading-notes">Notes</a><br/>
+<a style="margin-left: 6em;" href="#heading-notes">Notes</a><br/>
+<a style="margin-left: 3em;" href="#heading-delegate-acceptortransitionaction">Delegate AcceptorTransitionAction</a><br/>
+<a style="margin-left: 3em;" href="#heading-class-acceptor">Class Acceptor</a><br/>
+<a style="margin-left: 6em;" href="#heading-inherited-public-members">Inherited Public Members</a><br/>
+<a style="margin-left: 6em;" href="#heading-public-constructor.">Public Constructor</a><br/>
+<a style="margin-left: 6em;" href="#heading-public-methods.">Public Methods</a><br/>
+<a style="margin-left: 9em;" href="#heading-addstatetransitionfunctionpart">AddStateTransitionFunctionPart</a><br/>
+<a style="margin-left: 9em;" href="#heading-transitionsignal">TransitionSignal</a><br/>
+<a style="margin-left: 3em;" href="#heading-delegate-mooremachineoutputaction">Delegate MooreMachineOutputAction</a><br/>
+<a style="margin-left: 3em;" href="#heading-delegate-mealymachineoutputaction">Delegate MealyMachineOutputAction</a><br/>
+<a style="margin-left: 3em;" href="#heading-class-transducer">Class Transducer</a><br/>
+<a style="margin-left: 6em;" href="#heading-inherited-public-members.">Inherited Public Members</a><br/>
+<a style="margin-left: 6em;" href="#heading-public-constructor..">Public Constructor</a><br/>
+<a style="margin-left: 6em;" href="#heading-public-methods..">Public Methods</a><br/>
+<a style="margin-left: 9em;" href="#heading-addoutputfunctionpart">AddOutputFunctionPart</a><br/>
+<a style="margin-left: 9em;" href="#heading-signal">Signal</a><br/>
 <a style="margin-left: 0em;" href="#heading-examples">Examples</a><br/>
 <a style="margin-left: 3em;" href="#heading-room-door-example">Room Door Example</a><br/>
 <a style="margin-left: 3em;" href="#heading-non-enumeration-example">Non-Enumeration Example</a><br/>
@@ -52,10 +67,13 @@
 <p>An instance of the delegate provides a way to define a side effect of a valid transition between two states, <code>startState</code>, and <code>finishState</code>. For example, in the hardware automation applications, it can operate the hardware.</p><pre lang="C#" id="api-valid-state-transition-action"><span class="keyword highlighter">public</span> delegate <span class="keyword highlighter">void</span> <span class="_custom-word_ highlighter">ValidStateTransitionAction</span>&lt;<span class="_custom-word_ highlighter">STATE</span>&gt;(<span class="_custom-word_ highlighter">STATE</span> startState, <span class="_custom-word_ highlighter">STATE</span> finishState);
 </pre><p>The delegate instance is used in the <a href="#heading-addvalidstatetransition">TransitionSystem.AddValidStateTransition</a> and <a href="#heading-addinvalidstatetransition">TransitionSystem.AddValidStateTransitionChain</a> call.</p><h2 id="heading-delegate-invalidstatetransitionaction">Delegate InvalidStateTransitionAction</h2>
 <p>An instance of the delegate provides the optional information on an invalid transition between two states, <code>startState</code> and <code>finishState</code>. Its return <code>string</code> value can be used to provide an explanation of why an attempted transition between the states is considered invalid.</p><pre lang="C#" id="api-invalid-state-transition-action"><span class="keyword highlighter">public</span> delegate string <span class="_custom-word_ highlighter">InvalidStateTransitionAction</span>&lt;<span class="_custom-word_ highlighter">STATE</span>&gt;(<span class="_custom-word_ highlighter">STATE</span> startState, <span class="_custom-word_ highlighter">STATE</span> finishState);
-</pre><p>The delegate instance is used in the <a href="#heading-addinvalidstatetransition">TransitionSystem.AddInvalidStateTransition</a> call.</p><h2 id="heading-notastate-attribute">NotAState Attribute</h2>
-<p>This attribute can be used to mark some enumeration-type members to exclude them from the set of states of a transition system. It can be useful to create members irrelevant to the transition system behavior but used for some calculations. For example, such a member can be a bitwise <code>OR</code> combination of several states.</p><pre lang="C#" id="api-not-a-state">[System.AttributeUsage(System.AttributeTargets.Field, AllowMultiple = <span class="keyword highlighter">false</span>, Inherited = <span class="keyword highlighter">false</span>)]
-<span class="keyword highlighter">public</span> <span class="keyword highlighter">class</span> <span class="_custom-word_ highlighter">NotAStateAttribute</span> : System.Attribute {}
-</pre><p>Example:</p><pre lang="C#"><span class="keyword highlighter">enum</span> <span class="_custom-word_ highlighter">NotAStateAttribute</span> {
+</pre><p>The delegate instance is used in the <a href="#heading-addinvalidstatetransition">TransitionSystem.AddInvalidStateTransition</a> call.</p><h2 id="heading-notastate-and-notanalphabetelement-attributes">NotAState and NotAnAlphabetElement Attributes</h2>
+<p>These attributes can be used to mark some enumeration-type members to exclude them from the set of states or from the input or output aplphabets. It can be useful to create members irrelevant to the transition system behavior but used for some calculations. For example, such a member can be a bitwise <code>OR</code> combination of several states.</p><pre lang="C#" id="api-not-a-state">[System.AttributeUsage(System.AttributeTargets.Field, AllowMultiple = <span class="keyword highlighter">false</span>, Inherited = <span class="keyword highlighter">false</span>)]
+<span class="keyword highlighter">public</span> <span class="keyword highlighter">class</span> <span class="_custom-word_ highlighter">NotAStateAttribute</span> : ExcludeAttribute {}
+[System.AttributeUsage(System.AttributeTargets.Field, AllowMultiple = <span class="keyword highlighter">false</span>, Inherited = <span class="keyword highlighter">false</span>)]
+<span class="keyword highlighter">public</span> <span class="keyword highlighter">class</span> <span class="_custom-word_ highlighter">NotAnAlphabetElementAttribute</span> : ExcludeAttribute {}
+</pre><p>Formally, these attrubutes can be used interchangeably. They are made different only for the clarity
+of the terms “state” and “alphabets”. SA???</p><p>Example:</p><pre lang="C#"><span class="keyword highlighter">enum</span> <span class="_custom-word_ highlighter">NotAStateAttribute</span> {
     Locked = 1, Closed = 2, Opened = 4,
     OpenedInside = 8, ClosedInside = 16, LockedInside = 32,
     [<span class="_custom-word_ highlighter">NotAState</span>] Inside = OpenedInside | ClosedInside | LockedInside };
@@ -69,9 +87,11 @@ An attempt to perform an invalid transition can provide optional information,
 explaining why the transition is invalid.
 The class also implements several graph algorithms,
 including <a href="https://en.wikipedia.org/wiki/NP-hardness">NP-hard</a> ones,
-such as <a href="#heading-longestpaths">finding the longest possible paths</a>.</p><pre lang="C#" id="api-transition-system"><span class="keyword highlighter">public</span> <span class="keyword highlighter">class</span> <span class="_custom-word_ highlighter">TransitionSystem</span>&lt;<span class="_custom-word_ highlighter">STATE</span>&gt; {/* &hellip; */}
+such as <a href="#heading-longestpaths">finding the longest possible paths</a>.</p><pre lang="C#" id="api-transition-system"><span class="keyword highlighter">public</span> <span class="keyword highlighter">class</span> <span class="_custom-word_ highlighter">TransitionSystem</span>&lt;<span class="_custom-word_ highlighter">STATE</span>&gt; : <span class="_custom-word_ highlighter">TransitionSystemBase</span>&lt;<span class="_custom-word_ highlighter">STATE</span>&gt;{/* &hellip; */}
 </pre><p>The class can be instantiated with the generic type parameter <code>STATE</code>. Typically, it should be any enumeration type with its enumeration members representing states. However, it is not a strict rule. In principle, any type with public static fields can be used for the <code>STATE</code> type. In this case, the public static fields will represent the transition system states. Please see <a href="#heading-non-enumeration-example">the example</a> illustrating the use of a non-enumeration type <code>STATE</code>.</p><h3 id="heading-public-constructor">Public Constructor</h3>
-<p>Creates an instance of <code>TransitionSystem</code>.</p><p>Parameter: <code>STATE initialState = default</code>. Defines the initial state of the transition system. See also <a href="#heading-resetstate"><code>ResetState</code></a>.</p><p>Note that the use of a non-default initial state can be critically important when a default value for the <code>STATE</code> type is not a state. It can happen if this default value is excluded using the [<a href="#heading-notastate-attribute"><code>NotAState</code></a>] attribute. Another case of a non-state value is demonstrated by the <a href="#heading-non-enumeration-example">non-enumeration example</a>.</p><pre lang="C#" id="api-constructor"><span class="keyword highlighter">public</span> <span class="_custom-word_ highlighter">TransitionSystem</span>(<span class="_custom-word_ highlighter">STATE</span> initialState = <span class="keyword highlighter">default</span>);
+<p>Creates an instance of <code>TransitionSystem</code>.</p><p>Parameter: <code>STATE initialState = default</code>. Defines the initial state of the transition system. See also <a href="#heading-resetstate"><code>ResetState</code></a>.</p><p>Note that the use of a non-default initial state can be critically important when a default value
+for the <code>STATE</code> type is not a state. It can happen if this default value is excluded using the
+[<a href="#heading-notastate-and-notanalphabetelement-attributes"><code>NotAState</code></a>] attribute. Another case of a non-state value is demonstrated by the <a href="#heading-non-enumeration-example">non-enumeration example</a>.</p><pre lang="C#" id="api-constructor"><span class="keyword highlighter">public</span> <span class="_custom-word_ highlighter">TransitionSystem</span>(<span class="_custom-word_ highlighter">STATE</span> initialState = <span class="keyword highlighter">default</span>);
 </pre><h3 id="heading-public-methods">Public Methods</h3>
 <h4 id="heading-resetstate">ResetState</h4>
 <p>Unconditionally jumps to the <em>initial state</em> defined by the <a href="#heading-public-constructor">constructor</a>. No <a href="#heading-delegate-validstatetransitionaction">delegate instances</a> are called even if there is a valid transition between the <a href="#heading-currentstate">current state</a> and the initial state.</p><pre lang="C#" id="api-reset-state"><span class="keyword highlighter">public</span> <span class="_custom-word_ highlighter">STATE</span> ResetState();
@@ -97,12 +117,70 @@ such as <a href="#heading-longestpaths">finding the longest possible paths</a>.<
 <pre lang="C#" id="api-longest-paths"><span class="keyword highlighter">public</span> (int numberOfPaths, int longestPathLength, <span class="_custom-word_ highlighter">STATE</span>[][] longestPaths) LongestPaths; <span class="comment text highlighter">//NP-hard</span>
 </pre><h4 id="heading-maximumpaths">MaximumPaths</h4>
 <pre lang="C#" id="api-maximum-paths"><span class="keyword highlighter">public</span> (int maximumNumberOfPaths, (<span class="_custom-word_ highlighter">STATE</span> start, <span class="_custom-word_ highlighter">STATE</span> finish)[] pairsAtMax) MaximumPaths; <span class="comment text highlighter">//NP-hard</span>
-</pre><h2 id="heading-notes">Notes</h2>
+</pre><h3 id="heading-notes">Notes</h3>
 <p>All paths returned by <a href="#heading-labyrinth"><code>Labyrinth</code></a>, <a href="#heading-finddeadends"><code>FindDeadEnds</code></a>, and <a href="#heading-longestpaths"><code>LongestPaths</code></a> are represented as arrays <code>STATE[]</code> or arrays of paths <code>STATE[][]</code>, each path represented as an array of <code>STATE</code>. In the array of states, the starting state of the path is not included, and the final state of the path is included.</p><p>In other words, given a permitted path between the <a href="#heading-currentstate">current state</a> of a transition system and the other states in the array, we can perform the chain of transitions,
 sequentially to all the states in the array, and all the transitions will be valid.</p><p>Example:</p><pre lang="C#"><span class="keyword highlighter">var</span> solution = TransitionSystem.Labyrinth(<span class="_custom-word_ highlighter">VisitorState</span>.Entry, <span class="_custom-word_ highlighter">VisitorState</span>.Exit);
 <span class="keyword highlighter">if</span> (solution.Length &gt; <span class="literal numeric highlighter">0</span>)
     <span class="keyword highlighter">foreach</span> (<span class="keyword highlighter">var</span> state <span class="keyword highlighter">in</span> solution[<span class="literal numeric highlighter">0</span>]) <span class="comment text highlighter">// or any other solution path</span>
         TransitionSystem.TryTransitionTo(state); <span class="comment text highlighter">// always valid</span>
+</pre><h2 id="heading-delegate-acceptortransitionaction">Delegate AcceptorTransitionAction</h2>
+<pre lang="C#"><span class="keyword highlighter">public</span> <span class="keyword highlighter">delegate</span> <span class="_custom-word_ highlighter">STATE</span> AcceptorTransitionAction&lt;<span class="_custom-word_ highlighter">STATE</span>, <span class="_custom-word_ highlighter">INPUT</span>&gt; (<span class="_custom-word_ highlighter">STATE</span> state, <span class="_custom-word_ highlighter">INPUT</span> input);
+</pre><h2 id="heading-class-acceptor">Class Acceptor</h2>
+<pre lang="C#"><span class="keyword highlighter">public</span> <span class="keyword highlighter">class</span> <span class="_custom-word_ highlighter">Acceptor</span>&lt;<span class="_custom-word_ highlighter">STATE</span>, <span class="_custom-word_ highlighter">INPUT</span>&gt; : TransitionSystem&lt;<span class="_custom-word_ highlighter">STATE</span>&gt; {<span class="comment block highlighter">/* &hellip; */</span>}
+</pre><h3 id="heading-inherited-public-members">Inherited Public Members</h3>
+<p><a href="#heading-resetstate">TransitionSystem.ResetState</a>,
+<a href="#heading-addvalidstatetransition">TransitionSystem.AddValidStateTransition</a>,
+<a href="#heading-addvalidstatetransitionchain">TransitionSystem.AddValidStateTransitionChain</a>,
+<a href="#heading-addinvalidstatetransition">TransitionSystem.AddInvalidStateTransition</a>,
+<a href="#heading-istransitionvalid">TransitionSystem.IsTransitionValid</a>,
+<a href="#heading-trytransitionto">TransitionSystem.TryTransitionToTransitionSystem.</a>,
+<a href="#heading-labyrinth">TransitionSystem.LabyrinthTransitionSystem.</a>,
+<a href="#heading-finddeadends">TransitionSystem.FindDeadEnds</a>,
+<a href="#heading-currentstate">TransitionSystem.CurrentState</a>,
+<a href="#heading-longestpaths">TransitionSystem.LongestPaths</a>,
+<a href="#heading-maximumpaths">TransitionSystem.MaximumPaths</a>,</p><h3 id="heading-public-constructor.">Public Constructor</h3>
+<pre lang="C#"><span class="keyword highlighter">public</span> <span class="_custom-word_ highlighter">Acceptor</span>(<span class="_custom-word_ highlighter">STATE</span> initialState = <span class="keyword highlighter">default</span>) : <span class="keyword highlighter">base</span>(initialState = <span class="keyword highlighter">default</span>);
+</pre><h3 id="heading-public-methods.">Public Methods</h3>
+<h4 id="heading-addstatetransitionfunctionpart">AddStateTransitionFunctionPart</h4>
+<pre lang="C#"><span class="keyword highlighter">public</span> <span class="keyword highlighter">void</span> AddStateTransitionFunctionPart(
+    <span class="_custom-word_ highlighter">INPUT</span> input, <span class="_custom-word_ highlighter">STATE</span> state,
+    <span class="_custom-word_ highlighter">AcceptorTransitionAction</span>&lt;<span class="_custom-word_ highlighter">STATE</span>, <span class="_custom-word_ highlighter">INPUT</span>&gt; handler);
+</pre><h4 id="heading-transitionsignal">TransitionSignal</h4>
+<pre lang="C#"><span class="keyword highlighter">public</span> (<span class="_custom-word_ highlighter">STATE</span> result, <span class="type keyword highlighter">string</span> comment) TransitionSignal(<span class="_custom-word_ highlighter">INPUT</span> input);
+</pre><h2 id="heading-delegate-mooremachineoutputaction">Delegate MooreMachineOutputAction</h2>
+<pre lang="C#"><span class="keyword highlighter">public</span> <span class="keyword highlighter">delegate</span> <span class="_custom-word_ highlighter">OUTPUT</span> MooreMachineOutputAction&lt;<span class="_custom-word_ highlighter">STATE</span>, <span class="_custom-word_ highlighter">INPUT</span>, <span class="_custom-word_ highlighter">OUTPUT</span>&gt; (<span class="_custom-word_ highlighter">STATE</span> state);
+</pre><h2 id="heading-delegate-mealymachineoutputaction">Delegate MealyMachineOutputAction</h2>
+<pre lang="C#"><span class="keyword highlighter">public</span> <span class="keyword highlighter">delegate</span> <span class="_custom-word_ highlighter">OUTPUT</span> MealyMachineOutputAction&lt;<span class="_custom-word_ highlighter">STATE</span>, <span class="_custom-word_ highlighter">INPUT</span>, <span class="_custom-word_ highlighter">OUTPUT</span>&gt; (<span class="_custom-word_ highlighter">STATE</span> state, <span class="_custom-word_ highlighter">INPUT</span> input);
+</pre><h2 id="heading-class-transducer">Class Transducer</h2>
+<pre lang="C#"><span class="keyword highlighter">public</span> <span class="keyword highlighter">class</span> <span class="_custom-word_ highlighter">Transducer</span>&lt;<span class="_custom-word_ highlighter">STATE</span>, <span class="_custom-word_ highlighter">INPUT</span>, <span class="_custom-word_ highlighter">OUTPUT</span>&gt; : <span class="_custom-word_ highlighter">Acceptor</span>&lt;<span class="_custom-word_ highlighter">STATE</span>, <span class="_custom-word_ highlighter">INPUT</span>&gt; {<span class="comment block highlighter">/* &hellip; */</span>}
+</pre><h3 id="heading-inherited-public-members.">Inherited Public Members</h3>
+<p><a href="#heading-resetstate">TransitionSystem.ResetState</a>,
+<a href="#heading-addvalidstatetransition">TransitionSystem.AddValidStateTransition</a>,
+<a href="#heading-addvalidstatetransitionchain">TransitionSystem.AddValidStateTransitionChain</a>,
+<a href="#heading-addinvalidstatetransition">TransitionSystem.AddInvalidStateTransition</a>,
+<a href="#heading-istransitionvalid">TransitionSystem.IsTransitionValid</a>,
+<a href="#heading-trytransitionto">TransitionSystem.TryTransitionToTransitionSystem.</a>,
+<a href="#heading-labyrinth">TransitionSystem.LabyrinthTransitionSystem.</a>,
+<a href="#heading-finddeadends">TransitionSystem.FindDeadEnds</a>,
+<a href="#heading-currentstate">TransitionSystem.CurrentState</a>,
+<a href="#heading-longestpaths">TransitionSystem.LongestPaths</a>,
+<a href="#heading-maximumpaths">TransitionSystem.MaximumPaths</a>,
+<a href="#heading-addstatetransitionfunctionpart">Accessor.AddStateTransitionFunctionPart</a>,
+<a href="#heading-transitionsignal">Accessor.TransitionSignal</a></p><h3 id="heading-public-constructor..">Public Constructor</h3>
+<pre lang="C#"><span class="keyword highlighter">public</span> <span class="_custom-word_ highlighter">Transducer</span>(<span class="_custom-word_ highlighter">STATE</span> initialState = <span class="keyword highlighter">default</span>) : <span class="keyword highlighter">base</span>(initialState);
+</pre><h3 id="heading-public-methods..">Public Methods</h3>
+<h4 id="heading-addoutputfunctionpart">AddOutputFunctionPart</h4>
+<pre lang="C#"><span class="keyword highlighter">public</span> <span class="keyword highlighter">void</span> AddOutputFunctionPart(
+    <span class="_custom-word_ highlighter">INPUT</span> input, <span class="_custom-word_ highlighter">STATE</span> state,
+    <span class="_custom-word_ highlighter">MooreMachineOutputAction</span>&lt;<span class="_custom-word_ highlighter">STATE</span>, <span class="_custom-word_ highlighter">INPUT</span>, <span class="_custom-word_ highlighter">OUTPUT</span>&gt; handler);
+</pre><p>and SA???</p><pre lang="C#"><span class="keyword highlighter">public</span> <span class="keyword highlighter">void</span> AddOutputFunctionPart(
+    <span class="_custom-word_ highlighter">INPUT</span> input, <span class="_custom-word_ highlighter">STATE</span> state,
+    <span class="_custom-word_ highlighter">MealyMachineOutputAction</span>&lt;<span class="_custom-word_ highlighter">STATE</span>, <span class="_custom-word_ highlighter">INPUT</span>, <span class="_custom-word_ highlighter">OUTPUT</span>&gt; handler);
+</pre><h4 id="heading-signal">Signal</h4>
+<pre lang="C#"><span class="keyword highlighter">public</span> (
+    <span class="_custom-word_ highlighter">OUTPUT</span> output, <span class="type keyword highlighter">bool</span> outputSuccess, <span class="type keyword highlighter">string</span> outputComment,
+    <span class="_custom-word_ highlighter">STATE</span> transitionResult, <span class="type keyword highlighter">string</span> transitionComment)
+    Signal(<span class="_custom-word_ highlighter">INPUT</span> input);
 </pre><h1 id="heading-examples">Examples</h1>
 <h2 id="heading-room-door-example">Room Door Example</h2>
 <p>Basic transition system example with 6 states forming a linear transition graph. Demonstrates valid transitions and attempts to perform an invalid transition.</p><p><a href="https://github.com/SAKryukov/generic-state-machine/tree/main/code/Tests/TestDoor">Source code</a>
@@ -120,7 +198,8 @@ Total number of paths: 1603536, longest path length: 23.</p><p><a href="https://
 Also, the code can be used for some <a href="https://en.wikipedia.org/wiki/.NET_Framework">.NET Framework</a> versions. However, it will require re-creation of project files, which is not hard to do.</p><p>The build does not require Visual Studio, Visual Studio Code, or any other IDE. It can be done using the commands</p><pre>dotnet build -c Debug
 dotnet build -c Release
 </pre><p>With Visual Studio or Visual Studio Code, the code can be built in the usual ways. Besides, for Visual Studio Code, a <a href="https://github.com/SAKryukov/generic-state-machine/blob/main/code/.vscode/launch.json">launch configuration “Build All”</a> and a <a href="https://github.com/SAKryukov/generic-state-machine/blob/main/code/.vscode/tasks.json">task “Build All”</a> are provided.</p><p class="extensible-markdown">This documentation is generated from the extended Markdown documentation using <a href="https://marketplace.visualstudio.com/items?itemName=sakryukov.extensible-markdown">Extensible Markdown</a>
-for Visual Studio Code.</p><script src="https://SAKryukov.github.io/publications/code/source-code-decorator.js"></script>
+for Visual Studio Code.</p><div  data-line="374" class="code-line" dir="auto" ></div>
+<script src="https://SAKryukov.github.io/publications/code/source-code-decorator.js"></script>
 
 
 </body>
