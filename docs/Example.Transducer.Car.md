@@ -10,6 +10,6 @@ State diagram:
 
 ![Car](car.svg)
 
-In fact, the real state set is doubled: every state shown on the diagram comes with it "+Lights" counterpart.
+In fact, the real state set is doubled: every state shown on the diagram comes with its "+Lights" counterpart.
 
 @include(extensible-markdown.md)

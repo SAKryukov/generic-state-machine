@@ -5,7 +5,7 @@ The generic classes [TransitionSystem](#heading-class-transitionsystem),
 and [Transducer](#heading-class-transducer) provide the functionality of
 [transition systems](https://en.wikipedia.org/wiki/Transition_system) and
 [finite-state machines](https://en.wikipedia.org/wiki/Finite-state_machine).
-They rely on enumeration-type generic paramters representing the sets of states and the input and output alphabets.
+They rely on enumeration-type generic parameters representing the sets of states and the input and output alphabets.
 
 @toc
 
@@ -21,7 +21,7 @@ Inheritance diagram:
 
 The types of the namespace `StateMachines` depend on the generic-type parameters `STATE`, `INPUT`, and `OUTPUT`.
 
-Typically, the generic-type parameters hould be any enumeration types with their enumeration members representing states.
+Typically, a generic-type parameter could be of any enumeration type with its enumeration members representing states.
 However, it is not a strict rule. In principle, any type with public static fields can be used for the `STATE` type.
 In this case, the public static fields will represent the transition system states.
 Please see [the example](#heading-non-enumeration-example) illustrating the use of a non-enumeration type `STATE`.
@@ -38,7 +38,7 @@ The delegate instance is used in the [TransitionSystem.AddValidStateTransition](
 
 ## Delegate InvalidStateTransitionAction
 
-An instance of the delegate provides the optional information on an invalid transition between two states, `startState` and `finishState`. Its return `string` value can be used to provide an explanation of why an attempted transition between the states is considered invalid.
+An instance of the delegate provides the optional information on an invalid transition between two states, `startState` and `finishState`. Its return `string` value can be used to explain why an attempted transition between the states is considered invalid.
 
 ~~~{lang=C#}{id=api-invalid-state-transition-action}
 <span class="keyword highlighter">public</span> delegate string <span class="_custom-word_ highlighter">InvalidStateTransitionAction</span>&lt;<span class="_custom-word_ highlighter">STATE</span>&gt;(<span class="_custom-word_ highlighter">STATE</span> startState, <span class="_custom-word_ highlighter">STATE</span> finishState);
@@ -48,7 +48,7 @@ The delegate instance is used in the [TransitionSystem.AddInvalidStateTransition
 
 ## NotAState and NotAnAlphabetElement Attributes
 
-These attributes can be used to mark some enumeration-type members to exclude them from the set of states or from the input or output aplphabets. It can be useful to create members irrelevant to the transition system behavior but used for some calculations. For example, such a member can be a bitwise `OR` combination of several states.
+These attributes can be used to mark some enumeration-type members. It excludes them from the set of states or the input or output alphabets. It can be useful to create members irrelevant to the transition system behavior but used for some calculations. For example, such a member can be a bitwise `OR` combination of several states.
 
 ~~~{lang=C#}{id=api-not-a-state}
 [System.AttributeUsage(System.AttributeTargets.Field, AllowMultiple = <span class="keyword highlighter">false</span>, Inherited = <span class="keyword highlighter">false</span>)]
@@ -57,7 +57,7 @@ These attributes can be used to mark some enumeration-type members to exclude th
 <span class="keyword highlighter">public</span> <span class="keyword highlighter">class</span> <span class="_custom-word_ highlighter">NotAnAlphabetElementAttribute</span> : ExcludeAttribute {}
 ~~~
 
-Formally, these attrubutes can be used interchangeably and applied to any enumeration-member public fields. They are made different only for the clarity of the terms "state" and "alphabets". The effect of these attributes is the same: the members marked with one of these attributes are skipped when building a set of states of an alphabet.
+Formally, these attributes can be used interchangeably and applied to any enumeration-member public field. They are made different only for the clarity of the terms "state" and "alphabets". The effect of these attributes is the same: the members marked with one of these attributes are skipped when building a set of states of an alphabet.
 
 Example:
 
@@ -232,7 +232,7 @@ The delegate `AcceptorTransitionAction` is used to define an acceptor's *state-t
 
 ## Delegate InvalidAcceptorInputHandler
 
-The delegate `InvalidAcceptorInputHandler` is used to implement provide additional information on invalid input using the method
+The delegate `InvalidAcceptorInputHandler` is used to provide additional information on invalid input using the method
 [`AddInvalidInput`](#heading-addinvalidinput).
 
 ~~~{lang=C#}
@@ -280,7 +280,7 @@ The class `Acceptor` implements the functionality of a [finite-state acceptor](h
 
 #### AddInvalidInput
 
-The method `AddInvalidInput` is used to provide additional information on the `state` and `input` pair. It is used by [`TransitionSignal`](#heading-transitionsignal): when this methods find that a *state-transition function* is not implemented for a [`CurrentState`](#heading-currentstate) and `input` pair, it looks for the invalid acceptor input informaton to provide an explanation of why the function is not implemented for this pair. If this additional information is not found, [`TransitionSignal`](#heading-transitionsignal) returns a general issue description.
+The method `AddInvalidInput` is used to provide additional information on the `state` and `input` pair. It is used by [`TransitionSignal`](#heading-transitionsignal): when these methods find that a *state-transition function* is not implemented for a [`CurrentState`](#heading-currentstate) and `input` pair, it looks for the invalid acceptor input information to provide an explanation of why the function is not implemented for this pair. If this additional information is not found, [`TransitionSignal`](#heading-transitionsignal) returns a general issue description.
 
 ~~~{lang=C#}
 <span class="keyword highlighter">public</span> <span class="keyword highlighter">void</span> AddInvalidInput(<span class="_custom-word_ highlighter">INPUT</span> input, <span class="_custom-word_ highlighter">STATE</span> state, InvalidAcceptorInputHandler&lt;<span class="_custom-word_ highlighter">STATE</span>, <span class="_custom-word_ highlighter">INPUT</span>&gt; handler);
@@ -288,7 +288,7 @@ The method `AddInvalidInput` is used to provide additional information on the `s
 
 #### TransitionSignal
 
-The method `TransitionSignal` looks for both *state-transition function* using the combination of `input` and [`CurrentState`](#heading-currentstate). If possible, it performs the transition to the state according to the state-transition function, otherwise, it reports the issues.
+The method `TransitionSignal` looks at the *state-transition function* using the combination of `input` and [`CurrentState`](#heading-currentstate). If possible, it performs the transition to the state according to the state-transition function, otherwise, it reports the issues.
 
 
 ~~~{lang=C#}
@@ -351,7 +351,7 @@ The class `Transducer` implements the functionality of a [finite-state transduce
 
 #### AddOutputFunctionPart
 
-There are two functions under the same name `AddOutputFunctionPart`: one is used to develop a [Moore finite-state machine](https://en.wikipedia.org/wiki/Moore_machine), another one --- to develop a [Mealy finite-state machine](https://en.wikipedia.org/wiki/Mealy_machine).
+There are two functions under the same name `AddOutputFunctionPart`: one is used to develop a [Moore finite-state machine](https://en.wikipedia.org/wiki/Moore_machine), and another one --- to develop a [Mealy finite-state machine](https://en.wikipedia.org/wiki/Mealy_machine).
 
 Moore version:
 
@@ -375,7 +375,7 @@ If an output function of a state machine uses a mixture of Moore and Mealy funct
 
 The method `Signal` looks for both *state-transition function* and *output function* using the combination of `input` and [`Acceptor.CurrentState`](#heading-currentstate). If possible, it performs the transition to the state according to the state-transition function and calculates the `Output`, otherwise, it reports the issues.
 
-In other words, it calls [`Acceptor.TransitionSignal`](#heading-transitionsignal), takes it output, then uses the *output function*, and combines the results.
+In other words, it calls [`Acceptor.TransitionSignal`](#heading-transitionsignal), takes its output, then uses the *output function*, and combines the results.
 
 ~~~{lang=C#}
 <span class="keyword highlighter">public</span> record SignalResult(
@@ -415,7 +415,7 @@ Total number of paths: 1603536, longest path length: 23.
 
 ## Zoo Example
 
-The Zoo example represents the transition system representing the visitor location at the zoo. This example demonstrates all the `TransitionSystem` features.
+The Zoo example demonstrates the transition system representing the visitor location at the zoo. This example demonstrates all the `TransitionSystem` features.
 
 [Source code](https://github.com/SAKryukov/generic-state-machine/tree/main/code/Tests/TestZoo)
 <br/>[Description](Example.Zoo.html)
