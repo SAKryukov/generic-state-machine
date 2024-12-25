@@ -65,7 +65,7 @@
             "name": "Debug Test.Transducer.Car",
             "type": "coreclr",
             "request": "launch",
-            //"preLaunchTask": "build",
+            "preLaunchTask": "build",
             "windows": {
                 "program": "${workspaceFolder}/output.Debug.AnyCPU/Test.Transducer.Car.exe",
             },

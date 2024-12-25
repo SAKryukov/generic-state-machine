@@ -26,7 +26,7 @@ namespace StateMachines {
     enum CarSignal {
         StartEngine, StopEngine, BrakePedalPress, BrakePedalRelease,
         ShiftToDrive, ShiftToReverse, ShiftToPark,
-        LighsOn, LightsOff,
+        LightsOn, LightsOff,
     }
 
     enum CarOutput {
@@ -58,7 +58,13 @@ namespace StateMachines {
             AddFunction(signal, startState, finishState);
             AddFunction(reverseSignal, finishState, startState);
             AddText(startState, finishState, transitionText);
-            AddText(finishState, startState, reverseTransitionText);                
+            AddText(finishState, startState, reverseTransitionText);
+            if (signal != CarSignal.LightsOn && signal != CarSignal.LightsOff) {
+                AddFunction(signal, startState | CarState.Lights, finishState | CarState.Lights);
+                AddFunction(reverseSignal, finishState | CarState.Lights, startState | CarState.Lights);
+                AddText(startState | CarState.Lights, finishState | CarState.Lights, transitionText);
+                AddText(finishState | CarState.Lights, startState | CarState.Lights, reverseTransitionText);                
+            } //if
         } //Add
 
         void Report(Transducer<CarState, CarSignal, CarOutput>.SignalResult result) {
@@ -97,6 +103,10 @@ namespace StateMachines {
                 "Moving in reverse",
                 "Stopping in reverse motion"
             );
+            foreach (CarState state in new CarState[] { CarState.Off, CarState.Breaks, CarState.ParkBreaks, CarState.DriveBreaks, CarState.ReverveBreaks, CarState.Park, CarState.Drive, CarState.Reverse}) {
+                Add(CarSignal.LightsOn, CarSignal.LightsOff, state, state | CarState.Lights,
+                "Turning lights on", "Turning lights off");
+            } //loop
             foreach (CarState state in new CarState[] { CarState.Drive, CarState.Reverse, CarState.ReverseLights, CarState.DriveLights }) {
                 transducer.AddInvalidInput(CarSignal.ShiftToDrive, state, (input, state) =>
                 "Please don't shifts gears to the opposite direction while driving");
@@ -111,13 +121,13 @@ namespace StateMachines {
             Report(transducer.Signal(CarSignal.BrakePedalRelease));
             Report(transducer.Signal(CarSignal.BrakePedalPress));
             Report(transducer.Signal(CarSignal.StartEngine));
+            Report(transducer.Signal(CarSignal.LightsOn));
             Report(transducer.Signal(CarSignal.ShiftToDrive));
             Report(transducer.Signal(CarSignal.BrakePedalRelease));
-
-            Report(transducer.Signal(CarSignal.ShiftToReverse));
-
+            Report(transducer.Signal(CarSignal.ShiftToReverse)); // invalid signal
             Report(transducer.Signal(CarSignal.BrakePedalPress));
             Report(transducer.Signal(CarSignal.ShiftToPark));
+            Report(transducer.Signal(CarSignal.LightsOff));
             Report(transducer.Signal(CarSignal.ShiftToReverse));
             Report(transducer.Signal(CarSignal.BrakePedalRelease));
             Report(transducer.Signal(CarSignal.BrakePedalPress));
