@@ -3,7 +3,7 @@
 The classes [TransitionSystem](https://SAKryukov.GitHub.io/generic-state-machine#heading-class-transitionsystem),
 [Acceptor](https://SAKryukov.GitHub.io/generic-state-machine#heading-class-acceptor),
 and [Transducer](https://SAKryukov.GitHub.io/generic-state-machine#heading-class-transducer)
-can be instantiated with any enumeration type representing the sets of states and the input and output alphabets. For example:
+can be instantiated with any enumeration types representing the sets of states and the input and output alphabets. For example:
 
 ~~~
 enum RoomDoorState { Locked, Closed, Opened,
