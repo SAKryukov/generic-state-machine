@@ -53,7 +53,7 @@ namespace StateMachines {
                         (state, input) => CarOutput.None);
                 else
                     transducer.AddOutputFunctionPart(signal, startState,
-                        (state, input) => handler(finishState));
+                        (state, input) => handler(state));
             } //AddFunction
             void AddText(CarState startState, CarState finishState, string text) {
                 if (!string.IsNullOrEmpty(text))
@@ -92,17 +92,17 @@ namespace StateMachines {
             Add(CarSignal.StartEngine, CarSignal.StopEngine, CarState.Breaks, CarState.ParkBreaks,
                 "Starting Engine",
                 "Stopping Engine",
-                finalState => finalState == CarState.ParkBreaks ? CarOutput.WorkingEngine : CarOutput.SilentEngine
+                statе => (statе | CarState.Lights) == CarState.BreaksLights ? CarOutput.SilentEngine : CarOutput.WorkingEngine
             );
             Add(CarSignal.ShiftToDrive, CarSignal.ShiftToPark, CarState.ParkBreaks, CarState.DriveBreaks,
                 "Shifting gearbox to drive",
                 "Shifting gearbox to park",
-                finalState => finalState == CarState.DriveBreaks ? CarOutput.GearIndicatorDrive : CarOutput.GearIndicatorPark
+                state => (state | CarState.Lights) == CarState.DriveBreaksLights ? CarOutput.GearIndicatorDrive : CarOutput.GearIndicatorPark
             );
             Add(CarSignal.ShiftToReverse, CarSignal.ShiftToPark, CarState.ParkBreaks, CarState.ReverseBreaks,
                 "Shifting gearbox to reverse",
                 "Shifting gearbox to park",
-                finalState => finalState == CarState.ReverseBreaks ? CarOutput.GearIndicatorReverse : CarOutput.GearIndicatorPark
+                state => (state | CarState.Lights) == CarState.ReverseBreaksLights ? CarOutput.GearIndicatorReverse : CarOutput.GearIndicatorPark
             );
             Add(CarSignal.BrakePedalRelease, CarSignal.BrakePedalPress, CarState.DriveBreaks, CarState.Drive,
                 "Moving forward",
@@ -114,8 +114,8 @@ namespace StateMachines {
             );
             foreach (CarState state in new CarState[] { CarState.Off, CarState.Breaks, CarState.ParkBreaks, CarState.DriveBreaks, CarState.ReverseBreaks, CarState.Park, CarState.Drive, CarState.Reverse}) {
                 Add(CarSignal.LightsOn, CarSignal.LightsOff, state, state | CarState.Lights,
-                "Turning lights on", "Turning lights off", finishState =>
-                    (finishState & CarState.Lights) == 0 ? CarOutput.LightsIndicatorOff : CarOutput.LightsIndicatorOn
+                "Turning lights on", "Turning lights off",
+                state => (state & CarState.Lights) == 0 ? CarOutput.LightsIndicatorOff : CarOutput.LightsIndicatorOn
                 );
             } //loop
             foreach (CarState state in new CarState[] { CarState.Drive, CarState.Reverse, CarState.ReverseLights, CarState.DriveLights }) {
