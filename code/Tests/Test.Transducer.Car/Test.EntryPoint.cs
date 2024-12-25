@@ -12,14 +12,14 @@ namespace StateMachines {
     enum CarState : long {
         Off = 0,
         Breaks = 1 << 6, // Drive gear position, engine is off
-        ParkBreaks, DriveBreaks, ReverveBreaks, // engine is on
-        Park = 1, Drive = 2, Reverse = 3,
+        DriveBreaks, ParkBreaks, ReverseBreaks, // engine is on
+        Drive = 1, Park = 2, Reverse = 3,
         //
         Lights = 1 << 7, // Drive gear position, engine is off
         BreaksLights = Breaks|Lights,
         ParkBreaksLights = Park|Breaks|Lights,
         DriveBreaksLights = Drive|Breaks|Lights,
-        ReverveBreaksLights = Reverse|Breaks|Lights,
+        ReverseBreaksLights = Reverse|Breaks|Lights,
         ParkLights = Park|Lights, DriveLights = Drive|Lights, ReverseLights = Reverse|Lights,
     }
 
@@ -91,7 +91,7 @@ namespace StateMachines {
                 "Shifting gearbox to drive",
                 "Shifting gearbox to park"
             );
-            Add(CarSignal.ShiftToReverse, CarSignal.ShiftToPark, CarState.ParkBreaks, CarState.ReverveBreaks,
+            Add(CarSignal.ShiftToReverse, CarSignal.ShiftToPark, CarState.ParkBreaks, CarState.ReverseBreaks,
                 "Shifting gearbox to reverse",
                 "Shifting gearbox to park"
             );
@@ -99,11 +99,11 @@ namespace StateMachines {
                 "Moving forward",
                 "Stopping forward motion"
             );
-            Add(CarSignal.BrakePedalRelease, CarSignal.BrakePedalPress, CarState.ReverveBreaks, CarState.Reverse,
+            Add(CarSignal.BrakePedalRelease, CarSignal.BrakePedalPress, CarState.ReverseBreaks, CarState.Reverse,
                 "Moving in reverse",
                 "Stopping in reverse motion"
             );
-            foreach (CarState state in new CarState[] { CarState.Off, CarState.Breaks, CarState.ParkBreaks, CarState.DriveBreaks, CarState.ReverveBreaks, CarState.Park, CarState.Drive, CarState.Reverse}) {
+            foreach (CarState state in new CarState[] { CarState.Off, CarState.Breaks, CarState.ParkBreaks, CarState.DriveBreaks, CarState.ReverseBreaks, CarState.Park, CarState.Drive, CarState.Reverse}) {
                 Add(CarSignal.LightsOn, CarSignal.LightsOff, state, state | CarState.Lights,
                 "Turning lights on", "Turning lights off");
             } //loop
