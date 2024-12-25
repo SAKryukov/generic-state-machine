@@ -17,6 +17,15 @@ Inheritance diagram:
 <span style = "border: thin solid black; padding-left: 1em; padding-right: 1em">System.Object</span><big>&#x21FD;</big><span style = "border: thin solid black; padding-left: 1em; padding-right: 1em">TransitionSystem</span><big>&#x21FD;</big><span style = "border: thin solid black; padding-left: 1em; padding-right: 1em">Acceptor</span><big>&#x21FD;</big><span style = "border: thin solid black; padding-left: 1em; padding-right: 1em">Transducer</span>
 ~~~
 
+## Notes on the Generic Parameters
+
+The types of the namespace `StateMachines` depend on the generic-type parameters `STATE`, `INPUT`, and `OUTPUT`.
+
+Typically, the generic-type parameters hould be any enumeration types with their enumeration members representing states.
+However, it is not a strict rule. In principle, any type with public static fields can be used for the `STATE` type.
+In this case, the public static fields will represent the transition system states.
+Please see [the example](#heading-non-enumeration-example) illustrating the use of a non-enumeration type `STATE`.
+
 ## Delegate ValidStateTransitionAction
 
 An instance of the delegate provides a way to define a side effect of a valid transition between two states, `startState`, and `finishState`. For example, in the hardware automation applications, it can operate the hardware.
@@ -78,8 +87,6 @@ such as [finding the longest possible paths](#heading-longestpaths).
 <span class="keyword highlighter">public</span> <span class="keyword highlighter">class</span> <span class="_custom-word_ highlighter">TransitionSystem</span>&lt;<span class="_custom-word_ highlighter">STATE</span>&gt; : <span class="_custom-word_ highlighter">TransitionSystemBase</span>&lt;<span class="_custom-word_ highlighter">STATE</span>&gt;{/* &hellip; */}
 ~~~
 
-The class can be instantiated with the generic type parameter `STATE`. Typically, it should be any enumeration type with its enumeration members representing states. However, it is not a strict rule. In principle, any type with public static fields can be used for the `STATE` type. In this case, the public static fields will represent the transition system states. Please see [the example](#heading-non-enumeration-example) illustrating the use of a non-enumeration type `STATE`.
-
 ### Public Constructor
 
 Creates an instance of `TransitionSystem`.
@@ -110,6 +117,8 @@ Adds an edge to the transition system's *transition graph* between the states `s
 
 Optionally, a delegate instance of the type [`StateTransitionAction`](#heading-delegate-validstatetransitionaction) is specified. In this case (when the delegate instance is not `null`), the delegate's method will be called on each call to [`TryTransitionTo`](#heading-trytransitionto) between corresponding states.
 
+Note that the transition function rules are not respected by the methods [`Accessor.TransitionSignal`](#heading-transitionsignal") and [`Transducer.Signal`](#heading-signal).
+
 ~~~{lang=C#}{id=api-add-valid-state-transition}
 <span class="keyword highlighter">public</span> <span class="keyword highlighter">void</span> AddValidStateTransition(<span class="_custom-word_ highlighter">STATE</span> startState, <span class="_custom-word_ highlighter">STATE</span> finishState, <span class="_custom-word_ highlighter">StateTransitionAction</span>&lt;<span class="_custom-word_ highlighter">STATE</span>&gt; action, bool undirected = <span class="keyword highlighter">false</span>);
 ~~~
@@ -127,6 +136,8 @@ Optionally, a delegate instance of the type [`StateTransitionAction`](#heading-d
 #### AddInvalidStateTransition
 
 Defines the information in an invalid state transition between the states `startState` and `finishState`. This information is used in the return of the call to [IsTransitionValid](#heading-istransitionvalid) and [TryTransitionTo](#heading-trytransitionto). See also [InvalidStateTransitionAction](#heading-delegate-invalidstatetransitionaction).
+
+Note that the transition function rules are not respected by the methods [`Accessor.TransitionSignal`](#heading-transitionsignal") and [`Transducer.Signal`](#heading-signal).
 
 ~~~{lang=C#}{id=api-add-invalid-state-transition}
 <span class="keyword highlighter">public</span> <span class="keyword highlighter">void</span> AddInvalidStateTransition(<span class="_custom-word_ highlighter">STATE</span> startState, <span class="_custom-word_ highlighter">STATE</span> finishState, <span class="_custom-word_ highlighter">InvalidStateTransitionAction</span>&lt;<span class="_custom-word_ highlighter">STATE</span>&gt; action)
