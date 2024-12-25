@@ -93,7 +93,6 @@
    <text x="472.38995" y="423.89188">
       <tspan x="472.38995" y="423.89188">Break Pedal Press</tspan>
    </text>
-   <path d="m 433.77159,162.32239 v 0.004"/>
    <path class="arrow-end" d="m 433.77159,162.32239 v 0.004"/>
    <path class="arrow-end" d="m 433.77159,282.83958 v 0.004"/>
    <path class="arrow-start" d="m 465.77167,164.54891 v 0.004"/>
@@ -103,7 +102,7 @@
    <path class="arrow-end" d="m 152.08947,452.00792 v 0.004"/>
    <path class="arrow-start" d="m 184.08955,452.0117 v 0.004"/>
    <path class="arrow-end" d="m 725.37317,452.00792 v 0.004"/>
-   <path class="arrow" d="m 757.37325,450.8599 v 18.89768"/>
+   <path class="arrow-start" d="m 757.37325,450.8599 v 18.89768"/>
    <path class="arrow-end" d="m 309.17887,370.44927 v 0"/>
    <path class="arrow-end" d="m 589.59192,351.66413 v 0"/>
    <path class="arrow-start" d="m 311.39965,351.62903 v 0"/>
