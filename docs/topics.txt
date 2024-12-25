@@ -1,0 +1,1 @@
+acceptors, csharp, dotnet, enumeration, finite-state-machine, generics, graph-algorithms, graphs, np-hard, state-machine, transducers, transition-matrix, transition-systems, transitions
