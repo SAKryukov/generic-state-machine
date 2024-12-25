@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="243.946mm" height="155.31mm" viewBox="0 0 922 587"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+   <style>
+       path { fill:black; stroke:black;stroke-width:1;stroke-linecap:round;paint-order:stroke fill markers; }
+       path.state { fill:white; stroke-width:3; }
+       text { fill:black; stroke:none; font-family: Tahoma, sans-serif; }
+   </style>
+   <defs>
+      <marker style="overflow:visible" id="arrow" refX="0" refY="0" orient="auto-start-reverse" markerWidth="1" markerHeight="1" viewBox="0 0 1 1" preserveAspectRatio="xMidYMid">
+         <path transform="scale(0.5)" style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt" d="m 6,0 c -3,1 -7,3 -9,5 0,0 0,-4 2,-5 -2,-1 -2,-5 -2,-5 2,2 6,4 9,5 z"/>
+      </marker>
+   </defs>
+   <path d="m 189.01819,352.04019 236.06419,-0.69881" />
+   <path d="m 189.01819,370.83547 236.06419,-0.69882" />
+   <path d="m 477.01893,352.04019 236.06419,-0.69881" />
+   <path d="m 477.01893,370.83547 236.06419,-0.69882" />
+   <path d="M 465.77167,225.30868 V 359.74107" />
+   <path d="M 465.77167,361.30902 V 495.74141" />
+   <path d="M 433.77159,97.308352 V 231.74075" />
+   <path d="M 433.77159,233.3087 V 367.74109" />
+   <path d="M 433.77159,353.309 V 487.74139" />
+   <path d="M 465.77167,97.308352 V 231.74075" />
+   <path class="state" vector-effect="non-scaling-stroke" fill-rule="evenodd" d="m 411.40238,92.229649 c 0,-6.880111 2.06142,-12.457554 4.60431,-12.457554 h 67.52989 c 2.54293,0 4.60431,5.577443 4.60431,12.457554 0,6.880163 -2.06138,12.457551 -4.60431,12.457551 h -67.52989 c -2.54289,0 -4.60431,-5.577388 -4.60431,-12.457551"/>
+   <text x="417.38202" y="96.714386" xml:space="preserve" font-family="Tahoma" font-size="11.9592px" font-weight="400" font-style="normal" style="fill-rule:evenodd;stroke-width:0.996604;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1">      Off      </text>
+   <path class="state" vector-effect="non-scaling-stroke" fill-rule="evenodd" d="m 425.58069,224.87512 c 0,-5.48208 2.11943,-9.92618 4.73387,-9.92618 h 40.36246 c 2.61449,0 4.73387,4.4441 4.73387,9.92618 v 4.06614 c 0,5.48212 -2.11938,9.92618 -4.73387,9.92618 h -40.36246 c -2.61444,0 -4.73387,-4.44406 -4.73387,-9.92618 v -4.06614"/>
+   <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="433.05524" y="231.89122" font-family="Tahoma" font-size="11.9592px" font-weight="400" font-style="normal" style="fill-rule:evenodd;stroke-width:0.996604;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1">Breaks</text>
+   <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="361.91495" y="287.89136" font-family="Tahoma" font-size="11.9592px" font-weight="400" font-style="normal" style="fill-rule:evenodd;stroke-width:0.996604;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1">Start Engine</text>
+   <text fill="#000000" fill-opacity="1" stroke="none" xml:space="preserve" x="333.0914" y="167.89111" font-family="Tahoma" font-size="11.9592px" font-weight="400" font-style="normal" style="fill-rule:evenodd;stroke-width:0.996604;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1">
+      <tspan x="333.0914" y="167.89111">Break Pedal Press</tspan>
+   </text>
+   <text x="275.63504" y="344.35913" font-family="Tahoma" font-size="11.9592px" font-weight="400" font-style="normal" style="fill-rule:evenodd;stroke-width:0.996604;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1">
+      <tspan x="275.63504" y="344.35913">Shift to Drive</tspan>
+   </text>
+   <text x="548.9035" y="344.35913" font-family="Tahoma" font-size="11.9592px" font-weight="400" font-style="normal" style="fill-rule:evenodd;stroke-width:0.996604;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1">
+      <tspan x="548.9035" y="344.35913">Shift to Reverse</tspan>
+   </text>
+   <text x="277.57956" y="386.78128" font-family="Tahoma" font-size="11.9592px" font-weight="400" font-style="normal" style="fill-rule:evenodd;stroke-width:0.996604;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1">
+      <tspan x="277.57956" y="386.78128">Shift to Park</tspan>
+   </text>
+   <text x="557.99261" y="388.48007" font-family="Tahoma" font-size="11.9592px" font-weight="400" font-style="normal" style="fill-rule:evenodd;stroke-width:0.996604;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1">
+      <tspan x="557.99261" y="388.48007">Shift to Park</tspan>
+   </text>
+   <text x="472.38995" y="167.89111" font-family="Tahoma" font-size="11.9592px" font-weight="400" font-style="normal" style="fill-rule:evenodd;stroke-width:0.996604;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1">
+      <tspan x="472.38995" y="167.89111">Break Pedal Release</tspan>
+   </text>
+   <text x="51.40929" y="455.892" font-family="Tahoma" font-size="11.9592px" font-weight="400" font-style="normal" style="fill-rule:evenodd;stroke-width:0.996604;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1">
+      <tspan x="51.40929" y="455.892">Break Pedal Press</tspan>
+   </text>
+   <text x="190.70779" y="455.892" font-family="Tahoma" font-size="11.9592px" font-weight="400" font-style="normal" style="fill-rule:evenodd;stroke-width:0.996604;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1">
+      <tspan x="190.70779" y="455.892">Break Pedal Release</tspan>
+   </text>
+   <text x="624.69305" y="455.892" font-family="Tahoma" font-size="11.9592px" font-weight="400" font-style="normal" style="fill-rule:evenodd;stroke-width:0.996604;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1">
+      <tspan x="624.69305" y="455.892">Break Pedal Press</tspan>
+   </text>
+   <text x="763.99152" y="455.892" font-family="Tahoma" font-size="11.9592px" font-weight="400" font-style="normal" style="fill-rule:evenodd;stroke-width:0.996604;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1">
+      <tspan x="763.99152" y="455.892">Break Pedal Release</tspan>
+   </text>
+   <text x="472.82208" y="287.89136" font-family="Tahoma" font-size="11.9592px" font-weight="400" font-style="normal" style="fill-rule:evenodd;stroke-width:0.996604;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1">
+      <tspan x="472.82208" y="287.89136">Stop Engine</tspan>
+   </text>
+   <path vector-effect="non-scaling-stroke" fill-rule="evenodd" d="m 430.06541,491.4417 c 0,-4.49134 2.10381,-8.13229 4.69899,-8.13229 h 31.46279 c 2.59515,0 4.69898,3.64095 4.69898,8.13229 v 7.65392 c 0,4.49129 -2.10383,8.13229 -4.69898,8.13229 H 434.7644 c -2.59518,0 -4.69899,-3.641 -4.69899,-8.13229 v -7.65392" style="font-style:normal;font-weight:400;font-size:11px;font-family:'MS Shell Dlg 2';fill-opacity:1;stroke:#000000;stroke-width:0.996604;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1" />
+   <text x="439.03485" y="500.25174" font-family="Tahoma" font-size="11.9592px" font-weight="400" font-style="normal" style="fill-rule:evenodd;stroke-width:0.996604;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1">Park</text>
+   <path d="M 465.77167,361.30902 V 495.74141"/>
+   <path d="M 152.08947,353.309 V 487.74139"/>
+   <path d="M 184.08955,361.30902 V 495.74141"/>
+   <path d="M 725.37317,353.309 V 487.74139"/>
+   <path d="M 757.37325,361.30902 V 495.74141"/>
+   <!-- states: -->
+   <path class="state" vector-effect="non-scaling-stroke" fill-rule="evenodd" d="m 430.06541,491.4417 c 0,-4.49134 2.10381,-8.13229 4.69899,-8.13229 h 31.46279 c 2.59515,0 4.69898,3.64095 4.69898,8.13229 v 7.65392 c 0,4.49129 -2.10383,8.13229 -4.69898,8.13229 H 434.7644 c -2.59518,0 -4.69899,-3.641 -4.69899,-8.13229 v -7.65392"/>
+   <text class="state" x="439.03485" y="500.25174" font-family="Tahoma" font-size="11.9592px" font-weight="400">Park</text>
+   <path class="state" vector-effect="non-scaling-stroke" fill-rule="evenodd" d="m 125.73384,361.08842 c 0,-6.60491 2.08596,-11.95924 4.65912,-11.95924 h 75.3931 c 2.57313,0 4.65912,5.35433 4.65912,11.95924 0,6.60489 -2.08599,11.95925 -4.65912,11.95925 h -75.3931 c -2.57316,0 -4.65912,-5.35436 -4.65912,-11.95925"/>
+   <text class="state" x="135.20157" y="366.07141" font-family="Tahoma" font-size="11.9592px" font-weight="400">Drive Breaks</text>
+   <path class="state" vector-effect="non-scaling-stroke" fill-rule="evenodd" d="m 147.65913,491.44169 c 0,-4.49134 2.10381,-8.13229 4.69899,-8.13229 h 31.46279 c 2.59515,0 4.69898,3.64095 4.69898,8.13229 v 7.65392 c 0,4.49129 -2.10383,8.13229 -4.69898,8.13229 h -31.46279 c -2.59518,0 -4.69899,-3.641 -4.69899,-8.13229 v -7.65392"/>
+   <text class="state" x="154.63535" y="500.25174" font-family="Tahoma" font-size="11.9592px" font-weight="400" font-style="normal" style="fill-rule:evenodd;stroke-width:0.996604;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1">Drive</text>
+   <path class="state" vector-effect="non-scaling-stroke" fill-rule="evenodd" d="m 690.5464,361.08842 c 0,-6.60491 2.04803,-11.95924 4.57441,-11.95924 h 92.50479 c 2.52639,0 4.57441,5.35433 4.57441,11.95924 0,6.60489 -2.04802,11.95925 -4.57441,11.95925 h -92.50479 c -2.52638,0 -4.57441,-5.35436 -4.57441,-11.95925"/>
+   <text x="700.51245" y="366.07144" font-family="Tahoma" font-size="11.9592px" font-weight="400" font-style="normal" style="fill-rule:evenodd;stroke-width:0.996604;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1">Reverse Breaks</text>
+   <path class="state" vector-effect="non-scaling-stroke" fill-rule="evenodd" d="m 712.47169,494.79029 c 0,-6.34072 2.07035,-11.48088 4.62424,-11.48088 h 48.55455 c 2.5539,0 4.62424,5.14016 4.62424,11.48088 v 0.95674 c 0,6.34069 -2.07034,11.48088 -4.62424,11.48088 h -48.55455 c -2.55389,0 -4.62424,-5.14019 -4.62424,-11.48088 v -0.95674"/>
+   <text x="719.94623" y="500.25174" font-family="Tahoma" font-size="11.9592px" font-weight="400">Reverse</text>
+   <path class="state" vector-effect="non-scaling-stroke" fill-rule="evenodd" d="m 410.13333,361.08842 c 0,-6.60492 1.9878,-11.95924 4.43987,-11.95924 h 71.84518 c 2.45205,0 4.43987,5.35432 4.43987,11.95924 0,6.60489 -1.98782,11.95925 -4.43987,11.95925 H 414.5732 c -2.45207,0 -4.43987,-5.35436 -4.43987,-11.95925"/>
+   <!-- end states -->
+   <text x="419.6011" y="366.07144" font-family="Tahoma" font-size="11.9592px">Park Breaks</text>
+   <text x="635.47375" y="-20.296556">
+      <tspan style="stroke-width:1" x="635.47375" y="-20.296556" />
+   </text>
+   <text x="333.0914" y="423.89188" font-family="Tahoma" font-size="11.9592px" font-weight="400" font-style="normal" style="fill-rule:evenodd;stroke-width:0.996604;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1">
+      <tspan x="333.0914" y="423.89188">Break Pedal Press</tspan>
+   </text>
+   <text x="472.38995" y="423.89188" font-family="Tahoma" font-size="11.9592px" font-weight="400" font-style="normal" style="fill-rule:evenodd;stroke-width:0.996604;stroke-linecap:square;stroke-linejoin:bevel;stroke-opacity:1">
+      <tspan x="472.38995" y="423.89188">Break Pedal Release</tspan>
+   </text>
+   <path style="fill:#fc2424;stroke:#000000;stroke-width:1.00158;stroke-linecap:round;stroke-dasharray:none;marker-end:url(#arrow);paint-order:stroke fill markers" d="m 433.77159,162.32239 v 0.004"/>
+   <path style="fill:#fc2424;stroke:#000000;stroke-width:1.00158;stroke-linecap:round;stroke-dasharray:none;marker-end:url(#arrow);paint-order:stroke fill markers" d="m 433.77159,282.83958 v 0.004"/>
+   <path style="fill:#fc2424;stroke:#000000;stroke-width:1;stroke-linecap:round;marker-start:url(#arrow);paint-order:stroke fill markers" d="m 465.77167,164.54891 v 0.004"/>
+   <path style="fill:#fc2424;stroke:#000000;stroke-width:1;stroke-linecap:round;marker-start:url(#arrow);paint-order:stroke fill markers" d="m 465.77167,283.09281 v 0.004"/>
+   <path style="fill:#fc2424;stroke:#000000;stroke-width:1.00158;stroke-linecap:round;stroke-dasharray:none;marker-end:url(#arrow);paint-order:stroke fill markers" d="m 433.77159,420.01035 v 0.004"/>
+   <path style="fill:#fc2424;stroke:#000000;stroke-width:1;stroke-linecap:round;marker-start:url(#arrow);paint-order:stroke fill markers" d="m 465.77167,418.86137 v 0.004"/>
+   <path style="fill:#fc2424;stroke:#000000;stroke-width:1.00158;stroke-linecap:round;stroke-dasharray:none;marker-end:url(#arrow);paint-order:stroke fill markers" d="m 152.08947,452.00792 v 0.004"/>
+   <path style="fill:#fc2424;stroke:#000000;stroke-width:1;stroke-linecap:round;marker-start:url(#arrow);paint-order:stroke fill markers" d="m 184.08955,452.0117 v 0.004"/>
+   <path style="fill:#fc2424;stroke:#000000;stroke-width:1.00158;stroke-linecap:round;stroke-dasharray:none;marker-end:url(#arrow);paint-order:stroke fill markers" d="m 725.37317,452.00792 v 0.004"/>
+   <path style="fill:#fc2424;stroke:#000000;stroke-width:1;stroke-linecap:round;marker-start:url(#arrow);paint-order:stroke fill markers" d="m 757.37325,450.8599 v 18.89768"/>
+   <path style="fill:#fc2424;stroke:#000000;stroke-width:1;stroke-linecap:round;marker-end:url(#arrow);paint-order:stroke fill markers" d="m 309.17887,370.44927 v 0"/>
+   <path style="fill:#fc2424;stroke:#000000;stroke-width:1;stroke-linecap:round;marker-end:url(#arrow);paint-order:stroke fill markers" d="m 589.59192,351.66413 v 0"/>
+   <path style="fill:#fc2424;stroke:#000000;stroke-width:1;stroke-linecap:round;marker-start:url(#arrow);paint-order:stroke fill markers" d="m 311.39965,351.62903 v 0"/>
+   <path style="fill:#fc2424;stroke:#000000;stroke-width:0.999996;stroke-linecap:round;marker-start:url(#arrow);paint-order:stroke fill markers" d="m 591.81268,370.48606 v 0"/>
+</svg>

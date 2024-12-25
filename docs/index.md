@@ -48,8 +48,7 @@ These attributes can be used to mark some enumeration-type members to exclude th
 <span class="keyword highlighter">public</span> <span class="keyword highlighter">class</span> <span class="_custom-word_ highlighter">NotAnAlphabetElementAttribute</span> : ExcludeAttribute {}
 ~~~
 
-Formally, these attrubutes can be used interchangeably. They are made different only for the clarity
-of the terms "state" and "alphabets". SA???
+Formally, these attrubutes can be used interchangeably and applied to any enumeration-member public fields. They are made different only for the clarity of the terms "state" and "alphabets". The effect of these attributes is the same: the members marked with one of these attributes are skipped when building a set of states of an alphabet.
 
 Example:
 
@@ -213,6 +212,8 @@ Example:
 ~~~
 
 ## Delegate AcceptorTransitionAction
+
+The delegate `AcceptorTransitionAction` is used to define an acceptor's *state-transition function* using [`AddStateTransitionFunctionPart`](#heading-addstatetransitionfunctionpart").
     
 ~~~{lang=C#}
 <span class="keyword highlighter">public</span> <span class="keyword highlighter">delegate</span> <span class="_custom-word_ highlighter">STATE</span> AcceptorTransitionAction&lt;<span class="_custom-word_ highlighter">STATE</span>, <span class="_custom-word_ highlighter">INPUT</span>&gt; (<span class="_custom-word_ highlighter">STATE</span> state, <span class="_custom-word_ highlighter">INPUT</span> input);
@@ -220,11 +221,17 @@ Example:
 
 ## Delegate InvalidAcceptorInputHandler
 
+The delegate `InvalidAcceptorInputHandler` is used to implement provide additional information on invalid input using the method
+[`AddInvalidInput`](#heading-addinvalidinput).
+
 ~~~{lang=C#}
 <span class="keyword highlighter">public</span> <span class="keyword highlighter">delegate</span> <span class="type keyword highlighter">string</span> InvalidAcceptorInputHandler&lt;<span class="_custom-word_ highlighter">STATE</span>, <span class="_custom-word_ highlighter">INPUT</span>&gt; (<span class="_custom-word_ highlighter">STATE</span> state, <span class="_custom-word_ highlighter">INPUT</span> input);
 ~~~
 
 ## Class Acceptor
+
+The class `Acceptor` implements the functionality of a [finite-state acceptor](https://en.wikipedia.org/wiki/Finite-state_machine#Mathematical_model).
+
 
 ~~~{lang=C#}
 <span class="keyword highlighter">public</span> <span class="keyword highlighter">class</span> <span class="_custom-word_ highlighter">Acceptor</span>&lt;<span class="_custom-word_ highlighter">STATE</span>, <span class="_custom-word_ highlighter">INPUT</span>&gt; : TransitionSystem&lt;<span class="_custom-word_ highlighter">STATE</span>&gt; {<span class="comment block highlighter">/* &hellip; */</span>}
@@ -262,11 +269,16 @@ Example:
 
 #### AddInvalidInput
 
+The method `AddInvalidInput` is used to provide additional information on the `state` and `input` pair. It is used by [`TransitionSignal`](#heading-transitionsignal): when this methods find that a *state-transition function* is not implemented for a [`CurrentState`](#heading-currentstate) and `input` pair, it looks for the invalid acceptor input informaton to provide an explanation of why the function is not implemented for this pair. If this additional information is not found, [`TransitionSignal`](#heading-transitionsignal) returns a general issue description.
+
 ~~~{lang=C#}
 <span class="keyword highlighter">public</span> <span class="keyword highlighter">void</span> AddInvalidInput(<span class="_custom-word_ highlighter">INPUT</span> input, <span class="_custom-word_ highlighter">STATE</span> state, InvalidAcceptorInputHandler&lt;<span class="_custom-word_ highlighter">STATE</span>, <span class="_custom-word_ highlighter">INPUT</span>&gt; handler);
 ~~~
 
 #### TransitionSignal
+
+The method `TransitionSignal` looks for both *state-transition function* using the combination of `input` and [`CurrentState`](#heading-currentstate). If possible, it performs the transition to the state according to the state-transition function, otherwise, it reports the issues.
+
 
 ~~~{lang=C#}
 <span class="keyword highlighter">public</span> record TransitionSignalResult(<span class="_custom-word_ highlighter">STATE</span> State, <span class="type keyword highlighter">bool</span> Success, <span class="type keyword highlighter">string</span> Comment);
@@ -276,17 +288,25 @@ Example:
 
 ## Delegate MooreMachineOutputAction
 
+The delegate `MooreMachineOutputAction` is used to define an output function for a [transducer](#heading-class-transducer) using the [Moore model](https://en.wikipedia.org/wiki/Moore_machine),
+see [AddOutputFunctionPart](#heading-addoutputfunctionpart).
+
 ~~~{lang=C#}
 <span class="keyword highlighter">public</span> <span class="keyword highlighter">delegate</span> <span class="_custom-word_ highlighter">OUTPUT</span> MooreMachineOutputAction&lt;<span class="_custom-word_ highlighter">STATE</span>, <span class="_custom-word_ highlighter">INPUT</span>, <span class="_custom-word_ highlighter">OUTPUT</span>&gt; (<span class="_custom-word_ highlighter">STATE</span> state);
 ~~~
 
 ## Delegate MealyMachineOutputAction
 
+The delegate `MealyMachineOutputAction` is used to define an output function for a [transducer](#heading-class-transducer) using the [Mealy model](https://en.wikipedia.org/wiki/Mealy_machine),
+see [AddOutputFunctionPart](#heading-addoutputfunctionpart).
+
 ~~~{lang=C#}
 <span class="keyword highlighter">public</span> <span class="keyword highlighter">delegate</span> <span class="_custom-word_ highlighter">OUTPUT</span> MealyMachineOutputAction&lt;<span class="_custom-word_ highlighter">STATE</span>, <span class="_custom-word_ highlighter">INPUT</span>, <span class="_custom-word_ highlighter">OUTPUT</span>&gt; (<span class="_custom-word_ highlighter">STATE</span> state, <span class="_custom-word_ highlighter">INPUT</span> input);
 ~~~
 
 ## Class Transducer
+
+The class `Transducer` implements the functionality of a [finite-state transducer](https://en.wikipedia.org/wiki/Finite-state_machine#Mathematical_model).
 
 ~~~{lang=C#}
 <span class="keyword highlighter">public</span> <span class="keyword highlighter">class</span> <span class="_custom-word_ highlighter">Transducer</span>&lt;<span class="_custom-word_ highlighter">STATE</span>, <span class="_custom-word_ highlighter">INPUT</span>, <span class="_custom-word_ highlighter">OUTPUT</span>&gt; : <span class="_custom-word_ highlighter">Acceptor</span>&lt;<span class="_custom-word_ highlighter">STATE</span>, <span class="_custom-word_ highlighter">INPUT</span>&gt; {<span class="comment block highlighter">/* &hellip; */</span>}
@@ -320,13 +340,17 @@ Example:
 
 #### AddOutputFunctionPart
 
+There are two functions under the same name `AddOutputFunctionPart`: one is used to develop a [Moore finite-state machine](https://en.wikipedia.org/wiki/Moore_machine), another one --- to develop a [Mealy finite-state machine](https://en.wikipedia.org/wiki/Mealy_machine).
+
+Moore version:
+
 ~~~{lang=C#}
 <span class="keyword highlighter">public</span> <span class="keyword highlighter">void</span> AddOutputFunctionPart(
     <span class="_custom-word_ highlighter">INPUT</span> input, <span class="_custom-word_ highlighter">STATE</span> state,
     <span class="_custom-word_ highlighter">MooreMachineOutputAction</span>&lt;<span class="_custom-word_ highlighter">STATE</span>, <span class="_custom-word_ highlighter">INPUT</span>, <span class="_custom-word_ highlighter">OUTPUT</span>&gt; handler);
 ~~~
 
-and SA???
+Mealy version:
 
 ~~~{lang=C#}
 <span class="keyword highlighter">public</span> <span class="keyword highlighter">void</span> AddOutputFunctionPart(
@@ -334,7 +358,13 @@ and SA???
     <span class="_custom-word_ highlighter">MealyMachineOutputAction</span>&lt;<span class="_custom-word_ highlighter">STATE</span>, <span class="_custom-word_ highlighter">INPUT</span>, <span class="_custom-word_ highlighter">OUTPUT</span>&gt; handler);
 ~~~
 
+If an output function of a state machine uses a mixture of Moore and Mealy functions for different function arguments, it is, formally speaking, a Mealy machine.
+
 #### Signal
+
+The method `Signal` looks for both *state-transition function* and *output function* using the combination of `input` and [`Acceptor.CurrentState`](#heading-currentstate). If possible, it performs the transition to the state according to the state-transition function and calculates the `Output`, otherwise, it reports the issues.
+
+In other words, it calls [`Acceptor.TransitionSignal`](#heading-transitionsignal), takes it output, then uses the *output function*, and combines the results.
 
 ~~~{lang=C#}
 <span class="keyword highlighter">public</span> record SignalResult(
@@ -343,7 +373,6 @@ and SA???
 
 <span class="keyword highlighter">public</span> SignalResult Signal(<span class="_custom-word_ highlighter">INPUT</span> input);
 ~~~
-
 
 # Examples
 
@@ -379,6 +408,16 @@ The Zoo example represents the transition system representing the visitor locati
 
 [Source code](https://github.com/SAKryukov/generic-state-machine/tree/main/code/Tests/TestZoo)
 <br/>[Description](Example.Zoo.html)
+
+## Car Transducer Example
+
+The Car Transducer Example is a comprehensive example demonstrating [Acceptor](#heading-class-acceptor)
+and [Transducer](#heading-class-transducer) features on a highly simplified model of a car with automatic transmission,
+keyless entry, only three gearbox positions, and lights.
+
+[Source code](https://github.com/SAKryukov/generic-state-machine/tree/main/code/Tests/Test.Transducer.Car)
+<br/>[Description](Example.Transducer.Car.html)
+
 
 # Compatibility and Build
 
