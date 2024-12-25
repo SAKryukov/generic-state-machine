@@ -1,5 +1,12 @@
 Generic State Machines{title}
 
+The generic classes [TransitionSystem](#heading-class-transitionsystem),
+[Acceptor](#heading-class-acceptor),
+and [Transducer](#heading-class-transducer) provide the functionality of
+[transition systems](https://en.wikipedia.org/wiki/Transition_system) and
+[finite-state machines](https://en.wikipedia.org/wiki/Finite-state_machine).
+They rely on enumeration-type generic paramters representing the sets of states and the input and output alphabets.
+
 @toc
 
 # StateMachines Namespace

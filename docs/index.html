@@ -20,7 +20,12 @@
 </head>
 <body>
 
-<p class="title">Generic State Machines</p><p class="toc">
+<p class="title">Generic State Machines</p><p>The generic classes <a href="#heading-class-transitionsystem">TransitionSystem</a>,
+<a href="#heading-class-acceptor">Acceptor</a>,
+and <a href="#heading-class-transducer">Transducer</a> provide the functionality of
+<a href="https://en.wikipedia.org/wiki/Transition_system">transition systems</a> and
+<a href="https://en.wikipedia.org/wiki/Finite-state_machine">finite-state machines</a>.
+They rely on enumeration-type generic paramters representing the sets of states and the input and output alphabets.</p><p class="toc">
 <a style="margin-left: 0em;" href="#heading-statemachines-namespace">StateMachines Namespace</a><br/>
 <a style="margin-left: 3em;" href="#heading-delegate-validstatetransitionaction">Delegate ValidStateTransitionAction</a><br/>
 <a style="margin-left: 3em;" href="#heading-delegate-invalidstatetransitionaction">Delegate InvalidStateTransitionAction</a><br/>
@@ -208,7 +213,7 @@ Total number of paths: 1603536, longest path length: 23.</p><p><a href="https://
 Also, the code can be used for some <a href="https://en.wikipedia.org/wiki/.NET_Framework">.NET Framework</a> versions. However, it will require re-creation of project files, which is not hard to do.</p><p>The build does not require Visual Studio, Visual Studio Code, or any other IDE. It can be done using the commands</p><pre>dotnet build -c Debug
 dotnet build -c Release
 </pre><p>With Visual Studio or Visual Studio Code, the code can be built in the usual ways. Besides, for Visual Studio Code, a <a href="https://github.com/SAKryukov/generic-state-machine/blob/main/code/.vscode/launch.json">launch configuration “Build All”</a> and a <a href="https://github.com/SAKryukov/generic-state-machine/blob/main/code/.vscode/tasks.json">task “Build All”</a> are provided.</p><p class="extensible-markdown">This documentation is generated from the extended Markdown documentation using <a href="https://marketplace.visualstudio.com/items?itemName=sakryukov.extensible-markdown">Extensible Markdown</a>
-for Visual Studio Code.</p><div  data-line="395" class="code-line" dir="auto" ></div>
+for Visual Studio Code.</p><div  data-line="402" class="code-line" dir="auto" ></div>
 <script src="https://SAKryukov.github.io/publications/code/source-code-decorator.js"></script>
 
 
