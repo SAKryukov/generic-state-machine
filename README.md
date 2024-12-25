@@ -1,6 +1,9 @@
 # Generic state machine
 
-Transition System can be instantiated with any enumeration type representing the set of states.
+The classes [Transition System](https://SAKryukov.GitHub.io/generic-state-machine#heading-class-transitionsystem),
+[Acceptor](https://SAKryukov.GitHub.io/generic-state-machine#heading-class-acceptor),
+and [Tranducer](https://SAKryukov.GitHub.io/generic-state-machine#heading-class-transducer)
+can be instantiated with any enumeration type representing the set of states, input and output aplphabets. For example:
 
 ~~~
 enum RoomDoorState { Locked, Closed, Opened,
@@ -26,3 +29,4 @@ Both valid and invalid transitions can come with optional handlers accepting two
 For example, in the hardware automation applications, it can operate the hardware. In the case of an invalid transition, the handler returns a comment string explaining why the transition is not permitted.
 
 Please see the comprehensive [API documentation](https://SAKryukov.GitHub.io/generic-state-machine).
+
