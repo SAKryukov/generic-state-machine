@@ -2,7 +2,7 @@
 
 The classes [Transition System](https://SAKryukov.GitHub.io/generic-state-machine#heading-class-transitionsystem),
 [Acceptor](https://SAKryukov.GitHub.io/generic-state-machine#heading-class-acceptor),
-and [Tranducer](https://SAKryukov.GitHub.io/generic-state-machine#heading-class-transducer)
+and [Transducer](https://SAKryukov.GitHub.io/generic-state-machine#heading-class-transducer)
 can be instantiated with any enumeration type representing the set of states, input and output aplphabets. For example:
 
 ~~~
