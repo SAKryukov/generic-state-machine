@@ -55,8 +55,6 @@ Example:
 
 An attempt to perform a state transition to a `NotAState` enumeration value using [`TryTransitionTo`](#heading-trytransitionto) will throw an exception.
 
-
-
 ## Class TransitionSystem
 
 The class [`TransitionSystem`](#heading-class-transitionsystem) provides a way to create
@@ -213,6 +211,12 @@ Example:
 <span class="keyword highlighter">public</span> <span class="keyword highlighter">delegate</span> <span class="_custom-word_ highlighter">STATE</span> AcceptorTransitionAction&lt;<span class="_custom-word_ highlighter">STATE</span>, <span class="_custom-word_ highlighter">INPUT</span>&gt; (<span class="_custom-word_ highlighter">STATE</span> state, <span class="_custom-word_ highlighter">INPUT</span> input);
 ~~~
 
+## Delegate InvalidAcceptorInputHandler
+
+~~~{lang=C#}
+<span class="keyword highlighter">public</span> <span class="keyword highlighter">delegate</span> <span class="type keyword highlighter">string</span> InvalidAcceptorInputHandler&lt;<span class="_custom-word_ highlighter">STATE</span>, <span class="_custom-word_ highlighter">INPUT</span>&gt; (<span class="_custom-word_ highlighter">STATE</span> state, <span class="_custom-word_ highlighter">INPUT</span> input);
+~~~
+
 ## Class Acceptor
 
 ~~~{lang=C#}
@@ -249,10 +253,18 @@ Example:
     <span class="_custom-word_ highlighter">AcceptorTransitionAction</span>&lt;<span class="_custom-word_ highlighter">STATE</span>, <span class="_custom-word_ highlighter">INPUT</span>&gt; handler);
 ~~~
 
+#### AddInvalidInput
+
+~~~{lang=C#}
+<span class="keyword highlighter">public</span> <span class="keyword highlighter">void</span> AddInvalidInput(<span class="_custom-word_ highlighter">INPUT</span> input, <span class="_custom-word_ highlighter">STATE</span> state, InvalidAcceptorInputHandler&lt;<span class="_custom-word_ highlighter">STATE</span>, <span class="_custom-word_ highlighter">INPUT</span>&gt; handler);
+~~~
+
 #### TransitionSignal
 
 ~~~{lang=C#}
-<span class="keyword highlighter">public</span> (<span class="_custom-word_ highlighter">STATE</span> result, <span class="type keyword highlighter">string</span> comment) TransitionSignal(<span class="_custom-word_ highlighter">INPUT</span> input);
+<span class="keyword highlighter">public</span> record TransitionSignalResult(<span class="_custom-word_ highlighter">STATE</span> State, <span class="type keyword highlighter">bool</span> Success, <span class="type keyword highlighter">string</span> Comment);
+
+<span class="keyword highlighter">public</span> TransitionSignalResult TransitionSignal(<span class="_custom-word_ highlighter">INPUT</span> input)andler&lt;<span class="_custom-word_ highlighter">STATE</span>, <span class="_custom-word_ highlighter">INPUT</span>&gt; handler);
 ~~~
 
 ## Delegate MooreMachineOutputAction
@@ -286,7 +298,9 @@ Example:
 [TransitionSystem.CurrentState](#heading-currentstate),
 [TransitionSystem.LongestPaths](#heading-longestpaths),
 [TransitionSystem.MaximumPaths](#heading-maximumpaths),
+
 [Accessor.AddStateTransitionFunctionPart](#heading-addstatetransitionfunctionpart),
+[Accessor.AddInvalidInput](#heading-addinvalidinput),
 [Accessor.TransitionSignal](#heading-transitionsignal)
 
 ### Public Constructor
@@ -316,10 +330,11 @@ and SA???
 #### Signal
 
 ~~~{lang=C#}
-<span class="keyword highlighter">public</span> (
-    <span class="_custom-word_ highlighter">OUTPUT</span> output, <span class="type keyword highlighter">bool</span> outputSuccess, <span class="type keyword highlighter">string</span> outputComment,
-    <span class="_custom-word_ highlighter">STATE</span> transitionResult, <span class="type keyword highlighter">string</span> transitionComment)
-    Signal(<span class="_custom-word_ highlighter">INPUT</span> input);
+<span class="keyword highlighter">public</span> record SignalResult(
+    TransitionSignalResult TransitionResult,
+    <span class="_custom-word_ highlighter">OUTPUT</span> Output, <span class="type keyword highlighter">bool</span> OutputSuccess = <span class="literal keyword highlighter">true</span>, <span class="type keyword highlighter">string</span> OutputComment = <span class="literal keyword highlighter">null</span>);
+
+<span class="keyword highlighter">public</span> SignalResult Signal(<span class="_custom-word_ highlighter">INPUT</span> input);
 ~~~
 
 

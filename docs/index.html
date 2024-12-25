@@ -42,11 +42,13 @@
 <a style="margin-left: 9em;" href="#heading-maximumpaths">MaximumPaths</a><br/>
 <a style="margin-left: 6em;" href="#heading-notes">Notes</a><br/>
 <a style="margin-left: 3em;" href="#heading-delegate-acceptortransitionaction">Delegate AcceptorTransitionAction</a><br/>
+<a style="margin-left: 3em;" href="#heading-delegate-invalidacceptorinputhandler">Delegate InvalidAcceptorInputHandler</a><br/>
 <a style="margin-left: 3em;" href="#heading-class-acceptor">Class Acceptor</a><br/>
 <a style="margin-left: 6em;" href="#heading-inherited-public-members">Inherited Public Members</a><br/>
 <a style="margin-left: 6em;" href="#heading-public-constructor.">Public Constructor</a><br/>
 <a style="margin-left: 6em;" href="#heading-public-methods.">Public Methods</a><br/>
 <a style="margin-left: 9em;" href="#heading-addstatetransitionfunctionpart">AddStateTransitionFunctionPart</a><br/>
+<a style="margin-left: 9em;" href="#heading-addinvalidinput">AddInvalidInput</a><br/>
 <a style="margin-left: 9em;" href="#heading-transitionsignal">TransitionSignal</a><br/>
 <a style="margin-left: 3em;" href="#heading-delegate-mooremachineoutputaction">Delegate MooreMachineOutputAction</a><br/>
 <a style="margin-left: 3em;" href="#heading-delegate-mealymachineoutputaction">Delegate MealyMachineOutputAction</a><br/>
@@ -126,6 +128,8 @@ sequentially to all the states in the array, and all the transitions will be val
         TransitionSystem.TryTransitionTo(state); <span class="comment text highlighter">// always valid</span>
 </pre><h2 id="heading-delegate-acceptortransitionaction">Delegate AcceptorTransitionAction</h2>
 <pre lang="C#"><span class="keyword highlighter">public</span> <span class="keyword highlighter">delegate</span> <span class="_custom-word_ highlighter">STATE</span> AcceptorTransitionAction&lt;<span class="_custom-word_ highlighter">STATE</span>, <span class="_custom-word_ highlighter">INPUT</span>&gt; (<span class="_custom-word_ highlighter">STATE</span> state, <span class="_custom-word_ highlighter">INPUT</span> input);
+</pre><h2 id="heading-delegate-invalidacceptorinputhandler">Delegate InvalidAcceptorInputHandler</h2>
+<pre lang="C#"><span class="keyword highlighter">public</span> <span class="keyword highlighter">delegate</span> <span class="type keyword highlighter">string</span> InvalidAcceptorInputHandler&lt;<span class="_custom-word_ highlighter">STATE</span>, <span class="_custom-word_ highlighter">INPUT</span>&gt; (<span class="_custom-word_ highlighter">STATE</span> state, <span class="_custom-word_ highlighter">INPUT</span> input);
 </pre><h2 id="heading-class-acceptor">Class Acceptor</h2>
 <pre lang="C#"><span class="keyword highlighter">public</span> <span class="keyword highlighter">class</span> <span class="_custom-word_ highlighter">Acceptor</span>&lt;<span class="_custom-word_ highlighter">STATE</span>, <span class="_custom-word_ highlighter">INPUT</span>&gt; : TransitionSystem&lt;<span class="_custom-word_ highlighter">STATE</span>&gt; {<span class="comment block highlighter">/* &hellip; */</span>}
 </pre><h3 id="heading-inherited-public-members">Inherited Public Members</h3>
@@ -146,8 +150,12 @@ sequentially to all the states in the array, and all the transitions will be val
 <pre lang="C#"><span class="keyword highlighter">public</span> <span class="keyword highlighter">void</span> AddStateTransitionFunctionPart(
     <span class="_custom-word_ highlighter">INPUT</span> input, <span class="_custom-word_ highlighter">STATE</span> state,
     <span class="_custom-word_ highlighter">AcceptorTransitionAction</span>&lt;<span class="_custom-word_ highlighter">STATE</span>, <span class="_custom-word_ highlighter">INPUT</span>&gt; handler);
+</pre><h4 id="heading-addinvalidinput">AddInvalidInput</h4>
+<pre lang="C#"><span class="keyword highlighter">public</span> <span class="keyword highlighter">void</span> AddInvalidInput(<span class="_custom-word_ highlighter">INPUT</span> input, <span class="_custom-word_ highlighter">STATE</span> state, InvalidAcceptorInputHandler&lt;<span class="_custom-word_ highlighter">STATE</span>, <span class="_custom-word_ highlighter">INPUT</span>&gt; handler);
 </pre><h4 id="heading-transitionsignal">TransitionSignal</h4>
-<pre lang="C#"><span class="keyword highlighter">public</span> (<span class="_custom-word_ highlighter">STATE</span> result, <span class="type keyword highlighter">string</span> comment) TransitionSignal(<span class="_custom-word_ highlighter">INPUT</span> input);
+<pre lang="C#"><span class="keyword highlighter">public</span> record TransitionSignalResult(<span class="_custom-word_ highlighter">STATE</span> State, <span class="type keyword highlighter">bool</span> Success, <span class="type keyword highlighter">string</span> Comment);
+
+<span class="keyword highlighter">public</span> TransitionSignalResult TransitionSignal(<span class="_custom-word_ highlighter">INPUT</span> input)andler&lt;<span class="_custom-word_ highlighter">STATE</span>, <span class="_custom-word_ highlighter">INPUT</span>&gt; handler);
 </pre><h2 id="heading-delegate-mooremachineoutputaction">Delegate MooreMachineOutputAction</h2>
 <pre lang="C#"><span class="keyword highlighter">public</span> <span class="keyword highlighter">delegate</span> <span class="_custom-word_ highlighter">OUTPUT</span> MooreMachineOutputAction&lt;<span class="_custom-word_ highlighter">STATE</span>, <span class="_custom-word_ highlighter">INPUT</span>, <span class="_custom-word_ highlighter">OUTPUT</span>&gt; (<span class="_custom-word_ highlighter">STATE</span> state);
 </pre><h2 id="heading-delegate-mealymachineoutputaction">Delegate MealyMachineOutputAction</h2>
@@ -165,8 +173,8 @@ sequentially to all the states in the array, and all the transitions will be val
 <a href="#heading-finddeadends">TransitionSystem.FindDeadEnds</a>,
 <a href="#heading-currentstate">TransitionSystem.CurrentState</a>,
 <a href="#heading-longestpaths">TransitionSystem.LongestPaths</a>,
-<a href="#heading-maximumpaths">TransitionSystem.MaximumPaths</a>,
-<a href="#heading-addstatetransitionfunctionpart">Accessor.AddStateTransitionFunctionPart</a>,
+<a href="#heading-maximumpaths">TransitionSystem.MaximumPaths</a>,</p><p><a href="#heading-addstatetransitionfunctionpart">Accessor.AddStateTransitionFunctionPart</a>,
+<a href="#heading-addinvalidinput">Accessor.AddInvalidInput</a>,
 <a href="#heading-transitionsignal">Accessor.TransitionSignal</a></p><h3 id="heading-public-constructor..">Public Constructor</h3>
 <pre lang="C#"><span class="keyword highlighter">public</span> <span class="_custom-word_ highlighter">Transducer</span>(<span class="_custom-word_ highlighter">STATE</span> initialState = <span class="keyword highlighter">default</span>) : <span class="keyword highlighter">base</span>(initialState);
 </pre><h3 id="heading-public-methods..">Public Methods</h3>
@@ -178,10 +186,11 @@ sequentially to all the states in the array, and all the transitions will be val
     <span class="_custom-word_ highlighter">INPUT</span> input, <span class="_custom-word_ highlighter">STATE</span> state,
     <span class="_custom-word_ highlighter">MealyMachineOutputAction</span>&lt;<span class="_custom-word_ highlighter">STATE</span>, <span class="_custom-word_ highlighter">INPUT</span>, <span class="_custom-word_ highlighter">OUTPUT</span>&gt; handler);
 </pre><h4 id="heading-signal">Signal</h4>
-<pre lang="C#"><span class="keyword highlighter">public</span> (
-    <span class="_custom-word_ highlighter">OUTPUT</span> output, <span class="type keyword highlighter">bool</span> outputSuccess, <span class="type keyword highlighter">string</span> outputComment,
-    <span class="_custom-word_ highlighter">STATE</span> transitionResult, <span class="type keyword highlighter">string</span> transitionComment)
-    Signal(<span class="_custom-word_ highlighter">INPUT</span> input);
+<pre lang="C#"><span class="keyword highlighter">public</span> record SignalResult(
+    TransitionSignalResult TransitionResult,
+    <span class="_custom-word_ highlighter">OUTPUT</span> Output, <span class="type keyword highlighter">bool</span> OutputSuccess = <span class="literal keyword highlighter">true</span>, <span class="type keyword highlighter">string</span> OutputComment = <span class="literal keyword highlighter">null</span>);
+
+<span class="keyword highlighter">public</span> SignalResult Signal(<span class="_custom-word_ highlighter">INPUT</span> input);
 </pre><h1 id="heading-examples">Examples</h1>
 <h2 id="heading-room-door-example">Room Door Example</h2>
 <p>Basic transition system example with 6 states forming a linear transition graph. Demonstrates valid transitions and attempts to perform an invalid transition.</p><p><a href="https://github.com/SAKryukov/generic-state-machine/tree/main/code/Tests/TestDoor">Source code</a>
@@ -199,7 +208,7 @@ Total number of paths: 1603536, longest path length: 23.</p><p><a href="https://
 Also, the code can be used for some <a href="https://en.wikipedia.org/wiki/.NET_Framework">.NET Framework</a> versions. However, it will require re-creation of project files, which is not hard to do.</p><p>The build does not require Visual Studio, Visual Studio Code, or any other IDE. It can be done using the commands</p><pre>dotnet build -c Debug
 dotnet build -c Release
 </pre><p>With Visual Studio or Visual Studio Code, the code can be built in the usual ways. Besides, for Visual Studio Code, a <a href="https://github.com/SAKryukov/generic-state-machine/blob/main/code/.vscode/launch.json">launch configuration “Build All”</a> and a <a href="https://github.com/SAKryukov/generic-state-machine/blob/main/code/.vscode/tasks.json">task “Build All”</a> are provided.</p><p class="extensible-markdown">This documentation is generated from the extended Markdown documentation using <a href="https://marketplace.visualstudio.com/items?itemName=sakryukov.extensible-markdown">Extensible Markdown</a>
-for Visual Studio Code.</p><div  data-line="380" class="code-line" dir="auto" ></div>
+for Visual Studio Code.</p><div  data-line="395" class="code-line" dir="auto" ></div>
 <script src="https://SAKryukov.github.io/publications/code/source-code-decorator.js"></script>
 
 
