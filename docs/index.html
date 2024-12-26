@@ -5,12 +5,14 @@
     <meta charset="utf-8"/>
     <style type="text/css">
         @import url(https://SAKryukov.github.io/publications/code/documentation.css);
+        /*
         code { color: green; }
         p.title { margin-top: 0; }
         p.author { text-align: right; }
         pre { margin-top: 0; margin-bottom: 0; }
         p, h1, h2, h3, h4 { margin-top: 1em; margin-bottom: 0.4em; }
         p.toc br { content: ""; display: block; margin-top: 0.2em; }
+        */
         img { width: 70%; display: block; margin-left: auto; margin-right: auto; }
         p.extensible-markdown { border-top: solid thin darkgray; font-size: 80%; }
         table, td { border: solid thin black; border-collapse: collapse; font-size: 120%; }
@@ -198,7 +200,7 @@ see <a href="#heading-addoutputfunctionpart">AddOutputFunctionPart</a>.</p><pre 
 </pre><p>Mealy version:</p><pre lang="C#"><span class="keyword highlighter">public</span> <span class="keyword highlighter">void</span> AddOutputFunctionPart(
     <span class="_custom-word_ highlighter">INPUT</span> input, <span class="_custom-word_ highlighter">STATE</span> state,
     <span class="_custom-word_ highlighter">MealyMachineOutputAction</span>&lt;<span class="_custom-word_ highlighter">STATE</span>, <span class="_custom-word_ highlighter">INPUT</span>, <span class="_custom-word_ highlighter">OUTPUT</span>&gt; handler);
-</pre><p>If an output function of a state machine uses a mixture of Moore and Mealy functions for different function arguments, it is, formally speaking, a Mealy machine.</p><h4 id="heading-signal">Signal</h4>
+</pre><p>If an output function of a state machine uses a mixture of Moore and Mealy functions for different function arguments, it is, formally speaking, a Mealy machine.</p><p>See also: <a href="#heading-delegate-mooremachineoutputaction">MooreMachineOutputAction</a>, <a href="#heading-delegate-mealymachineoutputaction">MealyMachineOutputAction</a>.</p><h4 id="heading-signal">Signal</h4>
 <p>The method <code>Signal</code> looks for both <em>state-transition function</em> and <em>output function</em> using the combination of <code>input</code> and <a href="#heading-currentstate"><code>Acceptor.CurrentState</code></a>. If possible, it performs the transition to the state according to the state-transition function and calculates the <code>Output</code>, otherwise, it reports the issues.</p><p>In other words, it calls <a href="#heading-transitionsignal"><code>Acceptor.TransitionSignal</code></a>, takes its output, then uses the <em>output function</em>, and combines the results.</p><pre lang="C#"><span class="keyword highlighter">public</span> record SignalResult(
     TransitionSignalResult TransitionResult,
     <span class="_custom-word_ highlighter">OUTPUT</span> Output, <span class="type keyword highlighter">bool</span> OutputSuccess = <span class="literal keyword highlighter">true</span>, <span class="type keyword highlighter">string</span> OutputComment = <span class="literal keyword highlighter">null</span>);
@@ -225,7 +227,7 @@ keyless entry, only three gearbox positions, and lights.</p><p><a href="https://
 Also, the code can be used for some <a href="https://en.wikipedia.org/wiki/.NET_Framework">.NET Framework</a> versions. However, it will require re-creation of project files, which is not hard to do.</p><p>The build does not require Visual Studio, Visual Studio Code, or any other IDE. It can be done using the commands</p><pre>dotnet build -c Debug
 dotnet build -c Release
 </pre><p>With Visual Studio or Visual Studio Code, the code can be built in the usual ways. Besides, for Visual Studio Code, a <a href="https://github.com/SAKryukov/generic-state-machine/blob/main/code/.vscode/launch.json">launch configuration “Build All”</a> and a <a href="https://github.com/SAKryukov/generic-state-machine/blob/main/code/.vscode/tasks.json">task “Build All”</a> are provided.</p><p class="extensible-markdown">This documentation is generated from the extended Markdown documentation using <a href="https://marketplace.visualstudio.com/items?itemName=sakryukov.extensible-markdown">Extensible Markdown</a>
-for Visual Studio Code.</p><div  data-line="452" class="code-line" dir="auto" ></div>
+for Visual Studio Code.</p><div  data-line="454" class="code-line" dir="auto" ></div>
 <script src="https://SAKryukov.github.io/publications/code/source-code-decorator.js"></script>
 
 

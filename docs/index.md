@@ -371,6 +371,8 @@ Mealy version:
 
 If an output function of a state machine uses a mixture of Moore and Mealy functions for different function arguments, it is, formally speaking, a Mealy machine.
 
+See also: [MooreMachineOutputAction](#heading-delegate-mooremachineoutputaction), [MealyMachineOutputAction](#heading-delegate-mealymachineoutputaction).
+
 #### Signal
 
 The method `Signal` looks for both *state-transition function* and *output function* using the combination of `input` and [`Acceptor.CurrentState`](#heading-currentstate). If possible, it performs the transition to the state according to the state-transition function and calculates the `Output`, otherwise, it reports the issues.
