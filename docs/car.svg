@@ -15,6 +15,23 @@
          <path transform="scale(0.5)" style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt" d="m 6,0 c -3,1 -7,3 -9,5 0,0 0,-4 2,-5 -2,-1 -2,-5 -2,-5 2,2 6,4 9,5 z"/>
       </marker>
    </defs>
+
+  <path
+     style="fill:none;stroke:#000000;stroke-width:1.002;stroke-linecap:round;stroke-dasharray:none;marker-end:url(#arrow);paint-order:stroke fill markers"
+     d="m 465.77167,495.74141 c 0,0 51.33334,12.94195 124.93064,-39.66839 73.5973,-52.61033 72.35163,-98.71658 73.5973,-193.35873 1.24566,-94.64215 29.15512,-175.144488 -171.75039,-170.484641"
+     id="new1" />
+  <text
+     x="592.82208"
+     y="263.89136"
+     id="new2"
+     style="font-size:11.9592px;font-family:Tahoma, sans-serif;fill:#000000;stroke:none"
+><tspan
+       x="592.82208"
+       y="263.89136"
+       id="tspan24-4">Stop Engine</tspan></text>
+
+
+
    <path d="m 189.01819,352.04019 236.06419,-0.69881" />
    <path d="m 189.01819,370.83547 236.06419,-0.69882" />
    <path d="m 477.01893,352.04019 236.06419,-0.69881" />

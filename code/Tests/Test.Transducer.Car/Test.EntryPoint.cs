@@ -108,10 +108,19 @@ namespace StateMachines {
                 "Moving forward",
                 "Stopping forward motion"
             );
+            Add(CarSignal.BrakePedalRelease, CarSignal.BrakePedalPress, CarState.ParkBreaks, CarState.Park);
             Add(CarSignal.BrakePedalRelease, CarSignal.BrakePedalPress, CarState.ReverseBreaks, CarState.Reverse,
                 "Moving in reverse",
                 "Stopping in reverse motion"
             );
+            // one-way stop engine:
+            transducer.AddStateTransitionFunctionPart(CarSignal.StopEngine, CarState.Park,
+                (state, input) => CarState.Off);
+            transducer.AddOutputFunctionPart(CarSignal.StopEngine, CarState.Park,
+                (state, input) => CarOutput.None);
+            transducer.AddValidStateTransition(CarState.Park, CarState.Off,
+                (start, finish) => Console.WriteLine($"      (Stopping engine...)")); 
+            // stopped
             foreach (CarState state in new CarState[] { CarState.Off, CarState.Breaks, CarState.ParkBreaks, CarState.DriveBreaks, CarState.ReverseBreaks, CarState.Park, CarState.Drive, CarState.Reverse}) {
                 Add(CarSignal.LightsOn, CarSignal.LightsOff, state, state | CarState.Lights,
                 "Turning lights on", "Turning lights off",
@@ -143,6 +152,7 @@ namespace StateMachines {
             Report(transducer.Signal(CarSignal.BrakePedalRelease));
             Report(transducer.Signal(CarSignal.BrakePedalPress));
             Report(transducer.Signal(CarSignal.ShiftToPark));
+            Report(transducer.Signal(CarSignal.BrakePedalRelease));
             Report(transducer.Signal(CarSignal.StopEngine));
         } //Work
 
