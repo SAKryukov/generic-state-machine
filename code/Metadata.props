@@ -18,4 +18,8 @@
     <AssemblyTitle>$(Product) Demo</AssemblyTitle>
   </PropertyGroup>
 
+  <PropertyGroup> <!-- customize:  -->
+    <RootNamespace>SA</RootNamespace>
+  </PropertyGroup>
+
 </Project>

@@ -10,7 +10,7 @@
  
   <PropertyGroup> <!-- customize:  -->
     <TargetFramework>net5.0</TargetFramework>
-    <RootNamespace>SA</RootNamespace>
+    <RootNamespace>$(RootNamespace)</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup> <!-- change value, don't change property name: -->
@@ -24,7 +24,7 @@
 
   <PropertyGroup>
 
-    <NoWarn>$(NoWarn);NETSDK1138</NoWarn>
+    <NoWarn>$(NoWarn);NETSDK1138;IDE0130</NoWarn>
 
     <BaseIntermediateOutputPath>$([System.IO.Path]::Combine(
         $(SolutionDir),
