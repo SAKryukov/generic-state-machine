@@ -10,7 +10,6 @@
         table, td { border: solid thin black; border-collapse: collapse; font-size: 120%; }
         table { margin-left: 2em; }
         td { width: 1.4em; text-align: center; vertical-align: middle; }
-        code { font-weight: bold; }
     </style>
 </head>
 <body>
@@ -18,10 +17,18 @@
 <p class="title">Enumeration-Based Generic State Machine</p><p class="author">Sergey A Kryukov</p><p><a href="https://GitHub.com/SAKryukov/generic-state-machine">Source code</a><br/>
 <a href="https://SAKryukov.GitHub.io/generic-state-machine">API Documentation</a></p><h1>Contents</h1>
 <p class="toc">
+<a style="margin-left: 0em;" href="#heading-enumeration-series">Enumeration Series</a><br/>
 <a style="margin-left: 0em;" href="#heading-representation-of-a-transition-system">Representation of a Transition System</a><br/>
-</p><h1 id="heading-representation-of-a-transition-system">Representation of a Transition System</h1>
-<p>Let’s say, we have some system with three states, <code>A</code>, <code>B</code>, and <code>C</code>. Let’s make a Cartesian square out of them:</p><div  data-line="15" class="code-line" dir="auto" ></div>
-<table>
+</p><h1 id="heading-enumeration-series">Enumeration Series</h1>
+<ol>
+<li><a href="https://www.CodeProject.com/Articles/129830/Enumeration-Types-do-not-Enumerate-Working-around">Enumeration Types do not Enumerate! Working around .NET and Language Limitations</a></li>
+<li><a href="https://www.CodeProject.com/Articles/136181/Human-readable-Enumeration-Meta-data">Human-readable Enumeration Meta-data</a></li>
+<li><a href="https://www.CodeProject.com/Articles/144349/Enumeration-based-Command-Line-Utility">Enumeration-based Command Line Utility</a></li>
+<li><a href="https://www.CodeProject.com/Articles/809357/Bitwise-Enumeration-Editor-for-PropertyGrid-and-Vi">Bitwise Enumeration Editor for PropertyGrid and Visual Studio</a></li>
+<li>The present article</li>
+</ol>
+<h1 id="heading-representation-of-a-transition-system">Representation of a Transition System</h1>
+<p>Let’s say, we have some system with three states, <code>A</code>, <code>B</code>, and <code>C</code>. Let’s make a Cartesian square out of them:</p><table>
   <tr>
   <td></td><td>A</td><td>B</td><td>C</td>
   <tr></tr>
@@ -32,8 +39,7 @@
   <td>C</td><td> </td><td> </td><td>×</td>
   </tr>
 </table>
-<p>Circular relation <code>A ⭢ B ⭢ C ⭢ A ⭢ …</code>:</p><div  data-line="29" class="code-line" dir="auto" ></div>
-<table>
+<p>Circular relation <code>A ⭢ B ⭢ C ⭢ A ⭢ …</code>:</p><table>
   <tr>
   <td></td><td>A</td><td>B</td><td>C</td>
   <tr></tr>
@@ -45,14 +51,14 @@
   </tr>
 </table>
 <p>A <em>transition system</em> is a pair <code>(S, T)</code> where <code>S</code> is a set of states and <code>T</code>, the transition relation, is a subset of <code>S</code>.<br/>
-We say that there is a transition from state <code>p</code> to state <code>q</code> if <code>(p, q) ∈ T</code>, and denote it <code>p ⭢ q</code>.</p><p>A <em>deterministic finite-state machine</em> or <em>deterministic finite-state acceptor</em> is a quintuple <code>(Σ, S, s₀, δ, F)</code>, where:</p><ul data-line="48" class="code-line" dir="auto">
+We say that there is a transition from state <code>p</code> to state <code>q</code> if <code>(p, q) ∈ T</code>, and denote it <code>p ⭢ q</code>.</p><p>A <em>deterministic finite-state machine</em> or <em>deterministic finite-state acceptor</em> is a quintuple <code>(Σ, S, s₀, δ, F)</code>, where:</p><ul>
 <li><code>Σ</code></li>
 <li><code>S</code></li>
 <li><code>s₀</code></li>
 <li><code>δ</code> is the state-transition function: <code>δ: S ⨉ Σ ⭢ S</code></li>
 <li><code>F</code></li>
 </ul>
-<p>A <em>finite-state transducer</em> is a sextuple <code>(Σ, Γ, S, s₀, δ, ω)</code>, where:</p><ul data-line="56" class="code-line" dir="auto">
+<p>A <em>finite-state transducer</em> is a sextuple <code>(Σ, Γ, S, s₀, δ, ω)</code>, where:</p><ul>
 <li><code>Σ</code> is the input alphabet (a finite non-empty set of symbols)</li>
 <li><code>Γ</code> is the output alphabet (a finite non-empty set of symbols)</li>
 <li><code>S</code> is a finite non-empty set of states</li>

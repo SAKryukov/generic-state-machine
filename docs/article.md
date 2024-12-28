@@ -9,6 +9,17 @@ Sergey A Kryukov{.author}
 
 @toc
 
+
+# Enumeration Series
+
+This article is the fifth article of the small series of articles on enumeration types:
+
+1. [Enumeration Types do not Enumerate! Working around .NET and Language Limitations](https://www.CodeProject.com/Articles/129830/Enumeration-Types-do-not-Enumerate-Working-around)
+1. [Human-readable Enumeration Meta-data](https://www.CodeProject.com/Articles/136181/Human-readable-Enumeration-Meta-data)
+1. [Enumeration-based Command Line Utility](https://www.CodeProject.com/Articles/144349/Enumeration-based-Command-Line-Utility)
+1. [Bitwise Enumeration Editor for PropertyGrid and Visual Studio](https://www.CodeProject.com/Articles/809357/Bitwise-Enumeration-Editor-for-PropertyGrid-and-Vi)
+1. The present article
+
 # Representation of a Transition System
 
 Let's say, we have some system with three states, `A`, `B`, and `C`. Let's make a Cartesian square out of them:
