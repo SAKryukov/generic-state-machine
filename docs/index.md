@@ -173,7 +173,7 @@ Returns all the permitted paths between the states `start` and `finish`. If `sho
 
 #### FindDeadEnds
 
-Find all "dead ends", the states not visited along any paths between the states `start` and `finish`. Returns `allPaths`, all permitted paths between `start` and `finish`, and `deadEnds`.
+Finds all "dead ends", the states not visited along any paths between the states `start` and `finish`. Returns `allPaths`, all permitted paths between `start` and `finish`, and `deadEnds`.
 
 ~~~{lang=C#}{id=api-find-dead-ends-2}
 <span class="keyword highlighter">public</span> (<span class="_custom-word_ highlighter">STATE</span>[][] allPaths, <span class="_custom-word_ highlighter">STATE</span>[] deadEnds) FindDeadEnds(<span class="_custom-word_ highlighter">STATE</span> start, <span class="_custom-word_ highlighter">STATE</span> finish);
@@ -197,11 +197,15 @@ Returns the *current state* of the transition system. Before the very first tran
 
 #### LongestPaths
 
+Finds the longest path lengh in the state graph. When this number is found, it finds all the possible paths with this length and retuns all these paths.
+
 ~~~{lang=C#}{id=api-longest-paths}
 <span class="keyword highlighter">public</span> (int numberOfPaths, int longestPathLength, <span class="_custom-word_ highlighter">STATE</span>[][] longestPaths) LongestPaths; <span class="comment text highlighter">//NP-hard</span>
 ~~~
 
 #### MaximumPaths
+
+Finds the maximum number of paths between all `STATE`-to-`STATE` pairs. When this number is found, it returns the pairs having this number of paths between them.
 
 ~~~{lang=C#}{id=api-maximum-paths}
 <span class="keyword highlighter">public</span> (int maximumNumberOfPaths, (<span class="_custom-word_ highlighter">STATE</span> start, <span class="_custom-word_ highlighter">STATE</span> finish)[] pairsAtMax) MaximumPaths; <span class="comment text highlighter">//NP-hard</span>

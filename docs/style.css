@@ -1,6 +1,7 @@
         @import url(https://SAKryukov.github.io/publications/code/documentation.css);
         img { width: 70%; display: block; margin-left: auto; margin-right: auto; }
         p.extensible-markdown { border-top: solid thin darkgray; font-size: 80%; }
-        table, td { border: solid thin black; border-collapse: collapse; font-size: 120%; }
+        table, td, th { border: solid thin black; border-collapse: collapse; font-size: 120%; font-weight: normal; }
         table { margin-left: 2em; }
-        td { width: 1.4em; text-align: center; vertical-align: middle; }
+        td, th  { width: 1.3em; text-align: center; vertical-align: middle; }
+        th, tr > td:first-of-type { background-color: lightGray; }

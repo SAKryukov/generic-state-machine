@@ -7,9 +7,10 @@
         @import url(https://SAKryukov.github.io/publications/code/documentation.css);
         img { width: 70%; display: block; margin-left: auto; margin-right: auto; }
         p.extensible-markdown { border-top: solid thin darkgray; font-size: 80%; }
-        table, td { border: solid thin black; border-collapse: collapse; font-size: 120%; }
+        table, td, th { border: solid thin black; border-collapse: collapse; font-size: 120%; font-weight: normal; }
         table { margin-left: 2em; }
-        td { width: 1.4em; text-align: center; vertical-align: middle; }
+        td, th  { width: 1.3em; text-align: center; vertical-align: middle; }
+        th, tr > td:first-of-type { background-color: lightGray; }
     </style>
 </head>
 <body>
@@ -115,15 +116,15 @@ for the <code>STATE</code> type is not a state. It can happen if this default va
 </pre><h4 id="heading-labyrinth">Labyrinth</h4>
 <p>Returns all the permitted paths between the states <code>start</code> and <code>finish</code>. If <code>shortest</code> is <code>true</code> the method still finds all paths, but then it determines the shortest path length and returns only the array of paths of the minimal length.</p><pre lang="C#" id="api-labyrinth"><span class="keyword highlighter">public</span> <span class="_custom-word_ highlighter">STATE</span>[][] Labyrinth(<span class="_custom-word_ highlighter">STATE</span> start, <span class="_custom-word_ highlighter">STATE</span> finish, bool shortest = <span class="keyword highlighter">false</span>);
 </pre><h4 id="heading-finddeadends">FindDeadEnds</h4>
-<p>Find all “dead ends”, the states not visited along any paths between the states <code>start</code> and <code>finish</code>. Returns <code>allPaths</code>, all permitted paths between <code>start</code> and <code>finish</code>, and <code>deadEnds</code>.</p><pre lang="C#" id="api-find-dead-ends-2"><span class="keyword highlighter">public</span> (<span class="_custom-word_ highlighter">STATE</span>[][] allPaths, <span class="_custom-word_ highlighter">STATE</span>[] deadEnds) FindDeadEnds(<span class="_custom-word_ highlighter">STATE</span> start, <span class="_custom-word_ highlighter">STATE</span> finish);
+<p>Finds all “dead ends”, the states not visited along any paths between the states <code>start</code> and <code>finish</code>. Returns <code>allPaths</code>, all permitted paths between <code>start</code> and <code>finish</code>, and <code>deadEnds</code>.</p><pre lang="C#" id="api-find-dead-ends-2"><span class="keyword highlighter">public</span> (<span class="_custom-word_ highlighter">STATE</span>[][] allPaths, <span class="_custom-word_ highlighter">STATE</span>[] deadEnds) FindDeadEnds(<span class="_custom-word_ highlighter">STATE</span> start, <span class="_custom-word_ highlighter">STATE</span> finish);
 </pre><p>Another form of <code>FindDeadEnds</code> assumes that the parameter <code>allPaths</code> is the array of paths obtained through the prior call to <a href="#heading-labyrinth">Labyrinth</a> between the state <code>start</code> and some other state <code>finish</code>. In this case, the <code>allPaths</code> array will contain all paths ending with the state <code>finish</code> passed as the second parameter to <a href="#heading-labyrinth">Labyrinth</a>.</p><pre lang="C#" id="api-find-dead-ends"><span class="keyword highlighter">public</span> <span class="_custom-word_ highlighter">STATE</span>[] FindDeadEnds(<span class="_custom-word_ highlighter">STATE</span> start, <span class="_custom-word_ highlighter">STATE</span>[][] allPaths);
 </pre><h3 id="heading-public-properties">Public Properties</h3>
 <h4 id="heading-currentstate">CurrentState</h4>
 <p>Returns the <em>current state</em> of the transition system. Before the very first transition of the instance, the current state is the one defined by the <a href="#heading-public-constructor">constructor</a>.</p><pre lang="C#" id="api-current-state"><span class="keyword highlighter">public</span> <span class="_custom-word_ highlighter">STATE</span> CurrentState;
 </pre><h4 id="heading-longestpaths">LongestPaths</h4>
-<pre lang="C#" id="api-longest-paths"><span class="keyword highlighter">public</span> (int numberOfPaths, int longestPathLength, <span class="_custom-word_ highlighter">STATE</span>[][] longestPaths) LongestPaths; <span class="comment text highlighter">//NP-hard</span>
+<p>Finds the longest path lengh in the state graph. When this number is found, it finds all the possible paths with this length and retuns all these paths.</p><pre lang="C#" id="api-longest-paths"><span class="keyword highlighter">public</span> (int numberOfPaths, int longestPathLength, <span class="_custom-word_ highlighter">STATE</span>[][] longestPaths) LongestPaths; <span class="comment text highlighter">//NP-hard</span>
 </pre><h4 id="heading-maximumpaths">MaximumPaths</h4>
-<pre lang="C#" id="api-maximum-paths"><span class="keyword highlighter">public</span> (int maximumNumberOfPaths, (<span class="_custom-word_ highlighter">STATE</span> start, <span class="_custom-word_ highlighter">STATE</span> finish)[] pairsAtMax) MaximumPaths; <span class="comment text highlighter">//NP-hard</span>
+<p>Finds the maximum number of paths between all <code>STATE</code>-to-<code>STATE</code> pairs. When this number is found, it returns the pairs having this number of paths between them.</p><pre lang="C#" id="api-maximum-paths"><span class="keyword highlighter">public</span> (int maximumNumberOfPaths, (<span class="_custom-word_ highlighter">STATE</span> start, <span class="_custom-word_ highlighter">STATE</span> finish)[] pairsAtMax) MaximumPaths; <span class="comment text highlighter">//NP-hard</span>
 </pre><h3 id="heading-notes">Notes</h3>
 <p>All paths returned by <a href="#heading-labyrinth"><code>Labyrinth</code></a>, <a href="#heading-finddeadends"><code>FindDeadEnds</code></a>, and <a href="#heading-longestpaths"><code>LongestPaths</code></a> are represented as arrays <code>STATE[]</code> or arrays of paths <code>STATE[][]</code>, each path represented as an array of <code>STATE</code>. In the array of states, the starting state of the path is not included, and the final state of the path is included.</p><p>In other words, given a permitted path between the <a href="#heading-currentstate">current state</a> of a transition system and the other states in the array, we can perform the chain of transitions,
 sequentially to all the states in the array, and all the transitions will be valid.</p><p>Example:</p><pre lang="C#"><span class="keyword highlighter">var</span> solution = TransitionSystem.Labyrinth(<span class="_custom-word_ highlighter">VisitorState</span>.Entry, <span class="_custom-word_ highlighter">VisitorState</span>.Exit);
@@ -219,7 +220,7 @@ keyless entry, only three gearbox positions, and lights.</p><p><a href="https://
 Also, the code can be used for some <a href="https://en.wikipedia.org/wiki/.NET_Framework">.NET Framework</a> versions. However, it will require re-creation of project files, which is not hard to do.</p><p>The build does not require Visual Studio, Visual Studio Code, or any other IDE. It can be done using the commands</p><pre>dotnet build -c Debug
 dotnet build -c Release
 </pre><p>With Visual Studio or Visual Studio Code, the code can be built in the usual ways. Besides, for Visual Studio Code, a <a href="https://github.com/SAKryukov/generic-state-machine/blob/main/code/.vscode/launch.json">launch configuration “Build All”</a> and a <a href="https://github.com/SAKryukov/generic-state-machine/blob/main/code/.vscode/tasks.json">task “Build All”</a> are provided.</p><p class="extensible-markdown">This documentation is generated from the extended Markdown documentation using <a href="https://marketplace.visualstudio.com/items?itemName=sakryukov.extensible-markdown">Extensible Markdown</a>
-for Visual Studio Code.</p><div  data-line="454" class="code-line" dir="auto" ></div>
+for Visual Studio Code.</p><div  data-line="458" class="code-line" dir="auto" ></div>
 <script src="https://SAKryukov.github.io/publications/code/source-code-decorator.js"></script>
 
 
