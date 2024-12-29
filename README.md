@@ -30,3 +30,6 @@ For example, in the hardware automation applications, it can operate the hardwar
 
 Please see the comprehensive [API documentation](https://SAKryukov.GitHub.io/generic-state-machine).
 
+For the rationale, general ideas, and mathematical aspects, please see the
+[original publication](https://sakryukov.github.io/publications/2024-12-29.Enumeration-Based-Generic-State-Machine.html).
+
