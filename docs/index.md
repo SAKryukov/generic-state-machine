@@ -197,7 +197,7 @@ Returns the *current state* of the transition system. Before the very first tran
 
 #### LongestPaths
 
-Finds the longest path lengh in the state graph. When this number is found, it finds all the possible paths with this length and retuns all these paths.
+Finds the longest path length in the state graph. When this number is found, it finds all the possible paths with this length and returns all these paths.
 
 ~~~{lang=C#}{id=api-longest-paths}
 <span class="keyword highlighter">public</span> (int numberOfPaths, int longestPathLength, <span class="_custom-word_ highlighter">STATE</span>[][] longestPaths) LongestPaths; <span class="comment text highlighter">//NP-hard</span>
