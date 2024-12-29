@@ -31,7 +31,7 @@ namespace StateMachines {
             StateGraphKey key = new(FindState(startState), FindState(finishState), undirected);
             if (stateGraph.ContainsKey(key))
                 throw new GraphPopulationException(startState, finishState);
-            stateGraph.Add(key, new StateGraphValue(true, action, null));
+            stateGraph.Add(key, new TransitionLabel(true, action, null));
             digest.Update(key);
         } //AddValidStateTransition
 
@@ -52,9 +52,9 @@ namespace StateMachines {
         public void AddInvalidStateTransition(STATE startState, STATE finishState, InvalidStateTransitionAction<STATE> action) {
             if (startState.Equals(finishState)) return;
             StateGraphKey key = new(FindState(startState), FindState(finishState));
-            if (stateGraph.TryGetValue(key, out StateGraphValue value))
+            if (stateGraph.TryGetValue(key, out TransitionLabel value))
                 throw new GraphPopulationException(startState, finishState);
-            stateGraph.Add(key, new StateGraphValue(false, null, action));
+            stateGraph.Add(key, new TransitionLabel(false, null, action));
         } //AddInvalidStateTransition
 
         public STATE CurrentState { get; private protected set; }
@@ -66,7 +66,7 @@ namespace StateMachines {
             State start = FindState(startState);
             State finish = FindState(finishState);
             StateGraphKey key = new(start, finish);
-            var transition = stateGraph.TryGetValue(key, out StateGraphValue value) ? value : null;
+            var transition = stateGraph.TryGetValue(key, out TransitionLabel value) ? value : null;
             if (transition == null)
                 return (false, DefinitionSet<STATE, bool, bool>.TransitionNotDefined(startState, finishState));
             return IsTransitionValid(transition, startState, finishState);
@@ -78,7 +78,7 @@ namespace StateMachines {
             State start = FindState(CurrentState);
             State finish = FindState(state);
             StateGraphKey key = new(start, finish);
-            var transition = stateGraph.TryGetValue(key, out StateGraphValue stateGraphValue) ? stateGraphValue : null;
+            var transition = stateGraph.TryGetValue(key, out TransitionLabel stateGraphValue) ? stateGraphValue : null;
             bool found = transition != null;
             string validityComment = DefinitionSet<STATE, bool, bool>.TransitionSuccess(state);
             if (found) {
@@ -200,7 +200,7 @@ namespace StateMachines {
             State finish = FindState(state);
             CurrentState = state;
             StateGraphKey key = new(start, finish);
-            bool found = stateGraph.TryGetValue(key, out StateGraphValue stateGraphValue);
+            bool found = stateGraph.TryGetValue(key, out TransitionLabel stateGraphValue);
             if (found && stateGraphValue.ValidAction != null)
                 stateGraphValue.ValidAction(start.UnderlyingMember, finish.UnderlyingMember);
             return DefinitionSet<STATE, bool, bool>.TransitionSuccess(state);
@@ -225,16 +225,16 @@ namespace StateMachines {
             bool populated;
         } //class Digest
 
-        static bool IsValid(StateGraphValue value) => value.ValidAction != null;
+        static bool IsValid(TransitionLabel value) => value.ValidAction != null;
 
-        static (bool IsValid, string ValidityComment) IsTransitionValid(StateGraphValue value, STATE startState, STATE finishState) {
+        static (bool IsValid, string ValidityComment) IsTransitionValid(TransitionLabel value, STATE startState, STATE finishState) {
             if (!IsValid(value) && value.InvalidAction != null) {
                 return (false, value.InvalidAction(startState, finishState));
             } //if
             return (true, DefinitionSet<STATE, bool, bool>.TransitionIsValid(startState, finishState));
         } //IsTransitionValid
 
-        readonly Dictionary<StateGraphKey, StateGraphValue> stateGraph = new();
+        readonly Dictionary<StateGraphKey, TransitionLabel> stateGraph = new();
         readonly Digest digest;
 
         class StateGraphKey {
@@ -262,15 +262,15 @@ namespace StateMachines {
             internal bool IsUndirected { get; init; }
         } //class StateGraphKey
 
-        class StateGraphValue {
-            internal StateGraphValue(bool isValid, StateTransitionAction<STATE> valid, InvalidStateTransitionAction<STATE> invalid) {
+        class TransitionLabel {
+            internal TransitionLabel(bool isValid, StateTransitionAction<STATE> valid, InvalidStateTransitionAction<STATE> invalid) {
                 IsValid = isValid;
                 ValidAction = valid; InvalidAction = invalid;
             }
             internal bool IsValid { get; init; }
             internal StateTransitionAction<STATE> ValidAction { get; init; }
             internal InvalidStateTransitionAction<STATE> InvalidAction { get; init; }
-        } //class StateGraphValue
+        } //class TransitionLabel
 
         class GraphPopulationException : System.ApplicationException {
             internal GraphPopulationException(STATE startState, STATE finishState)
