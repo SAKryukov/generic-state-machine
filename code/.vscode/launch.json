@@ -15,9 +15,9 @@
             "request": "launch",
             "preLaunchTask": "build",
             "windows": {
-                "program": "${workspaceFolder}/output.Debug.AnyCPU/TestDoor.exe",    
+                "program": "${workspaceFolder}/output.AnyCPU.Debug/TestDoor.exe",    
             },
-            "program": "${workspaceFolder}/output.Debug.AnyCPU/TestDoor",
+            "program": "${workspaceFolder}/output.AnyCPU.Debug/TestDoor",
             "stopAtEntry": true,
             "logging": { "moduleLoad": false },
             "console": "internalConsole",
@@ -28,9 +28,9 @@
             "request": "launch",
             "preLaunchTask": "build",
             "windows": {
-                "program": "${workspaceFolder}/output.Debug.AnyCPU/Test.Non-Emumeration.exe",
+                "program": "${workspaceFolder}/output.AnyCPU.Debug\/Test.Non-Emumeration.exe",
             },
-            "program": "${workspaceFolder}/output.Debug.AnyCPU/Test.Non-Emumeration",
+            "program": "${workspaceFolder}/output.AnyCPU.Debug/Test.Non-Emumeration",
             "stopAtEntry": true,
             "logging": { "moduleLoad": false },
             "console": "internalConsole"
@@ -41,9 +41,9 @@
             "request": "launch",
             "preLaunchTask": "build",
             "windows": {
-                "program": "${workspaceFolder}/output.Debug.AnyCPU/TestGrid.exe",
+                "program": "${workspaceFolder}/output.AnyCPU.Debug/TestGrid.exe",
             },
-            "program": "${workspaceFolder}/output.Debug.AnyCPU/TestGrid",
+            "program": "${workspaceFolder}/output.AnyCPU.Debug/TestGrid",
             "stopAtEntry": true,
             "logging": { "moduleLoad": false },
             "console": "internalConsole"
@@ -54,9 +54,9 @@
             "request": "launch",
             "preLaunchTask": "build",
             "windows": {
-                "program": "${workspaceFolder}/output.Debug.AnyCPU/TestZoo.exe",
+                "program": "${workspaceFolder}/output.AnyCPU.Debug/TestZoo.exe",
             },
-            "program": "${workspaceFolder}/output.Debug.AnyCPU/TestZoo",
+            "program": "${workspaceFolder}/output.AnyCPU.Debug/TestZoo",
             "stopAtEntry": true,
             "logging": { "moduleLoad": false },
             "console": "internalConsole",
@@ -67,9 +67,9 @@
             "request": "launch",
             "preLaunchTask": "build",
             "windows": {
-                "program": "${workspaceFolder}/output.Debug.AnyCPU/Test.Transducer.Car.exe",
+                "program": "${workspaceFolder}/output.AnyCPU.Debug/Test.Transducer.Car.exe",
             },
-            "program": "${workspaceFolder}/output.Debug.AnyCPU/Test.Transducer.Car",
+            "program": "${workspaceFolder}/output.AnyCPU.Debug/Test.Transducer.Car",
             "stopAtEntry": true,
             "logging": { "moduleLoad": false },
             "console": "internalConsole",

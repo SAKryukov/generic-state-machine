@@ -2,19 +2,17 @@
     Copyright (C) 2024 by Sergey A Kryukov
     https://www.SAKryukov.org
     https://github.com/SAKryukov
-    https://www.codeproject.com/Members/SAKryukov
 -->
 
 <Project>
-    <Import Project="$(SolutionDir)Metadata.props"/>
+    <Import Project="$(MSBuildThisFileDirectory)Metadata.props"/>
  
   <PropertyGroup> <!-- customize:  -->
-    <TargetFramework>net5.0</TargetFramework>
-    <RootNamespace>$(RootNamespace)</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup> <!-- change value, don't change property name: -->
-    <_intermediateOutputPathRoot>$(SolutionDir).intermediateOutput</_intermediateOutputPathRoot>
+    <_intermediateOutputPathRoot>$(MSBuildThisFileDirectory).intermediateOutput</_intermediateOutputPathRoot>
+    <RootNamespace>$(RootNamespace)</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
@@ -22,18 +20,22 @@
     <DebugSymbols>false</DebugSymbols>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Platform)'==''">
+    <Platform>AnyCPU</Platform>
+  </PropertyGroup>
+
   <PropertyGroup>
 
     <NoWarn>$(NoWarn);NETSDK1138;IDE0130</NoWarn>
 
     <BaseIntermediateOutputPath>$([System.IO.Path]::Combine(
-        $(SolutionDir),
         $(_intermediateOutputPathRoot),
         $(MSBuildProjectName),
-        $(Configuration).$(Platform)))</BaseIntermediateOutputPath>
+        $(Platform).$(Configuration)))</BaseIntermediateOutputPath>
     <OutputPath>$([System.IO.Path]::Combine(
-        $(SolutionDir),
-        output.$(Configuration).$(Platform)))</OutputPath>
+        $(MSBuildThisFileDirectory),
+        $(MSBuildThisFileDirectory),
+        output.$(Platform).$(Configuration)))</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
 
