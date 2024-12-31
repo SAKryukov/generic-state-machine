@@ -7,9 +7,6 @@
 <Project>
     <Import Project="$(MSBuildThisFileDirectory)Metadata.props"/>
  
-  <PropertyGroup> <!-- customize:  -->
-  </PropertyGroup>
-
   <PropertyGroup> <!-- change value, don't change property name: -->
     <_intermediateOutputPathRoot>$(MSBuildThisFileDirectory).intermediateOutput</_intermediateOutputPathRoot>
     <RootNamespace>$(RootNamespace)</RootNamespace>
@@ -27,6 +24,10 @@
   <PropertyGroup>
 
     <NoWarn>$(NoWarn);NETSDK1138;IDE0130</NoWarn>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <!-- Placeholders: -->
+    <WarningsAsErrors></WarningsAsErrors>
+    <WarningsNotAsErrors></WarningsNotAsErrors>
 
     <BaseIntermediateOutputPath>$([System.IO.Path]::Combine(
         $(_intermediateOutputPathRoot),
@@ -38,11 +39,6 @@
         output.$(Platform).$(Configuration)))</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
-
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <!-- Placeholders: -->
-    <WarningsAsErrors></WarningsAsErrors>
-    <WarningsNotAsErrors></WarningsNotAsErrors>
 
     <AssemblyVersion>$(CustomUnifiedVersion)</AssemblyVersion>
     <FileVersion>$(CustomUnifiedVersion)</FileVersion>
