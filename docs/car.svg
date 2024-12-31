@@ -8,30 +8,22 @@
        path.arrow-start, path.arrow-end { fill:black;stroke:#000000;stroke-width:1;stroke-linecap:round;paint-order:stroke fill markers; }
        path.arrow-start { marker-start:url(#arrow) }
        path.arrow-end { marker-end:url(#arrow) }
-       text { fill:black; stroke:none; font-family: Tahoma, sans-serif; font-size:11.9592px; }
+       text { fill:black; stroke:none; font-family: sans-serif; font-size:11.9592px; }
    </style>
    <defs>
       <marker style="overflow:visible" id="arrow" refX="0" refY="0" orient="auto-start-reverse" markerWidth="1" markerHeight="1" viewBox="0 0 1 1" preserveAspectRatio="xMidYMid">
          <path transform="scale(0.5)" style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt" d="m 6,0 c -3,1 -7,3 -9,5 0,0 0,-4 2,-5 -2,-1 -2,-5 -2,-5 2,2 6,4 9,5 z"/>
       </marker>
    </defs>
-
   <path
      style="fill:none;stroke:#000000;stroke-width:1.002;stroke-linecap:round;stroke-dasharray:none;marker-end:url(#arrow);paint-order:stroke fill markers"
-     d="m 465.77167,495.74141 c 0,0 51.33334,12.94195 124.93064,-39.66839 73.5973,-52.61033 72.35163,-98.71658 73.5973,-193.35873 1.24566,-94.64215 29.15512,-175.144488 -171.75039,-170.484641"
-     id="new1" />
+     d="m 465.77167,495.74141 c 0,0 51.33334,12.94195 124.93064,-39.66839 73.5973,-52.61033 72.35163,-98.71658 73.5973,-193.35873 1.24566,-94.64215 29.15512,-175.144488 -171.75039,-170.484641"/>
   <text
      x="592.82208"
      y="263.89136"
      id="new2"
      style="font-size:11.9592px;font-family:Tahoma, sans-serif;fill:#000000;stroke:none"
-><tspan
-       x="592.82208"
-       y="263.89136"
-       id="tspan24-4">Stop Engine</tspan></text>
-
-
-
+><tspan x="671" y="263.89136">Stop Engine</tspan></text>
    <path d="m 189.01819,352.04019 236.06419,-0.69881" />
    <path d="m 189.01819,370.83547 236.06419,-0.69882" />
    <path d="m 477.01893,352.04019 236.06419,-0.69881" />
@@ -43,12 +35,12 @@
    <path d="M 433.77159,353.309 V 487.74139" />
    <path d="M 465.77167,97.308352 V 231.74075" />
    <path class="state" vector-effect="non-scaling-stroke" fill-rule="evenodd" d="m 411.40238,92.229649 c 0,-6.880111 2.06142,-12.457554 4.60431,-12.457554 h 67.52989 c 2.54293,0 4.60431,5.577443 4.60431,12.457554 0,6.880163 -2.06138,12.457551 -4.60431,12.457551 h -67.52989 c -2.54289,0 -4.60431,-5.577388 -4.60431,-12.457551"/>
-   <text x="417.38202" y="96.714386" xml:space="preserve">      Off      </text>
+   <text x="440" y="96.714386" xml:space="preserve">Off</text>
    <path class="state" vector-effect="non-scaling-stroke" fill-rule="evenodd" d="m 425.58069,224.87512 c 0,-5.48208 2.11943,-9.92618 4.73387,-9.92618 h 40.36246 c 2.61449,0 4.73387,4.4441 4.73387,9.92618 v 4.06614 c 0,5.48212 -2.11938,9.92618 -4.73387,9.92618 h -40.36246 c -2.61444,0 -4.73387,-4.44406 -4.73387,-9.92618 v -4.06614"/>
    <text xml:space="preserve" x="433.05524" y="231.89122">Breaks</text>
-   <text xml:space="preserve" x="361.91495" y="287.89136">Start Engine</text>
+   <text xml:space="preserve" x="352" y="287.89136">Start Engine</text>
    <text xml:space="preserve" x="333.0914" y="167.89111" >
-      <tspan x="333.0914" y="167.89111">Break Pedal Press</tspan>
+      <tspan x="320" y="167.89111">Break Pedal Press</tspan>
    </text>
    <text x="275.63504" y="344.35913">
       <tspan x="275.63504" y="344.35913">Shift to Drive</tspan>
@@ -66,13 +58,13 @@
       <tspan x="472.38995" y="167.89111">Break Pedal Release</tspan>
    </text>
    <text x="51.40929" y="455.892">
-      <tspan x="39.4" y="455.892">Break Pedal Release</tspan>
+      <tspan x="24" y="455.892">Break Pedal Release</tspan>
    </text>
    <text x="190.70779" y="455.892">
       <tspan x="190.70779" y="455.892">Break Pedal Press</tspan>
    </text>
    <text x="624.69305" y="455.892">
-      <tspan x="611" y="455.892">Break Pedal Release</tspan>
+      <tspan x="596" y="470">Break Pedal Release</tspan>
    </text>
    <text x="763.99152" y="455.892">
       <tspan x="763.99152" y="455.892">Break Pedal Press</tspan>
@@ -105,7 +97,7 @@
       <tspan style="stroke-width:1" x="635.47375" y="-20.296556" />
    </text>
    <text x="333.0914" y="423.89188">
-      <tspan x="319.6" y="423.89188">Break Pedal Release</tspan>
+      <tspan x="304" y="423.89188">Break Pedal Release</tspan>
    </text>
    <text x="472.38995" y="423.89188">
       <tspan x="472.38995" y="423.89188">Break Pedal Press</tspan>
