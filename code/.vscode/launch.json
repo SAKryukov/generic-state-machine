@@ -74,6 +74,19 @@
             "logging": { "moduleLoad": false },
             "console": "internalConsole",
         },
+        {
+            "name": "Debug Transcoder",
+            "type": "coreclr",
+            "request": "launch",
+            //"preLaunchTask": "build",
+            "windows": {
+                "program": "${workspaceFolder}/output.AnyCPU.Debug/Test.Transcode.exe",
+            },
+            "program": "${workspaceFolder}/output.AnyCPU.Debug/Test.Transcode",
+            //"stopAtEntry": true,
+            "logging": { "moduleLoad": false },
+            "console": "internalConsole",
+        },
 
     ]
 }
