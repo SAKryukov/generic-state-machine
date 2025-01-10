@@ -17,8 +17,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestZoo", "Tests\TestZoo\Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Transducer.Car", "Tests\Test.Transducer.Car\Test.Transducer.Car.csproj", "{CF42B7CB-F66F-48D3-8BC3-0C5EF39E6D9F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Transcode", "Tests\Test.Transcode\Test.Transcode.csproj", "{6FFB2E84-99A5-4771-8422-C278D43473D3}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,10 +47,6 @@ Global
 		{CF42B7CB-F66F-48D3-8BC3-0C5EF39E6D9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF42B7CB-F66F-48D3-8BC3-0C5EF39E6D9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF42B7CB-F66F-48D3-8BC3-0C5EF39E6D9F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6FFB2E84-99A5-4771-8422-C278D43473D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6FFB2E84-99A5-4771-8422-C278D43473D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6FFB2E84-99A5-4771-8422-C278D43473D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6FFB2E84-99A5-4771-8422-C278D43473D3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -66,6 +60,5 @@ Global
 		{09CB4C98-495E-489C-BAA0-9A2BDDFD7511} = {3CA2D687-5B48-43D2-BFC9-9AA5A3E91C0A}
 		{3AD60D10-DEAA-465F-9FA7-7782FCE5AAE1} = {3CA2D687-5B48-43D2-BFC9-9AA5A3E91C0A}
 		{CF42B7CB-F66F-48D3-8BC3-0C5EF39E6D9F} = {3CA2D687-5B48-43D2-BFC9-9AA5A3E91C0A}
-		{6FFB2E84-99A5-4771-8422-C278D43473D3} = {3CA2D687-5B48-43D2-BFC9-9AA5A3E91C0A}
 	EndGlobalSection
 EndGlobal
