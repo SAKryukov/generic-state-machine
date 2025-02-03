@@ -1,14 +1,19 @@
 ﻿<!--
-    Copyright (C) 2024 by Sergey A Kryukov
+    Copyright (C) 2024-2025 by Sergey A Kryukov
     https://www.SAKryukov.org
     https://github.com/SAKryukov
 -->
 
 <Project>
-    <Import Project="$(MSBuildThisFileDirectory)Metadata.props"/>
+  <Import Project="$(MSBuildThisFileDirectory)Metadata.props"/>
  
+  <PropertyGroup> <!-- explicitely named -->
+    <SolutionDirectory>$(MSBuildThisFileDirectory)</SolutionDirectory>
+    <RootNamespace>$(RootNamespace)</RootNamespace>
+  </PropertyGroup>
+
   <PropertyGroup> <!-- change value, don't change property name: -->
-    <_intermediateOutputPathRoot>$(MSBuildThisFileDirectory).intermediateOutput</_intermediateOutputPathRoot>
+    <_intermediateOutputPathRoot>$(SolutionDirectory).intermediateOutput</_intermediateOutputPathRoot>
     <RootNamespace>$(RootNamespace)</RootNamespace>
   </PropertyGroup>
 
@@ -34,8 +39,7 @@
         $(MSBuildProjectName),
         $(Platform).$(Configuration)))</BaseIntermediateOutputPath>
     <OutputPath>$([System.IO.Path]::Combine(
-        $(MSBuildThisFileDirectory),
-        $(MSBuildThisFileDirectory),
+        $(SolutionDirectory),
         output.$(Platform).$(Configuration)))</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <ProduceReferenceAssembly>false</ProduceReferenceAssembly>

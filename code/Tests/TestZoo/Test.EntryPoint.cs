@@ -8,7 +8,7 @@
     https://GitHub.com/SAKryukov/generic-state-machine/blob/main/docs/zoo.svg
     https://raw.GitHubUserContent.com/SAKryukov/generic-state-machine/refs/heads/main/docs/zoo.svg
 
-    Copyright (C) 2024 by Sergey A Kryukov
+    Copyright (C) 2024-2025 by Sergey A Kryukov
     https://www.SAKryukov.org
     https://github.com/SAKryukov
 */

@@ -1,7 +1,7 @@
 /*
     Generic Transducer, test
 
-    Copyright (C) 2024 by Sergey A Kryukov
+    Copyright (C) 2024-2025 by Sergey A Kryukov
     https://www.SAKryukov.org
     https://github.com/SAKryukov
 */

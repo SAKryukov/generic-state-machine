@@ -1,0 +1,18 @@
+﻿<!--
+    Copyright (C) 2024-2025 by Sergey A Kryukov
+    https://www.SAKryukov.org
+    https://github.com/SAKryukov
+-->
+
+<Project>
+  <Import Project="$(MSBuildThisFileDirectory)../Directory.Build.props"/>
+ 
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="$(SolutionDirectory)StateMachines/StateMachines.csproj" />
+  </ItemGroup>
+
+</Project>
